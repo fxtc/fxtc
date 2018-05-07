@@ -224,10 +224,10 @@ public:
         nDefaultPort = 19468;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1523632983, 3438095, 0x1e0ffff0, 1, consensus.nMinimumSubsidy * COIN);
+        genesis = CreateGenesisBlock(1523632983, 3828092, 0x1e0ffff0, 1, consensus.nMinimumSubsidy * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000087940a78c957df3eae725ba2719fb7e669803b5c0afa8521086996b3d77"));
-        assert(genesis.hashMerkleRoot == uint256S("0x48012c5849aa7b83d6b5f41d86753a9210b5b49636dbbf6e5606a39d0287890a"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000000a5e5599ea63cf28b5b560fe2ae8e0b719e9c0d83e8687ada22924df3ff"));
+        assert(genesis.hashMerkleRoot == uint256S("0xdc6c10ad2a26613ae9b8a156ed9ca15e3e355a994a7e32cd7a4c3d7a478f57d2"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -256,7 +256,7 @@ public:
 
         checkpointData = {
             {
-                {0, uint256S("0x0000087940a78c957df3eae725ba2719fb7e669803b5c0afa8521086996b3d77")},
+                {0, uint256S("0x000000a5e5599ea63cf28b5b560fe2ae8e0b719e9c0d83e8687ada22924df3ff")},
             }
         };
 
@@ -317,10 +317,10 @@ public:
         nDefaultPort = 29468;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1523632983, 20182020, 0x207fffff, 1, consensus.nMinimumSubsidy * COIN);
+        genesis = CreateGenesisBlock(1523632983, 3828092, 0x207fffff, 1, consensus.nMinimumSubsidy * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0559a251ceb82f228d8b7502374e9af9c58b8a52c289b2b60cb6c3a678912bed"));
-        assert(genesis.hashMerkleRoot == uint256S("0x48012c5849aa7b83d6b5f41d86753a9210b5b49636dbbf6e5606a39d0287890a"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000000a5e5599ea63cf28b5b560fe2ae8e0b719e9c0d83e8687ada22924df3ff"));
+        assert(genesis.hashMerkleRoot == uint256S("0xdc6c10ad2a26613ae9b8a156ed9ca15e3e355a994a7e32cd7a4c3d7a478f57d2"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();      //!< Regtest mode doesn't have any DNS seeds.
@@ -331,7 +331,7 @@ public:
 
         checkpointData = {
             {
-                {0, uint256S("0x0559a251ceb82f228d8b7502374e9af9c58b8a52c289b2b60cb6c3a678912bed")},
+                {0, uint256S("0x000000a5e5599ea63cf28b5b560fe2ae8e0b719e9c0d83e8687ada22924df3ff")},
             }
         };
 
