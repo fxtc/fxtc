@@ -122,10 +122,10 @@ public:
         nDefaultPort = 9468;
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock(1523632983, 3004867, 0x1e0ffff0, 1, consensus.nMinimumSubsidy * COIN);
+        genesis = CreateGenesisBlock(1523632983, 3828092, 0x1e0ffff0, 1, consensus.nMinimumSubsidy * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000007a41822c2dc13d911c542fa884932da6b88fee13b467128950c271658b6"));
-        assert(genesis.hashMerkleRoot == uint256S("0x48012c5849aa7b83d6b5f41d86753a9210b5b49636dbbf6e5606a39d0287890a"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000000a5e5599ea63cf28b5b560fe2ae8e0b719e9c0d83e8687ada22924df3ff"));
+        assert(genesis.hashMerkleRoot == uint256S("0xdc6c10ad2a26613ae9b8a156ed9ca15e3e355a994a7e32cd7a4c3d7a478f57d2"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
@@ -157,7 +157,7 @@ public:
 
         checkpointData = {
             {
-                {     0, uint256S("0x000007a41822c2dc13d911c542fa884932da6b88fee13b467128950c271658b6")},
+                {     0, uint256S("0x000000a5e5599ea63cf28b5b560fe2ae8e0b719e9c0d83e8687ada22924df3ff")},
                 //{295000, uint256S("0x00000000000000004d9b4ef50f0f9d686fd69db2e03af35a100370c64632a983")},
             }
         };
