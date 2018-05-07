@@ -6,6 +6,9 @@
 #ifndef BITCOIN_CONSENSUS_PARAMS_H
 #define BITCOIN_CONSENSUS_PARAMS_H
 
+// FXTC BEGIN
+#include <amount.h>
+// FXTC END
 #include <uint256.h>
 #include <limits>
 #include <map>
@@ -49,6 +52,11 @@ struct BIP9Deployment {
 struct Params {
     uint256 hashGenesisBlock;
     int nSubsidyHalvingInterval;
+
+    // FXTC BEGIN
+    CAmount nMinimumSubsidy;
+    // FXTC END
+
     /* Block hash that is excepted from BIP16 enforcement */
     uint256 BIP16Exception;
     /** Block height and hash at which BIP34 becomes active */
