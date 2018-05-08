@@ -68,10 +68,10 @@ public:
         consensus.nMinimumSubsidy = 0.00000100;
         // FXTC TODO: BIP16Exception is valid for BTC blockchain only
         consensus.BIP16Exception = uint256S("0x00000000000002dc756eebf4f49723ed8d30cc28a5f108eb94b1ba88ac4f9c22");
-        consensus.BIP34Height = 1;
-        consensus.BIP34Hash = uint256S("0x000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8");
-        consensus.BIP65Height = 1; // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
-        consensus.BIP66Height = 1; // 00000000000000000379eaa19dce8c9b722d46ae6a57c2f1a988119488b50931
+        consensus.BIP34Height = 0;
+        consensus.BIP34Hash = uint256S("0x000002ab12adfcfd8ad9950a30de845763b817b83d38655f6586070631e1fd1b");
+        consensus.BIP65Height = 0; // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
+        consensus.BIP66Height = 0; // 00000000000000000379eaa19dce8c9b722d46ae6a57c2f1a988119488b50931
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
         consensus.nPowTargetSpacing = 1 * 60; // one minute
@@ -80,18 +80,18 @@ public:
         consensus.nRuleChangeActivationThreshold = 1916; // 95% of 2016
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
-        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
-        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
         // Deployment of BIP68, BIP112, and BIP113.
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1462060800; // May 1st, 2016
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1493596800; // May 1st, 2017
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
         // Deployment of SegWit (BIP141, BIP143, and BIP147)
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].bit = 1;
-        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nStartTime = 1479168000; // November 15th, 2016.
-        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1510704000; // November 15th, 2017.
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000000000"); // starting point
@@ -113,10 +113,10 @@ public:
         m_assumed_blockchain_size = 240;
         m_assumed_chain_state_size = 3;
 
-        genesis = CreateGenesisBlock(1523632983, 3828092, 0x1e0ffff0, 1, consensus.nMinimumSubsidy * COIN);
+        genesis = CreateGenesisBlock(1523632983, 4268751, 0x1e0ffff0, 1, consensus.nMinimumSubsidy * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000000a5e5599ea63cf28b5b560fe2ae8e0b719e9c0d83e8687ada22924df3ff"));
-        assert(genesis.hashMerkleRoot == uint256S("0xdc6c10ad2a26613ae9b8a156ed9ca15e3e355a994a7e32cd7a4c3d7a478f57d2"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000002ab12adfcfd8ad9950a30de845763b817b83d38655f6586070631e1fd1b"));
+        assert(genesis.hashMerkleRoot == uint256S("0xbce15d4f0f9d2d7ba03064da56007ea0a437d7da74eaadc2260b0d435fcec312"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
@@ -148,7 +148,7 @@ public:
 
         checkpointData = {
             {
-                {     0, uint256S("0x000000a5e5599ea63cf28b5b560fe2ae8e0b719e9c0d83e8687ada22924df3ff")},
+                {     0, uint256S("0x000002ab12adfcfd8ad9950a30de845763b817b83d38655f6586070631e1fd1b")},
                 //{295000, uint256S("0x00000000000000004d9b4ef50f0f9d686fd69db2e03af35a100370c64632a983")},
             }
         };
@@ -180,10 +180,10 @@ public:
         consensus.nMinimumSubsidy = 0.00000100;
         // FXTC TODO: BIP16Exception is valid for BTC blockchain only
         consensus.BIP16Exception = uint256S("0x00000000dd30457c001f4095d208cc1296b0eed002427aa599874af7a432b105");
-        consensus.BIP34Height = 1;
-        consensus.BIP34Hash = uint256S("0x0000000023b3a96d3484e5abb3755c413e7d41500f8e2a5c3f0dd01299cd8ef8");
-        consensus.BIP65Height = 1; // 00000000007f6655f22f98e72ed80d8b06dc761d5da09df0fa1dc4be4f861eb6
-        consensus.BIP66Height = 1; // 000000002104c8c45e99a8853285a3b592602a3ccde2b832481da85e9e4ba182
+        consensus.BIP34Height = 0;
+        consensus.BIP34Hash = uint256S("0x000002ab12adfcfd8ad9950a30de845763b817b83d38655f6586070631e1fd1b");
+        consensus.BIP65Height = 0; // 00000000007f6655f22f98e72ed80d8b06dc761d5da09df0fa1dc4be4f861eb6
+        consensus.BIP66Height = 0; // 000000002104c8c45e99a8853285a3b592602a3ccde2b832481da85e9e4ba182
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
         consensus.nPowTargetSpacing = 1 * 60; // one minute
@@ -192,18 +192,18 @@ public:
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
-        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
-        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
         // Deployment of BIP68, BIP112, and BIP113.
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1456790400; // March 1st, 2016
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1493596800; // May 1st, 2017
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
         // Deployment of SegWit (BIP141, BIP143, and BIP147)
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].bit = 1;
-        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nStartTime = 1462060800; // May 1st 2016
-        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1493596800; // May 1st 2017
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x0");
@@ -220,10 +220,10 @@ public:
         m_assumed_blockchain_size = 30;
         m_assumed_chain_state_size = 2;
 
-        genesis = CreateGenesisBlock(1523632983, 3828092, 0x1e0ffff0, 1, consensus.nMinimumSubsidy * COIN);
+        genesis = CreateGenesisBlock(1523632983, 4268751, 0x1e0ffff0, 1, consensus.nMinimumSubsidy * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000000a5e5599ea63cf28b5b560fe2ae8e0b719e9c0d83e8687ada22924df3ff"));
-        assert(genesis.hashMerkleRoot == uint256S("0xdc6c10ad2a26613ae9b8a156ed9ca15e3e355a994a7e32cd7a4c3d7a478f57d2"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000002ab12adfcfd8ad9950a30de845763b817b83d38655f6586070631e1fd1b"));
+        assert(genesis.hashMerkleRoot == uint256S("0xbce15d4f0f9d2d7ba03064da56007ea0a437d7da74eaadc2260b0d435fcec312"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -252,7 +252,7 @@ public:
 
         checkpointData = {
             {
-                {0, uint256S("0x000000a5e5599ea63cf28b5b560fe2ae8e0b719e9c0d83e8687ada22924df3ff")},
+                {0, uint256S("0x000002ab12adfcfd8ad9950a30de845763b817b83d38655f6586070631e1fd1b")},
             }
         };
 
@@ -317,10 +317,10 @@ public:
 
         UpdateVersionBitsParametersFromArgs(args);
 
-        genesis = CreateGenesisBlock(1523632983, 3828092, 0x207fffff, 1, consensus.nMinimumSubsidy * COIN);
+        genesis = CreateGenesisBlock(1523632983, 4268751, 0x207fffff, 1, consensus.nMinimumSubsidy * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000000a5e5599ea63cf28b5b560fe2ae8e0b719e9c0d83e8687ada22924df3ff"));
-        assert(genesis.hashMerkleRoot == uint256S("0xdc6c10ad2a26613ae9b8a156ed9ca15e3e355a994a7e32cd7a4c3d7a478f57d2"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000002ab12adfcfd8ad9950a30de845763b817b83d38655f6586070631e1fd1b"));
+        assert(genesis.hashMerkleRoot == uint256S("0xbce15d4f0f9d2d7ba03064da56007ea0a437d7da74eaadc2260b0d435fcec312"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();      //!< Regtest mode doesn't have any DNS seeds.
@@ -333,7 +333,7 @@ public:
 
         checkpointData = {
             {
-                {0, uint256S("0x000000a5e5599ea63cf28b5b560fe2ae8e0b719e9c0d83e8687ada22924df3ff")},
+                {0, uint256S("0x000002ab12adfcfd8ad9950a30de845763b817b83d38655f6586070631e1fd1b")},
             }
         };
 

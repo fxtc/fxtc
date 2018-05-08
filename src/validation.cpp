@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -1151,16 +1152,56 @@ bool ReadRawBlockFromDisk(std::vector<uint8_t>& block, const CBlockIndex* pindex
     return ReadRawBlockFromDisk(block, block_pos, message_start);
 }
 
-CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
+// FXTC BEGIN
+double ConvertBitsToDouble(unsigned int nBits)
+{
+    int nShift = (nBits >> 24) & 0xff;
+
+    double dDiff = (double)0x0000ffff / (double)(nBits & 0x00ffffff);
+
+    while (nShift < 29)
+    {
+        dDiff *= 256.0;
+        nShift++;
+    }
+    while (nShift > 29)
+    {
+        dDiff /= 256.0;
+        nShift--;
+    }
+
+    return dDiff;
+}
+// FXTC END
+
+// FXTC BEGIN
+//CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
+CAmount GetBlockSubsidy(unsigned int nBits, int nHeight, const Consensus::Params& consensusParams)
+// FXTC END
 {
     int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
     // Force block reward to zero when right shift is undefined.
     if (halvings >= 64)
         return 0;
 
-    CAmount nSubsidy = 50 * COIN;
-    // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
+    // FXTC BEGIN
+    if (nHeight == 1)
+        return 1 * COIN;        // Founder marker (Ownership is transferred by moving this coin)
+    else if (nHeight == 2)
+        return 200000 * COIN;   // Exchange Fund (Exchange fees, Masternode listing fees, ...)
+    else if (nHeight == 3)
+        return 10000 * COIN;    // Marketing Fund (Wallet, Website, Marketing, ...)
+    else if (nHeight == 4)
+        return 289999 * COIN;   // Reserve Fund (Locked for future use)
+
+    CAmount nSubsidy = ConvertBitsToDouble(nBits) * COIN / 49500000; // SHA256d mining efficiency
+    //CAmount nSubsidy = ConvertBitsToDouble(nBits) * COIN / 99; // Lyra2z mining efficiency experimental
+
+    // Subsidy is cut in half every 865,000 blocks which will occur approximately every 3 years.
     nSubsidy >>= halvings;
+    // Force minimum subsidy allowed
+    if (nSubsidy < consensusParams.nMinimumSubsidy) nSubsidy = consensusParams.nMinimumSubsidy;
+    // FXTC END
     return nSubsidy;
 }
 
@@ -2040,7 +2081,10 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     int64_t nTime3 = GetTimeMicros(); nTimeConnect += nTime3 - nTime2;
     LogPrint(BCLog::BENCH, "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs (%.2fms/blk)]\n", (unsigned)block.vtx.size(), MILLI * (nTime3 - nTime2), MILLI * (nTime3 - nTime2) / block.vtx.size(), nInputs <= 1 ? 0 : MILLI * (nTime3 - nTime2) / (nInputs-1), nTimeConnect * MICRO, nTimeConnect * MILLI / nBlocksTotal);
 
-    CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, chainparams.GetConsensus());
+    // FXTC BEGIN
+    //CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, chainparams.GetConsensus());
+    CAmount blockReward = nFees + GetBlockSubsidy(pindex->nBits, pindex->nHeight, chainparams.GetConsensus());
+    // FXTC END
     if (block.vtx[0]->GetValueOut() > blockReward)
         return state.DoS(100,
                          error("ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)",
