@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -1137,64 +1138,80 @@ bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus
     return true;
 }
 
-bool ReadRawBlockFromDisk(std::vector<uint8_t>& block, const CDiskBlockPos& pos, const CMessageHeader::MessageStartChars& message_start)
+//FXTC BEGIN
+double ConvertBitsToDouble(unsigned int nBits)
 {
-    CDiskBlockPos hpos = pos;
-    hpos.nPos -= 8; // Seek back 8 bytes for meta header
-    CAutoFile filein(OpenBlockFile(hpos, true), SER_DISK, CLIENT_VERSION);
-    if (filein.IsNull()) {
-        return error("%s: OpenBlockFile failed for %s", __func__, pos.ToString());
-    }
+    int nShift = (nBits >> 24) & 0xff;
 
-    try {
-        CMessageHeader::MessageStartChars blk_start;
-        unsigned int blk_size;
+    double dDiff = (double)0x0000ffff / (double)(nBits & 0x00ffffff);
 
-        filein >> blk_start >> blk_size;
-
-        if (memcmp(blk_start, message_start, CMessageHeader::MESSAGE_START_SIZE)) {
-            return error("%s: Block magic mismatch for %s: %s versus expected %s", __func__, pos.ToString(),
-                    HexStr(blk_start, blk_start + CMessageHeader::MESSAGE_START_SIZE),
-                    HexStr(message_start, message_start + CMessageHeader::MESSAGE_START_SIZE));
-        }
-
-        if (blk_size > MAX_SIZE) {
-            return error("%s: Block data is larger than maximum deserialization size for %s: %s versus %s", __func__, pos.ToString(),
-                    blk_size, MAX_SIZE);
-        }
-
-        block.resize(blk_size); // Zeroing of memory is intentional here
-        filein.read((char*)block.data(), blk_size);
-    } catch(const std::exception& e) {
-        return error("%s: Read from block file failed: %s for %s", __func__, e.what(), pos.ToString());
-    }
-
-    return true;
-}
-
-bool ReadRawBlockFromDisk(std::vector<uint8_t>& block, const CBlockIndex* pindex, const CMessageHeader::MessageStartChars& message_start)
-{
-    CDiskBlockPos block_pos;
+    while (nShift < 29)
     {
-        LOCK(cs_main);
-        block_pos = pindex->GetBlockPos();
+        dDiff *= 256.0;
+        nShift++;
+    }
+    while (nShift > 29)
+    {
+        dDiff /= 256.0;
+        nShift--;
     }
 
-    return ReadRawBlockFromDisk(block, block_pos, message_start);
+    return dDiff;
 }
+//FXTC END
 
-CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
+CAmount GetBlockSubsidy(unsigned int nBits, int nHeight, const Consensus::Params& consensusParams)
 {
     int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
     // Force block reward to zero when right shift is undefined.
     if (halvings >= 64)
         return 0;
 
-    CAmount nSubsidy = 50 * COIN;
-    // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
+    // FXTC BEGIN
+    if (nHeight == 1)
+        return 1 * COIN;        // Founder marker (Ownership is transferred by moving this coin)
+    else if (nHeight == 2)
+        return 200000 * COIN;   // Exchange Fund (Exchange fees, Masternode listing fees, ...)
+    else if (nHeight == 3)
+        return 10000 * COIN;    // Marketing Fund (Wallet, Website, Marketing, ...)
+    else if (nHeight == 4)
+        return 289999 * COIN;   // Reserve Fund (Locked for future use)
+
+    CAmount nSubsidy = ConvertBitsToDouble(nBits) * COIN / 49500000; // SHA256d mining efficiency
+    //CAmount nSubsidy = ConvertBitsToDouble(nBits) * COIN / 99; // Lyra2z mining efficiency experimental
+
+    // Subsidy is cut in half every 865,000 blocks which will occur approximately every 3 years.
     nSubsidy >>= halvings;
+    // Force minimum subsidy allowed
+    if (nSubsidy < consensusParams.nMinimumSubsidy) nSubsidy = consensusParams.nMinimumSubsidy;
+    // FXTC END
     return nSubsidy;
 }
+
+//FXTC BEGIN
+//CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
+//{
+//    CAmount ret = blockValue * 0.00;
+//
+//    int nMNPIBlock = Params().GetConsensus().nMasternodePaymentsIncreaseBlock;
+//    int nMNPIPeriod = Params().GetConsensus().nMasternodePaymentsIncreasePeriod;
+//
+//    if(nHeight >= nMNPIBlock) ret = (0.25 - 0.24 * (100.00 * nMNPIPeriod / (1.00 * nHeight + 100.00 * nMNPIPeriod ))) * blockValue; // Increase smoothly from 1% up to 25% in infinity
+//
+//    return ret;
+//}
+
+CAmount GetFounderReward(int nHeight, CAmount blockValue)
+{
+        CAmount ret = 0;
+
+        if (nHeight >= 5) ret = blockValue * 0.01;
+
+        //if (nHeight >= nEndOfFounderReward.WeDontKnowYet) ret = 0;
+
+        return ret;
+}
+//FXTC END
 
 bool IsInitialBlockDownload()
 {
@@ -2074,7 +2091,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     int64_t nTime3 = GetTimeMicros(); nTimeConnect += nTime3 - nTime2;
     LogPrint(BCLog::BENCH, "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs (%.2fms/blk)]\n", (unsigned)block.vtx.size(), MILLI * (nTime3 - nTime2), MILLI * (nTime3 - nTime2) / block.vtx.size(), nInputs <= 1 ? 0 : MILLI * (nTime3 - nTime2) / (nInputs-1), nTimeConnect * MICRO, nTimeConnect * MILLI / nBlocksTotal);
 
-    CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, chainparams.GetConsensus());
+    CAmount blockReward = nFees + GetBlockSubsidy(pindex->nBits, pindex->nHeight, chainparams.GetConsensus());
     if (block.vtx[0]->GetValueOut() > blockReward)
         return state.DoS(100,
                          error("ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)",

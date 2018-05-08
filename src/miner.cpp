@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -37,17 +38,29 @@
 uint64_t nLastBlockTx = 0;
 uint64_t nLastBlockWeight = 0;
 
-int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev)
+int64_t UpdateTime(CBlock* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev)
 {
     int64_t nOldTime = pblock->nTime;
     int64_t nNewTime = std::max(pindexPrev->GetMedianTimePast()+1, GetAdjustedTime());
 
     if (nOldTime < nNewTime)
+    {
         pblock->nTime = nNewTime;
 
-    // Updating time can change work required on testnet:
-    if (consensusParams.fPowAllowMinDifficultyBlocks)
+        // We need to store actual block reward
+        CAmount blockRewardDelta = GetBlockSubsidy(pblock->nBits, pindexPrev->nHeight + 1, consensusParams);
+
+        // Parameter consensusParams.fPowAllowMinDifficultyBlocks implemented into GetNextWorkRequired
         pblock->nBits = GetNextWorkRequired(pindexPrev, pblock, consensusParams);
+
+        // Calculate delta reward
+        blockRewardDelta -= GetBlockSubsidy(pblock->nBits, pindexPrev->nHeight + 1, consensusParams);
+
+        // Update coinbase output to new value
+        CMutableTransaction coinbaseTx(*pblock->vtx[0]);
+        coinbaseTx.vout[0].nValue -= blockRewardDelta;
+        pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));
+    }
 
     return nNewTime - nOldTime;
 }
@@ -154,8 +167,16 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     coinbaseTx.vin[0].prevout.SetNull();
     coinbaseTx.vout.resize(1);
     coinbaseTx.vout[0].scriptPubKey = scriptPubKeyIn;
-    coinbaseTx.vout[0].nValue = nFees + GetBlockSubsidy(nHeight, chainparams.GetConsensus());
+    coinbaseTx.vout[0].nValue = nFees + GetBlockSubsidy(GetNextWorkRequired(pindexPrev, pblock, chainparams.GetConsensus()), nHeight, chainparams.GetConsensus());
     coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
+
+    //CAmount founderReward = GetFounderReward(nHeight, blockReward);
+    //if (founderReward > 0) {
+    //    CScript FOUNDER_SCRIPT = GetScriptForDestination(CBitcoinAddress(Params().FounderAddress()).Get());
+    //    txNew.vout[0].nValue -= founderReward;
+    //    txNew.vout.push_back(CTxOut(founderReward, CScript(FOUNDER_SCRIPT.begin(), FOUNDER_SCRIPT.end())));
+    //}
+
     pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));
     pblocktemplate->vchCoinbaseCommitment = GenerateCoinbaseCommitment(*pblock, pindexPrev, chainparams.GetConsensus());
     pblocktemplate->vTxFees[0] = -nFees;
