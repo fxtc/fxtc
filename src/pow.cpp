@@ -99,7 +99,6 @@ unsigned int GetNextWorkRequiredBTC(const CBlockIndex* pindexLast, const CBlockH
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
-    return UintToArith256(params.powLimit).GetCompact();
     unsigned int nBits = DarkGravityWave(pindexLast, params);
 
     // Dead lock protection will halve work every 2x spacing:

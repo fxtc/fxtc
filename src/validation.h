@@ -280,6 +280,9 @@ bool ActivateBestChain(CValidationState& state, const CChainParams& chainparams,
 //CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams);
 CAmount GetBlockSubsidy(unsigned int nBits, int nHeight, const Consensus::Params& consensusParams);
 // FXTC END
+// FXTC BEGIN
+CAmount GetFounderReward(int nHeight, CAmount blockValue);
+// FXTC END
 
 /** Guess verification progress (as a fraction between 0.0=genesis and 1.0=current tip). */
 double GuessVerificationProgress(const ChainTxData& data, const CBlockIndex* pindex);
