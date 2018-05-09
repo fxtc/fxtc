@@ -19,6 +19,7 @@
 #include <hash.h>
 #include <index/txindex.h>
 #include <init.h>
+#include <key_io.h>
 #include <policy/fees.h>
 #include <policy/policy.h>
 #include <policy/rbf.h>
@@ -2097,6 +2098,29 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
                          error("ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)",
                                block.vtx[0]->GetValueOut(), blockReward),
                                REJECT_INVALID, "bad-cb-amount");
+
+    // FXTC BEGIN
+    CAmount founderReward = GetFounderReward(pindex->nHeight, blockReward);
+    if (founderReward > 0) {
+        CTxDestination destination = DecodeDestination(Params().FounderAddress());
+        if (IsValidDestination(destination)) {
+            CScript FOUNDER_SCRIPT = GetScriptForDestination(destination);
+            bool FounderPaid = false;
+
+            for (const auto& output : block.vtx[0]->vout) {
+                if (output.scriptPubKey == FOUNDER_SCRIPT && output.nValue == founderReward) {
+                    FounderPaid = true;
+                    break;
+                }
+            }
+            if (!FounderPaid) {
+                return state.DoS(0, error("ConnectBlock(INFINEX): no founder reward"), REJECT_INVALID, "no-founder-reward");
+            }
+        } else {
+            return state.DoS(0, error("ConnectBlock(INFINEX): invalid founder reward destination"), REJECT_INVALID, "invalid-founder-reward-destination");
+        }
+    }
+    // FXTC END
 
     if (!control.Wait())
         return state.DoS(100, error("%s: CheckQueue failed", __func__), REJECT_INVALID, "block-validation-failed");

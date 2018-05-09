@@ -1,5 +1,6 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -359,6 +360,10 @@ static UniValue getblocktemplate(const JSONRPCRequest& request)
             "  \"curtime\" : ttt,                  (numeric) current timestamp in seconds since epoch (Jan 1 1970 GMT)\n"
             "  \"bits\" : \"xxxxxxxx\",              (string) compressed target of next block\n"
             "  \"height\" : n                      (numeric) The height of the next block\n"
+            "  \"founderreward\" : {               (json object) required founder reward that must be included in the next block\n"
+            "      \"payee\" : \"xxxx\",           (string) payee address\n"
+            "      \"amount\": n                   (numeric) required amount to pay\n"
+            "  },\n"
             "}\n"
 
             "\nExamples:\n"
@@ -669,6 +674,17 @@ static UniValue getblocktemplate(const JSONRPCRequest& request)
     result.pushKV("curtime", pblock->GetBlockTime());
     result.pushKV("bits", strprintf("%08x", pblock->nBits));
     result.pushKV("height", (int64_t)(pindexPrev->nHeight+1));
+
+    // FXTC BEGIN
+    CAmount founderReward = GetFounderReward(pindexPrev->nHeight+1,GetBlockSubsidy(pblock->nBits, pindexPrev->nHeight+1, consensusParams));
+    if (founderReward > 0) {
+        UniValue founderRewardObj(UniValue::VOBJ);
+        founderRewardObj.pushKV("founderpayee", Params().FounderAddress().c_str());
+        founderRewardObj.pushKV("amount", founderReward);
+        result.pushKV("founderreward", founderRewardObj);
+        result.pushKV("founder_reward_enforced", true);
+    }
+    //FXTC END
 
     if (!pblocktemplate->vchCoinbaseCommitment.empty() && fSupportsSegwit) {
         result.pushKV("default_witness_commitment", HexStr(pblocktemplate->vchCoinbaseCommitment.begin(), pblocktemplate->vchCoinbaseCommitment.end()));

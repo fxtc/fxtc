@@ -252,7 +252,7 @@ public:
         fRequireStandard = false;
         fMineBlocksOnDemand = false;
 
-        founderAddress = "fExDspm4Jxk6NcLmwm2gDBREYngUn4QhbA"; // FXTC-TODO: change to testnet address!
+        founderAddress = "t82FHzCV9EbdVLGgC1QEo6fSmT1hp1cSGZ";
 
         checkpointData = {
             {
@@ -317,7 +317,8 @@ public:
         nDefaultPort = 29468;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1523632983, 4268751, 0x207fffff, 1, consensus.nMinimumSubsidy * COIN);
+        //genesis = CreateGenesisBlock(1523632983, 4268751, 0x207fffff, 1, consensus.nMinimumSubsidy * COIN);
+        genesis = CreateGenesisBlock(1523632983, 4268751, 0x1e0ffff0, 1, consensus.nMinimumSubsidy * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
         assert(consensus.hashGenesisBlock == uint256S("0x000002ab12adfcfd8ad9950a30de845763b817b83d38655f6586070631e1fd1b"));
         assert(genesis.hashMerkleRoot == uint256S("0xbce15d4f0f9d2d7ba03064da56007ea0a437d7da74eaadc2260b0d435fcec312"));
@@ -328,6 +329,8 @@ public:
         fDefaultConsistencyChecks = true;
         fRequireStandard = false;
         fMineBlocksOnDemand = true;
+
+        founderAddress = "";
 
         checkpointData = {
             {

@@ -15,6 +15,7 @@
 #include <consensus/merkle.h>
 #include <consensus/validation.h>
 #include <hash.h>
+#include <key_io.h>
 #include <net.h>
 #include <policy/feerate.h>
 #include <policy/policy.h>
@@ -24,6 +25,7 @@
 #include <timedata.h>
 #include <util.h>
 #include <utilmoneystr.h>
+#include <validation.h>
 #include <validationinterface.h>
 
 #include <algorithm>
@@ -163,25 +165,32 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
 
     // Create coinbase transaction.
     CMutableTransaction coinbaseTx;
+    CAmount nBlockReward = GetBlockSubsidy(GetNextWorkRequired(pindexPrev, pblock, chainparams.GetConsensus()), nHeight, chainparams.GetConsensus());
     coinbaseTx.vin.resize(1);
     coinbaseTx.vin[0].prevout.SetNull();
     coinbaseTx.vout.resize(1);
     coinbaseTx.vout[0].scriptPubKey = scriptPubKeyIn;
-    coinbaseTx.vout[0].nValue = nFees + GetBlockSubsidy(GetNextWorkRequired(pindexPrev, pblock, chainparams.GetConsensus()), nHeight, chainparams.GetConsensus());
+    coinbaseTx.vout[0].nValue = nFees + nBlockReward;
     coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
 
-    //CAmount founderReward = GetFounderReward(nHeight, blockReward);
-    //if (founderReward > 0) {
-    //    CScript FOUNDER_SCRIPT = GetScriptForDestination(CBitcoinAddress(Params().FounderAddress()).Get());
-    //    txNew.vout[0].nValue -= founderReward;
-    //    txNew.vout.push_back(CTxOut(founderReward, CScript(FOUNDER_SCRIPT.begin(), FOUNDER_SCRIPT.end())));
-    //}
+    CAmount nFounderReward = GetFounderReward(nHeight, nBlockReward);
+    if (nFounderReward > 0) {
+        CTxDestination destination = DecodeDestination(Params().FounderAddress());
+        if (IsValidDestination(destination)) {
+            CScript FOUNDER_SCRIPT = GetScriptForDestination(destination);
+            coinbaseTx.vout[0].nValue -= nFounderReward;
+            coinbaseTx.vout.push_back(CTxOut(nFounderReward, CScript(FOUNDER_SCRIPT.begin(), FOUNDER_SCRIPT.end())));
+        } else {
+            LogPrintf("CreateNewBlock(): invalid founder reward destination");
+        }
+    }
 
     pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));
     pblocktemplate->vchCoinbaseCommitment = GenerateCoinbaseCommitment(*pblock, pindexPrev, chainparams.GetConsensus());
     pblocktemplate->vTxFees[0] = -nFees;
 
     LogPrintf("CreateNewBlock(): block weight: %u txs: %u fees: %ld sigops %d\n", GetBlockWeight(*pblock), nBlockTx, nFees, nBlockSigOpsCost);
+    LogPrintf("CreateNewBlock(): block height: %ld pow reward: %ld pos reward: %ld founder reward: %ld masternode reward: %ld\n", nHeight, nBlockReward, 0, nFounderReward, 0);
 
     // Fill in header
     pblock->hashPrevBlock  = pindexPrev->GetBlockHash();
