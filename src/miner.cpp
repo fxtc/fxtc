@@ -173,7 +173,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     coinbaseTx.vout[0].nValue = nFees + nBlockReward;
     coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
 
-    CAmount nFounderReward = GetFounderReward(nHeight, nBlockReward);
+    CAmount nFounderReward = GetFounderReward(nHeight, nFees + nBlockReward);
     if (nFounderReward > 0) {
         CTxDestination destination = DecodeDestination(Params().FounderAddress());
         if (IsValidDestination(destination)) {
