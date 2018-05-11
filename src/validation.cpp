@@ -1179,6 +1179,7 @@ CAmount GetBlockSubsidy(unsigned int nBits, int nHeight, const Consensus::Params
         return 289999 * COIN;   // Reserve Fund (Locked for future use)
 
     CAmount nSubsidy = ConvertBitsToDouble(nBits) * COIN / 49500000; // SHA256d mining efficiency
+    //CAmount nSubsidy = ConvertBitsToDouble(nBits) * COIN / 3990; // Scrypt mining efficiency
     //CAmount nSubsidy = ConvertBitsToDouble(nBits) * COIN / 99; // Lyra2z mining efficiency experimental
 
     // Subsidy is cut in half every 865,000 blocks which will occur approximately every 3 years.
