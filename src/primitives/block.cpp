@@ -9,10 +9,29 @@
 #include <tinyformat.h>
 #include <utilstrencodings.h>
 #include <crypto/common.h>
+#include <crypto/scrypt.h>
 
 uint256 CBlockHeader::GetHash() const
 {
     return SerializeHash(*this);
+}
+
+uint256 CBlockHeader::GetPoWHash() const
+{
+    int32_t nAlgo = nVersion & ALGO_VERSION_MASK;
+
+    uint256 powHash = uint256S("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+
+    switch (nAlgo)
+    {
+        case ALGO_SHA256D: powHash = GetHash(); break;
+        case ALGO_SCRYPT:  scrypt_1024_1_1_256(BEGIN(nVersion), BEGIN(powHash)); break;
+        //case ALGO_NIST5:   powHash = Nist5(BEGIN(nVersion), END(nNonce)); break;
+        //case ALGO_LYRA2Z:  lyra2z_hash(BEGIN(nVersion), BEGIN(powHash)); break;
+        default:           break; // FXTC TODO: we should not be here
+    }
+
+    return powHash;
 }
 
 std::string CBlock::ToString() const
