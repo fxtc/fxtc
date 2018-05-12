@@ -302,6 +302,13 @@ public:
         return *phashBlock;
     }
 
+    // FXTC BEGIN
+    uint256 GetBlockPoWHash() const
+    {
+        return GetBlockHeader().GetPoWHash();
+    }
+    // FXTC END
+
     /**
      * Check whether this block's and all previous blocks' transactions have been
      * downloaded (and stored to disk) at some point.

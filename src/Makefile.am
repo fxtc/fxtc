@@ -353,6 +353,15 @@ crypto_libbitcoin_crypto_base_a_SOURCES = \
   crypto/siphash.cpp \
   crypto/siphash.h
 
+## FXTC BEGIN
+# crypto multi-algo libraries
+crypto_libbitcoin_crypto_base_a_SOURCES += \
+  crypto/scrypt-sse2.cpp \
+  crypto/scrypt.cpp \
+  crypto/scrypt.h
+## FXTC END
+
+
 if USE_ASM
 crypto_libbitcoin_crypto_base_a_SOURCES += crypto/sha256_sse4.cpp
 endif

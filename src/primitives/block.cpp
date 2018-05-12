@@ -10,10 +10,32 @@
 #include <util/strencodings.h>
 #include <crypto/common.h>
 
+// FXTC BEGIN
+#include <crypto/scrypt.h>
+// FXTC END
+
 uint256 CBlockHeader::GetHash() const
 {
     return SerializeHash(*this);
 }
+
+// FXTC BEGIN
+uint256 CBlockHeader::GetPoWHash() const
+{
+    int32_t nAlgo = nVersion & ALGO_VERSION_MASK;
+
+    uint256 powHash = uint256S("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+
+    switch (nAlgo)
+    {
+        case ALGO_SHA256D: powHash = GetHash(); break;
+        case ALGO_SCRYPT:  scrypt_1024_1_1_256(BEGIN(nVersion), BEGIN(powHash)); break;
+        default:           break; // FXTC TODO: we should not be here
+    }
+
+    return powHash;
+}
+// FXTC END
 
 std::string CBlock::ToString() const
 {
