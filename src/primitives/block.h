@@ -9,8 +9,6 @@
 #include <primitives/transaction.h>
 #include <serialize.h>
 #include <uint256.h>
-#include <crypto/scrypt.h>
-#include <crypto/nist5.h>
 
 // Algo number in nVersion
 enum {
@@ -19,10 +17,10 @@ enum {
     ALGO_SHA256D         = (  0 << 8),
     ALGO_SCRYPT          = (  1 << 8),
     ALGO_NIST5           = (  2 << 8),
-    //ALGO_LYRA2Z          = (  3 << 8),
+    ALGO_LYRA2Z          = (  3 << 8),
 }
 
-const ALGO_LAST_KNOWN = ALGO_NIST5;
+const ALGO_LAST_KNOWN = ALGO_LYRA2Z;
 
 /** Nodes collect new transactions into a block, hash them into a hash tree,
  * and scan through nonce values to make the block's hash satisfy proof-of-work
