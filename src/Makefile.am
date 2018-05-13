@@ -357,10 +357,15 @@ crypto_libbitcoin_crypto_base_a_SOURCES = \
 ## FXTC BEGIN
 # crypto multi-algo libraries
 crypto_libbitcoin_crypto_base_a_SOURCES += \
+  crypto/aes_helper.c \
   crypto/blake.c \
+  crypto/bmw.c \
+  crypto/cubehash.c \
+  crypto/echo.c \
   crypto/groestl.c \
   crypto/jh.c \
   crypto/keccak.c \
+  crypto/luffa.c \
   crypto/Lyra2.c \
   crypto/Lyra2.h \
   crypto/Lyra2Z.c \
@@ -369,15 +374,24 @@ crypto_libbitcoin_crypto_base_a_SOURCES += \
   crypto/scrypt-sse2.cpp \
   crypto/scrypt.cpp \
   crypto/scrypt.h \
+  crypto/shavite.c \
+  crypto/simd.c \
   crypto/skein.c \
   crypto/sph_blake.h \
+  crypto/sph_bmw.h \
+  crypto/sph_cubehash.h \
+  crypto/sph_echo.h \
   crypto/sph_groestl.h \
   crypto/sph_jh.h \
   crypto/sph_keccak.h \
+  crypto/sph_luffa.h \
+  crypto/sph_shavite.h \
+  crypto/sph_simd.h \
   crypto/sph_skein.h \
   crypto/sph_types.h \
   crypto/Sponge.c \
-  crypto/Sponge.h
+  crypto/Sponge.h \
+  crypto/x11.h
 ## FXTC END
 
 
