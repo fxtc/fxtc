@@ -9,9 +9,11 @@
 #include <tinyformat.h>
 #include <utilstrencodings.h>
 #include <crypto/common.h>
-#include <crypto/scrypt.h>
-#include <crypto/nist5.h>
+
 #include <crypto/Lyra2Z.h>
+#include <crypto/nist5.h>
+#include <crypto/scrypt.h>
+#include <crypto/x11.h>
 
 uint256 CBlockHeader::GetHash() const
 {
@@ -30,6 +32,7 @@ uint256 CBlockHeader::GetPoWHash() const
         case ALGO_SCRYPT:  scrypt_1024_1_1_256(BEGIN(nVersion), BEGIN(powHash)); break;
         case ALGO_NIST5:   powHash = NIST5(BEGIN(nVersion), END(nNonce)); break;
         case ALGO_LYRA2Z:  lyra2z_hash(BEGIN(nVersion), BEGIN(powHash)); break;
+        case ALGO_X11:     powHash = HashX11(BEGIN(nVersion), END(nNonce)); break;
         default:           break; // FXTC TODO: we should not be here
     }
 

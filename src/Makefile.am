@@ -277,43 +277,18 @@ crypto_libbitcoin_crypto_a_SOURCES = \
   crypto/hmac_sha256.h \
   crypto/hmac_sha512.cpp \
   crypto/hmac_sha512.h \
+  crypto/Lyra2Z.h \
+  crypto/nist5.h \
   crypto/ripemd160.cpp \
   crypto/ripemd160.h \
+  crypto/scrypt.h \
   crypto/sha1.cpp \
   crypto/sha1.h \
   crypto/sha256.cpp \
   crypto/sha256.h \
   crypto/sha512.cpp \
-  crypto/sha512.h
-
-# scrypt
-crypto_libbitcoin_crypto_a_SOURCES += \
-  crypto/scrypt-sse2.cpp \
-  crypto/scrypt.cpp \
-  crypto/scrypt.h
-
-# nist5
-crypto_libbitcoin_crypto_a_SOURCES += \
-  crypto/blake.c \
-  crypto/groestl.c \
-  crypto/jh.c \
-  crypto/keccak.c \
-  crypto/skein.c \
-  crypto/sph_blake.h \
-  crypto/sph_groestl.h \
-  crypto/sph_jh.h \
-  crypto/sph_keccak.h \
-  crypto/sph_skein.h \
-  crypto/sph_types.h
-
-# lyra2z
-crypto_libbitcoin_crypto_a_SOURCES += \
-  crypto/Lyra2.c \
-  crypto/Lyra2.h \
-  crypto/Lyra2Z.c \
-  crypto/Lyra2Z.h \
-  crypto/Sponge.c \
-  crypto/Sponge.h
+  crypto/sha512.h \
+  crypto/x11.h
 
 if USE_ASM
 crypto_libbitcoin_crypto_a_SOURCES += crypto/sha256_sse4.cpp
