@@ -19,6 +19,7 @@ else
 LIBUNIVALUE = $(UNIVALUE_LIBS)
 endif
 
+BITCOIN_CONFIG_INCLUDES=-I$(builddir)/config
 BITCOIN_INCLUDES=-I$(builddir) $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
 
 BITCOIN_INCLUDES += -I$(srcdir)/secp256k1/include
@@ -356,9 +357,21 @@ crypto_libbitcoin_crypto_base_a_SOURCES = \
 ## FXTC BEGIN
 # crypto multi-algo libraries
 crypto_libbitcoin_crypto_base_a_SOURCES += \
+  crypto/blake.c \
+  crypto/groestl.c \
+  crypto/jh.c \
+  crypto/keccak.c \
+  crypto/nist5.h \
   crypto/scrypt-sse2.cpp \
   crypto/scrypt.cpp \
-  crypto/scrypt.h
+  crypto/scrypt.h \
+  crypto/skein.c \
+  crypto/sph_blake.h \
+  crypto/sph_groestl.h \
+  crypto/sph_jh.h \
+  crypto/sph_keccak.h \
+  crypto/sph_skein.h \
+  crypto/sph_types.h
 ## FXTC END
 
 

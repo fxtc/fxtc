@@ -17,9 +17,10 @@ enum {
 
     ALGO_SHA256D         = (  0 << 8),
     ALGO_SCRYPT          = (  1 << 8),
+    ALGO_NIST5           = (  2 << 8),
 }
 
-const ALGO_LAST_KNOWN = ALGO_SCRYPT;
+const ALGO_LAST_KNOWN = ALGO_NIST5;
 // FXTC END
 
 /** Nodes collect new transactions into a block, hash them into a hash tree,

@@ -11,6 +11,7 @@
 #include <crypto/common.h>
 
 // FXTC BEGIN
+#include <crypto/nist5.h>
 #include <crypto/scrypt.h>
 // FXTC END
 
@@ -30,6 +31,7 @@ uint256 CBlockHeader::GetPoWHash() const
     {
         case ALGO_SHA256D: powHash = GetHash(); break;
         case ALGO_SCRYPT:  scrypt_1024_1_1_256(BEGIN(nVersion), BEGIN(powHash)); break;
+        case ALGO_NIST5:   powHash = NIST5(BEGIN(nVersion), END(nNonce)); break;
         default:           break; // FXTC TODO: we should not be here
     }
 
