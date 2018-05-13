@@ -361,6 +361,10 @@ crypto_libbitcoin_crypto_base_a_SOURCES += \
   crypto/groestl.c \
   crypto/jh.c \
   crypto/keccak.c \
+  crypto/Lyra2.c \
+  crypto/Lyra2.h \
+  crypto/Lyra2Z.c \
+  crypto/Lyra2Z.h \
   crypto/nist5.h \
   crypto/scrypt-sse2.cpp \
   crypto/scrypt.cpp \
@@ -371,7 +375,9 @@ crypto_libbitcoin_crypto_base_a_SOURCES += \
   crypto/sph_jh.h \
   crypto/sph_keccak.h \
   crypto/sph_skein.h \
-  crypto/sph_types.h
+  crypto/sph_types.h \
+  crypto/Sponge.c \
+  crypto/Sponge.h
 ## FXTC END
 
 
