@@ -22,11 +22,9 @@ uint256 CBlockHeader::GetHash() const
 
 uint256 CBlockHeader::GetPoWHash() const
 {
-    int32_t nAlgo = nVersion & ALGO_VERSION_MASK;
-
     uint256 powHash = uint256S("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
 
-    switch (nAlgo)
+    switch (nVersion & ALGO_VERSION_MASK)
     {
         case ALGO_SHA256D: powHash = GetHash(); break;
         case ALGO_SCRYPT:  scrypt_1024_1_1_256(BEGIN(nVersion), BEGIN(powHash)); break;
@@ -37,6 +35,21 @@ uint256 CBlockHeader::GetPoWHash() const
     }
 
     return powHash;
+}
+
+unsigned int CBlockHeader::GetAlgoSubsidy() const
+{
+    switch (nVersion & ALGO_VERSION_MASK)
+    {
+        case ALGO_SHA256D: return       1;
+        case ALGO_SCRYPT:  return   12406;
+        case ALGO_NIST5:   return   80870;
+        case ALGO_LYRA2Z:  return  495000;
+        case ALGO_X11:     return  334262;
+        default:           return       1; // FXTC TODO: we should not be here
+    }
+
+    return 1; // FXTC TODO: we should not be here
 }
 
 std::string CBlock::ToString() const

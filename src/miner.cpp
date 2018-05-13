@@ -50,13 +50,13 @@ int64_t UpdateTime(CBlock* pblock, const Consensus::Params& consensusParams, con
         pblock->nTime = nNewTime;
 
         // We need to store actual block reward
-        CAmount blockRewardDelta = GetBlockSubsidy(pblock->nBits, pindexPrev->nHeight + 1, consensusParams);
+        CAmount blockRewardDelta = GetBlockSubsidy(pindexPrev->nHeight + 1, pblock->GetBlockHeader(), consensusParams);
 
         // Parameter consensusParams.fPowAllowMinDifficultyBlocks implemented into GetNextWorkRequired
         pblock->nBits = GetNextWorkRequired(pindexPrev, pblock, consensusParams);
 
         // Calculate delta reward
-        blockRewardDelta -= GetBlockSubsidy(pblock->nBits, pindexPrev->nHeight + 1, consensusParams);
+        blockRewardDelta -= GetBlockSubsidy(pindexPrev->nHeight + 1, pblock->GetBlockHeader(), consensusParams);
 
         // Update coinbase output to new value
         CMutableTransaction coinbaseTx(*pblock->vtx[0]);
@@ -165,7 +165,8 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
 
     // Create coinbase transaction.
     CMutableTransaction coinbaseTx;
-    CAmount nBlockReward = GetBlockSubsidy(GetNextWorkRequired(pindexPrev, pblock, chainparams.GetConsensus()), nHeight, chainparams.GetConsensus());
+    pblock->nBits=GetNextWorkRequired(pindexPrev, pblock, chainparams.GetConsensus());
+    CAmount nBlockReward = GetBlockSubsidy(nHeight, pblock->GetBlockHeader(), chainparams.GetConsensus());
     coinbaseTx.vin.resize(1);
     coinbaseTx.vin[0].prevout.SetNull();
     coinbaseTx.vout.resize(1);

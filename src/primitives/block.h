@@ -77,6 +77,8 @@ public:
 
     uint256 GetPoWHash() const;
 
+    unsigned int GetAlgoSubsidy() const;
+
     int64_t GetBlockTime() const
     {
         return (int64_t)nTime;

@@ -88,6 +88,7 @@ const char * const BITCOIN_PID_FILENAME = "bitcoind.pid";
 ArgsManager gArgs;
 
 CTranslationInterface translationInterface;
+int32_t miningAlgo = 0;
 
 /** Init OpenSSL library multithreading support */
 static std::unique_ptr<CCriticalSection[]> ppmutexOpenSSL;
