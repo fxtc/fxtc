@@ -1182,7 +1182,7 @@ double ConvertBitsToDouble(unsigned int nBits)
 
 // FXTC BEGIN
 //CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
-CAmount GetBlockSubsidy(unsigned int nBits, int nHeight, const Consensus::Params& consensusParams)
+CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Params& consensusParams)
 // FXTC END
 {
     int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
@@ -1198,10 +1198,9 @@ CAmount GetBlockSubsidy(unsigned int nBits, int nHeight, const Consensus::Params
     else if (nHeight == 3)
         return 10000 * COIN;    // Marketing Fund (Wallet, Website, Marketing, ...)
     else if (nHeight == 4)
-        return 289999 * COIN;   // Reserve Fund (Locked for future use)
+        return 789999 * COIN;   // Reserve Fund (Locked for future use)
 
-    CAmount nSubsidy = ConvertBitsToDouble(nBits) * COIN / 49500000; // SHA256d mining efficiency
-    //CAmount nSubsidy = ConvertBitsToDouble(nBits) * COIN / 99; // Lyra2z mining efficiency experimental
+    CAmount nSubsidy = ConvertBitsToDouble(pblock.nBits) * COIN / (49500000 / pblock.GetAlgoSubsidy()); // dynamic block reward by algo efficiency
 
     // Subsidy is cut in half every 865,000 blocks which will occur approximately every 3 years.
     nSubsidy >>= halvings;
@@ -1755,6 +1754,9 @@ int32_t ComputeBlockVersion(const CBlockIndex* pindexPrev, const Consensus::Para
         }
     }
 
+    // encode algo into nVersion
+    nVersion |= miningAlgo;
+
     return nVersion;
 }
 
@@ -2102,7 +2104,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
     // FXTC BEGIN
     //CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, chainparams.GetConsensus());
-    CAmount blockReward = nFees + GetBlockSubsidy(pindex->nBits, pindex->nHeight, chainparams.GetConsensus());
+    CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, pindex->GetBlockHeader(), chainparams.GetConsensus());
     // FXTC END
     if (block.vtx[0]->GetValueOut() > blockReward)
         return state.DoS(100,
@@ -2341,7 +2343,7 @@ void static UpdateTip(const CBlockIndex *pindexNew, const CChainParams& chainPar
         for (int i = 0; i < 100 && pindex != nullptr; i++)
         {
             int32_t nExpectedVersion = ComputeBlockVersion(pindex->pprev, chainParams.GetConsensus());
-            if (pindex->nVersion > VERSIONBITS_LAST_OLD_BLOCK_VERSION && (pindex->nVersion & ~nExpectedVersion) != 0)
+            if ((pindex->nVersion & ~ALGO_VERSION_MASK) > VERSIONBITS_LAST_OLD_BLOCK_VERSION && (pindex->nVersion & ~nExpectedVersion & ~ALGO_VERSION_MASK) != 0)
                 ++nUpgraded;
             pindex = pindex->pprev;
         }

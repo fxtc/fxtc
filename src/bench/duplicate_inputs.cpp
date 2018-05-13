@@ -70,7 +70,7 @@ static void DuplicateInputs(benchmark::State& state)
     coinbaseTx.vout[0].scriptPubKey = SCRIPT_PUB;
     // FXTC BEGIN
     //coinbaseTx.vout[0].nValue = GetBlockSubsidy(nHeight, chainparams.GetConsensus());
-    coinbaseTx.vout[0].nValue = GetBlockSubsidy(nHeight, block.nBits, chainparams.GetConsensus());
+    coinbaseTx.vout[0].nValue = GetBlockSubsidy(nHeight, block.GetBlockHeader(), chainparams.GetConsensus());
     // FXTC END
     coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
 

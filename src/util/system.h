@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -38,6 +39,10 @@
 
 // Application startup time (used for uptime calculation)
 int64_t GetStartupTime();
+
+// FXTC BEGIN
+extern int32_t miningAlgo;
+// FXTC END
 
 extern const char * const BITCOIN_CONF_FILENAME;
 

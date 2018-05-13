@@ -278,7 +278,7 @@ bool GetTransaction(const uint256& hash, CTransactionRef& tx, const Consensus::P
 bool ActivateBestChain(CValidationState& state, const CChainParams& chainparams, std::shared_ptr<const CBlock> pblock = std::shared_ptr<const CBlock>());
 // FXTC BEGIN
 //CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams);
-CAmount GetBlockSubsidy(unsigned int nBits, int nHeight, const Consensus::Params& consensusParams);
+CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Params& consensusParams);
 // FXTC END
 // FXTC BEGIN
 CAmount GetFounderReward(int nHeight, CAmount blockValue);
@@ -404,6 +404,9 @@ bool ReadRawBlockFromDisk(std::vector<uint8_t>& block, const CDiskBlockPos& pos,
 bool ReadRawBlockFromDisk(std::vector<uint8_t>& block, const CBlockIndex* pindex, const CMessageHeader::MessageStartChars& message_start);
 
 /** Functions for validating blocks and updating the block tree */
+
+// Subsidy by algo efficiency
+unsigned int GetAlgoSubsidy(int32_t nAlgo);
 
 /** Context-independent validity checks */
 bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW = true, bool fCheckMerkleRoot = true);

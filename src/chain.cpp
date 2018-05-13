@@ -168,3 +168,21 @@ const CBlockIndex* LastCommonAncestor(const CBlockIndex* pa, const CBlockIndex* 
     assert(pa == pb);
     return pa;
 }
+
+std::string GetAlgoName(int32_t nAlgo)
+{
+    switch (nAlgo)
+    {
+        case ALGO_SHA256D:
+            return std::string("sha256d");
+        case ALGO_SCRYPT:
+            return std::string("scrypt");
+        case ALGO_NIST5:
+            return std::string("nist5");
+        case ALGO_LYRA2Z:
+            return std::string("lyra2z");
+        case ALGO_X11:
+            return std::string("x11");
+    }
+    return std::string("unknown");
+}

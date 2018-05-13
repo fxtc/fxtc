@@ -202,6 +202,7 @@ static UniValue getmininginfo(const JSONRPCRequest& request)
                     "  \"currentblockweight\": nnn, (numeric, optional) The block weight of the last assembled block (only present if a block was ever assembled)\n"
                     "  \"currentblocktx\": nnn,     (numeric, optional) The number of block transactions of the last assembled block (only present if a block was ever assembled)\n"
                     "  \"difficulty\": xxx.xxxxx    (numeric) The current difficulty\n"
+                    "  \"algo\": \"...\"              (string) The current mining algo\n"
                     "  \"networkhashps\": nnn,      (numeric) The network hashes per second\n"
                     "  \"pooledtx\": n              (numeric) The size of the mempool\n"
                     "  \"chain\": \"xxxx\",           (string) current network name as defined in BIP70 (main, test, regtest)\n"
@@ -222,6 +223,7 @@ static UniValue getmininginfo(const JSONRPCRequest& request)
     if (BlockAssembler::m_last_block_weight) obj.pushKV("currentblockweight", *BlockAssembler::m_last_block_weight);
     if (BlockAssembler::m_last_block_num_txs) obj.pushKV("currentblocktx", *BlockAssembler::m_last_block_num_txs);
     obj.pushKV("difficulty",       (double)GetDifficulty(chainActive.Tip()));
+    obj.pushKV("algo",             GetAlgoName(miningAlgo));
     obj.pushKV("networkhashps",    getnetworkhashps(request));
     obj.pushKV("pooledtx",         (uint64_t)mempool.size());
     obj.pushKV("chain",            Params().NetworkIDString());
