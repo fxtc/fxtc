@@ -41,7 +41,7 @@ uint256 CBlockHeader::GetPoWHash() const
 }
 // FXTC END
 
-unsigned int CBlockHeader::GetAlgoSubsidy() const
+unsigned int CBlockHeader::GetAlgoEfficiency() const
 {
     switch (nVersion & ALGO_VERSION_MASK)
     {
