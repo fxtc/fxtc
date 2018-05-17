@@ -37,7 +37,7 @@ uint256 CBlockHeader::GetPoWHash() const
     return powHash;
 }
 
-unsigned int CBlockHeader::GetAlgoSubsidy() const
+unsigned int CBlockHeader::GetAlgoEfficiency() const
 {
     switch (nVersion & ALGO_VERSION_MASK)
     {

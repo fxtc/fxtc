@@ -11,52 +11,97 @@
 #include <primitives/block.h>
 #include <uint256.h>
 
-unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const Consensus::Params& params) {
-    /* current difficulty formula, criptoreal - DarkGravity v3, written by Evan Duffield - evan@dash.io */
-    const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
-    int64_t nPastBlocks = 24;
+unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params) {
+    const int64_t nAvgBlocks = 24;
 
-    // make sure we have at least (nPastBlocks + 1) blocks, otherwise just return powLimit
+    const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
+    int64_t nPastBlocks = nAvgBlocks * ALGO_ACTIVE_COUNT;
+
+    // make sure we have at least ALGO_ACTIVE_COUNT blocks, otherwise just return powLimit
     if (!pindexLast || pindexLast->nHeight < nPastBlocks) {
-        return bnPowLimit.GetCompact();
+        if (pindexLast->nHeight < (int)ALGO_ACTIVE_COUNT)
+            return bnPowLimit.GetCompact();
+        else
+            nPastBlocks = pindexLast->nHeight;
     }
 
     const CBlockIndex *pindex = pindexLast;
-    arith_uint256 bnPastTargetAvg;
+    arith_uint256 bnPastTargetAvg(0);
+
+    const CBlockIndex *pindexAlgo = nullptr;
+    const CBlockIndex *pindexAlgoLast = nullptr;
+    arith_uint256 bnPastAlgoTargetAvg(0);
+
+    // count blocks mined by actual algo
+    int32_t nVersion = pblock->nVersion & ALGO_VERSION_MASK;
+    unsigned int nPastAlgoBlocks = 0;
 
     for (unsigned int nCountBlocks = 1; nCountBlocks <= nPastBlocks; nCountBlocks++) {
-        arith_uint256 bnTarget = arith_uint256().SetCompact(pindex->nBits);
-        if (nCountBlocks == 1) {
-            bnPastTargetAvg = bnTarget;
-        } else {
-            // NOTE: that's not an average really...
-            bnPastTargetAvg = (bnPastTargetAvg * nCountBlocks + bnTarget) / (nCountBlocks + 1);
+        arith_uint256 bnTarget = arith_uint256().SetCompact(pindex->nBits) / pblock->GetAlgoEfficiency(); // convert to normalized target by algo efficiency
+
+        if (nVersion == (pindex->nVersion & ALGO_VERSION_MASK))
+        {
+            nPastAlgoBlocks++;
+
+            if (!pindexAlgoLast)
+                pindexAlgoLast=pindex;
+            else
+                pindexAlgo=pindex;
+
+            bnPastAlgoTargetAvg = (bnPastAlgoTargetAvg * (nPastAlgoBlocks - 1) + bnTarget) / nPastAlgoBlocks;
         }
+
+        bnPastTargetAvg = (bnPastTargetAvg * (nCountBlocks - 1) + bnTarget) / nCountBlocks;
 
         if(nCountBlocks != nPastBlocks) {
             assert(pindex->pprev); // should never fail
             pindex = pindex->pprev;
         }
+
+        if (nPastAlgoBlocks == nAvgBlocks) nCountBlocks=nPastBlocks;
     }
 
     arith_uint256 bnNew(bnPastTargetAvg);
 
+    if (pindexAlgo && pindexAlgoLast && nPastAlgoBlocks > 1)
+    {
+        bnNew = bnPastAlgoTargetAvg;
+
+        // retarget down if no new algo block is mined
+        if (pindexLast->nHeight != pindexAlgoLast->nHeight) nPastAlgoBlocks++;
+
+        int64_t nActualTimespan = pindexLast->GetBlockTime() - pindexAlgo->GetBlockTime();
+        int64_t nTargetTimespan = (nPastAlgoBlocks - 1) * params.nPowTargetSpacing * ALGO_ACTIVE_COUNT;
+
+        if (nActualTimespan < 1)
+            nActualTimespan = 1;
+        if (nActualTimespan > nTargetTimespan*ALGO_ACTIVE_COUNT)
+            nActualTimespan = nTargetTimespan*ALGO_ACTIVE_COUNT;
+
+        // Retarget algo
+        bnNew *= nActualTimespan;
+        bnNew /= nTargetTimespan;
+    } else {
+        bnNew = bnPowLimit;
+    }
+
     int64_t nActualTimespan = pindexLast->GetBlockTime() - pindex->GetBlockTime();
-    // NOTE: is this accurate? nActualTimespan counts it for (nPastBlocks - 1) blocks only...
     int64_t nTargetTimespan = nPastBlocks * params.nPowTargetSpacing;
 
-    if (nActualTimespan < nTargetTimespan/3)
-        nActualTimespan = nTargetTimespan/3;
-    if (nActualTimespan > nTargetTimespan*3)
-        nActualTimespan = nTargetTimespan*3;
+    if (nActualTimespan < nTargetTimespan/ALGO_ACTIVE_COUNT)
+        nActualTimespan = nTargetTimespan/ALGO_ACTIVE_COUNT;
+    if (nActualTimespan > nTargetTimespan*ALGO_ACTIVE_COUNT)
+        nActualTimespan = nTargetTimespan*ALGO_ACTIVE_COUNT;
 
     // Retarget
     bnNew *= nActualTimespan;
     bnNew /= nTargetTimespan;
 
-    if (bnNew > bnPowLimit) {
+    // at least PoW limit
+    if ((bnPowLimit / pblock->GetAlgoEfficiency()) > bnNew)
+        bnNew *= pblock->GetAlgoEfficiency(); // convert normalized target to actual algo target
+    else
         bnNew = bnPowLimit;
-    }
 
     return bnNew.GetCompact();
 }
@@ -99,18 +144,21 @@ unsigned int GetNextWorkRequiredBTC(const CBlockIndex* pindexLast, const CBlockH
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
-    unsigned int nBits = DarkGravityWave(pindexLast, params);
+    unsigned int nBits = DarkGravityWave(pindexLast, pblock, params);
 
-    // Dead lock protection will halve work every 2x spacing:
-    int nHalvings = (pblock->GetBlockTime() - pindexLast->GetBlockTime()) / (params.nPowTargetSpacing * 2);
+    // Dead lock protection will halve work every block spacing when no block for 2 * number of active algos * block spacing (FxTC: every two minutes if no block for 10 minutes)
+    int nHalvings = (pblock->GetBlockTime() - pindexLast->GetBlockTime()) / (params.nPowTargetSpacing * 2) - ALGO_ACTIVE_COUNT + 1;
     if (nHalvings > 0)
     {
         const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
         arith_uint256 bnBits;
         bnBits.SetCompact(nBits);
 
-        // Can not be less than PoW limit
-        if ((bnPowLimit >> nHalvings) < bnBits)
+        // Special difficulty rule for testnet:
+        // If the new block's timestamp is more than 2x block spacing
+        // then allow mining of a min-difficulty block.
+        // Also can not be less than PoW limit.
+        if (params.fPowAllowMinDifficultyBlocks || (bnPowLimit >> nHalvings) < bnBits)
             bnBits = bnPowLimit;
         else
             bnBits <<= nHalvings;

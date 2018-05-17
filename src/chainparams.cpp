@@ -21,7 +21,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
     txNew.nVersion = 1;
     txNew.vin.resize(1);
     txNew.vout.resize(1);
-    txNew.vin[0].scriptSig = CScript() << 486604799 << CScriptNum(4) << std::vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
+    txNew.vin[0].scriptSig = CScript() << 0 << OP_0 << 504365040 << CScriptNum(4) << std::vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
     txNew.vout[0].nValue = genesisReward;
     txNew.vout[0].scriptPubKey = genesisOutputScript;
 
@@ -80,7 +80,7 @@ public:
         // FXTC TODO: BIP16Exception is valid for BTC blockchain only
         consensus.BIP16Exception = uint256S("0x00000000000002dc756eebf4f49723ed8d30cc28a5f108eb94b1ba88ac4f9c22");
         consensus.BIP34Height = 0;
-        consensus.BIP34Hash = uint256S("0x000002ab12adfcfd8ad9950a30de845763b817b83d38655f6586070631e1fd1b");
+        consensus.BIP34Hash = uint256S("0x000003c5b9037b8d87c539372ba4f854e336a19cb1771f535e04e9645b627dc5");
         consensus.BIP65Height = 0; // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
         consensus.BIP66Height = 0; // 00000000000000000379eaa19dce8c9b722d46ae6a57c2f1a988119488b50931
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
@@ -122,10 +122,10 @@ public:
         nDefaultPort = 9468;
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock(1523632983, 4268751, 0x1e0ffff0, 1, consensus.nMinimumSubsidy * COIN);
+        genesis = CreateGenesisBlock(1523632983, 5066318, 0x1e0ffff0, 536870912, consensus.nMinimumSubsidy * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000002ab12adfcfd8ad9950a30de845763b817b83d38655f6586070631e1fd1b"));
-        assert(genesis.hashMerkleRoot == uint256S("0xbce15d4f0f9d2d7ba03064da56007ea0a437d7da74eaadc2260b0d435fcec312"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000003c5b9037b8d87c539372ba4f854e336a19cb1771f535e04e9645b627dc5"));
+        assert(genesis.hashMerkleRoot == uint256S("0x823eea34b19469a1ff62087a3b1c8f9b320088dbc7a4fe50b3de0ddc4254da3f"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
@@ -157,7 +157,7 @@ public:
 
         checkpointData = {
             {
-                {     0, uint256S("0x000002ab12adfcfd8ad9950a30de845763b817b83d38655f6586070631e1fd1b")},
+                {     0, uint256S("0x000003c5b9037b8d87c539372ba4f854e336a19cb1771f535e04e9645b627dc5")},
                 //{295000, uint256S("0x00000000000000004d9b4ef50f0f9d686fd69db2e03af35a100370c64632a983")},
             }
         };
@@ -187,7 +187,7 @@ public:
         // FXTC TODO: BIP16Exception is valid for BTC blockchain only
         consensus.BIP16Exception = uint256S("0x00000000dd30457c001f4095d208cc1296b0eed002427aa599874af7a432b105");
         consensus.BIP34Height = 0;
-        consensus.BIP34Hash = uint256S("0x000002ab12adfcfd8ad9950a30de845763b817b83d38655f6586070631e1fd1b");
+        consensus.BIP34Hash = uint256S("0x000003c5b9037b8d87c539372ba4f854e336a19cb1771f535e04e9645b627dc5");
         consensus.BIP65Height = 0; // 00000000007f6655f22f98e72ed80d8b06dc761d5da09df0fa1dc4be4f861eb6
         consensus.BIP66Height = 0; // 000000002104c8c45e99a8853285a3b592602a3ccde2b832481da85e9e4ba182
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
@@ -224,10 +224,10 @@ public:
         nDefaultPort = 19468;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1523632983, 4268751, 0x1e0ffff0, 1, consensus.nMinimumSubsidy * COIN);
+        genesis = CreateGenesisBlock(1523632983, 5066318, 0x1e0ffff0, 536870912, consensus.nMinimumSubsidy * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000002ab12adfcfd8ad9950a30de845763b817b83d38655f6586070631e1fd1b"));
-        assert(genesis.hashMerkleRoot == uint256S("0xbce15d4f0f9d2d7ba03064da56007ea0a437d7da74eaadc2260b0d435fcec312"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000003c5b9037b8d87c539372ba4f854e336a19cb1771f535e04e9645b627dc5"));
+        assert(genesis.hashMerkleRoot == uint256S("0x823eea34b19469a1ff62087a3b1c8f9b320088dbc7a4fe50b3de0ddc4254da3f"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -256,7 +256,7 @@ public:
 
         checkpointData = {
             {
-                {0, uint256S("0x000002ab12adfcfd8ad9950a30de845763b817b83d38655f6586070631e1fd1b")},
+                {0, uint256S("0x000003c5b9037b8d87c539372ba4f854e336a19cb1771f535e04e9645b627dc5")},
             }
         };
 
@@ -289,7 +289,7 @@ public:
         consensus.BIP66Height = 1; // BIP66 activated on regtest (Used in rpc activation tests)
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
-        consensus.nPowTargetSpacing = 1 * 60; // one minute
+        consensus.nPowTargetSpacing = 1; // one second
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = true;
         consensus.nRuleChangeActivationThreshold = 108; // 75% for testchains
@@ -318,10 +318,10 @@ public:
         nPruneAfterHeight = 1000;
 
         //genesis = CreateGenesisBlock(1523632983, 4268751, 0x207fffff, 1, consensus.nMinimumSubsidy * COIN);
-        genesis = CreateGenesisBlock(1523632983, 4268751, 0x1e0ffff0, 1, consensus.nMinimumSubsidy * COIN);
+        genesis = CreateGenesisBlock(1523632983, 5066318, 0x1e0ffff0, 536870912, consensus.nMinimumSubsidy * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000002ab12adfcfd8ad9950a30de845763b817b83d38655f6586070631e1fd1b"));
-        assert(genesis.hashMerkleRoot == uint256S("0xbce15d4f0f9d2d7ba03064da56007ea0a437d7da74eaadc2260b0d435fcec312"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000003c5b9037b8d87c539372ba4f854e336a19cb1771f535e04e9645b627dc5"));
+        assert(genesis.hashMerkleRoot == uint256S("0x823eea34b19469a1ff62087a3b1c8f9b320088dbc7a4fe50b3de0ddc4254da3f"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();      //!< Regtest mode doesn't have any DNS seeds.
@@ -330,11 +330,11 @@ public:
         fRequireStandard = false;
         fMineBlocksOnDemand = true;
 
-        founderAddress = "";
+        founderAddress = "mto17yEm3vuDaQ9YzCpXwwF2frPnZZbtnx";
 
         checkpointData = {
             {
-                {0, uint256S("0x000002ab12adfcfd8ad9950a30de845763b817b83d38655f6586070631e1fd1b")},
+                {0, uint256S("0x000003c5b9037b8d87c539372ba4f854e336a19cb1771f535e04e9645b627dc5")},
             }
         };
 

@@ -1224,7 +1224,7 @@ CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Param
     else if (nHeight == 4)
         return 789999 * COIN;   // Reserve Fund (Locked for future use)
 
-    CAmount nSubsidy = ConvertBitsToDouble(pblock.nBits) * COIN / (49500000 / pblock.GetAlgoSubsidy()); // dynamic block reward by algo efficiency
+    CAmount nSubsidy = ConvertBitsToDouble(pblock.nBits) * COIN / (49500000 / pblock.GetAlgoEfficiency()); // dynamic block reward by algo efficiency
 
     // Subsidy is cut in half every 865,000 blocks which will occur approximately every 3 years.
     nSubsidy >>= halvings;

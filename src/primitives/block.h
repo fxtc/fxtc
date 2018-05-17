@@ -19,9 +19,11 @@ enum {
     ALGO_NIST5           = (  2 << 8),
     ALGO_LYRA2Z          = (  3 << 8),
     ALGO_X11             = (  4 << 8),
-}
 
-const ALGO_LAST_KNOWN = ALGO_X11;
+    ALGO_NULL
+};
+
+const unsigned int ALGO_ACTIVE_COUNT = 5;
 
 /** Nodes collect new transactions into a block, hash them into a hash tree,
  * and scan through nonce values to make the block's hash satisfy proof-of-work
@@ -77,7 +79,7 @@ public:
 
     uint256 GetPoWHash() const;
 
-    unsigned int GetAlgoSubsidy() const;
+    unsigned int GetAlgoEfficiency() const;
 
     int64_t GetBlockTime() const
     {
