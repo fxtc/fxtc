@@ -139,8 +139,8 @@ public:
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,95);
         // FXTC prefix 'F'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,36);
-        // FXTC prefix 'c'
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,87);
+        // FXTC prefix 'X'
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,207);
         // BIP32 prefixes
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
@@ -153,7 +153,7 @@ public:
         fRequireStandard = true;
         fMineBlocksOnDemand = false;
 
-        founderAddress = "fExDspm4Jxk6NcLmwm2gDBREYngUn4QhbA";
+        founderAddress = "fXdevXfLwHZ4TLya3enVvg8BJXPRKqFBrR";
 
         checkpointData = {
             {
@@ -235,11 +235,11 @@ public:
         vSeeds.emplace_back("testnet-seeds.fixedtradecoin.org");
 
         // FXTC prefix 't'
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,127);
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,128);
         // FXTC prefix 'T'
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,66);
-        // FXTC prefix 'C'
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,28);
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,65);
+        // FXTC prefix 'Y'
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,214);
         // BIP32 prefixes
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
@@ -252,7 +252,7 @@ public:
         fRequireStandard = false;
         fMineBlocksOnDemand = false;
 
-        founderAddress = "t82FHzCV9EbdVLGgC1QEo6fSmT1hp1cSGZ";
+        founderAddress = "tXdevXRj7MeN6GF68NVwqsHonLYeS8GPzV";
 
         checkpointData = {
             {
@@ -330,7 +330,7 @@ public:
         fRequireStandard = false;
         fMineBlocksOnDemand = true;
 
-        founderAddress = "mto17yEm3vuDaQ9YzCpXwwF2frPnZZbtnx";
+        founderAddress = "cXdevX1jzA1Bd6hZVTcTEPh5NH8iDx1s4Z";
 
         checkpointData = {
             {
@@ -345,9 +345,12 @@ public:
         };
 
         // Bitcoin defaults
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
+        // FXTC prefix 'c'
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,88);
+        // FXTC prefix 'C'
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,28);
+        // FXTC prefix 'Z'
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,221);
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
 
