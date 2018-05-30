@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
 // Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -37,6 +38,13 @@ struct BIP9Deployment {
     /** Timeout/expiry MedianTime for the deployment attempt. */
     int64_t nTimeout;
 
+    // Dash
+    /** The number of past blocks (including the block under consideration) to be taken into account for locking in a fork. */
+    int64_t nWindowSize;
+    /** A number of blocks, in the range of 1..nWindowSize, which must signal for a fork in order to lock it in. */
+    int64_t nThreshold;
+    //
+
     /** Constant for nTimeout very far in the future. */
     static constexpr int64_t NO_TIMEOUT = std::numeric_limits<int64_t>::max();
 
@@ -57,6 +65,28 @@ struct Params {
     // FXTC BEGIN
     CAmount nMinimumSubsidy;
     // FXTC END
+
+    // Dash
+    int nMasternodeMinimumConfirmations;
+    int nMasternodePaymentsStartBlock;
+    int nMasternodePaymentsIncreaseBlock;
+    int nMasternodePaymentsIncreasePeriod; // in blocks
+    int nMasternodeCollateralMinimum; // in coins
+    int nMasternodeCollateralMaximum; // in coins
+
+    int nInstantSendKeepLock; // in blocks
+
+    int nBudgetPaymentsStartBlock;
+    int nBudgetPaymentsCycleBlocks;
+    int nBudgetPaymentsWindowBlocks;
+    int nBudgetProposalEstablishingTime; // in seconds
+
+    int nSuperblockStartBlock;
+    int nSuperblockCycle; // in blocks
+
+    int nGovernanceMinQuorum; // Min absolute vote count to trigger an action
+    int nGovernanceFilterElements;
+    //
 
     /* Block hash that is excepted from BIP16 enforcement */
     uint256 BIP16Exception;

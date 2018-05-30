@@ -142,9 +142,18 @@ public:
         return m_wallet->EncryptWallet(wallet_passphrase);
     }
     bool isCrypted() override { return m_wallet->IsCrypted(); }
-    bool lock() override { return m_wallet->Lock(); }
-    bool unlock(const SecureString& wallet_passphrase) override { return m_wallet->Unlock(wallet_passphrase); }
-    bool isLocked() override { return m_wallet->IsLocked(); }
+    // Dash
+    //bool lock() override { return m_wallet->Lock(); }
+    bool lock(bool fAllowMixing = false) override { return m_wallet->Lock(fAllowMixing); }
+    //
+    // Dash
+    //bool unlock(const SecureString& wallet_passphrase) override { return m_wallet->Unlock(wallet_passphrase); }
+    bool unlock(const SecureString& wallet_passphrase, bool fForMixingOnly = false) override { return m_wallet->Unlock(wallet_passphrase,fForMixingOnly); }
+    //
+    // Dash
+    //bool isLocked() override { return m_wallet->IsLocked(); }
+    bool isLocked(bool fForMixing = false) override { return m_wallet->IsLocked(fForMixing); }
+    //
     bool changeWalletPassphrase(const SecureString& old_wallet_passphrase,
         const SecureString& new_wallet_passphrase) override
     {
@@ -244,13 +253,18 @@ public:
         bool sign,
         int& change_pos,
         CAmount& fee,
-        std::string& fail_reason) override
+        std::string& fail_reason,
+        AvailableCoinsType nCoinType,
+        bool fUseInstantSend = false) override
     {
         auto locked_chain = m_wallet->chain().lock();
         LOCK(m_wallet->cs_wallet);
         auto pending = MakeUnique<PendingWalletTxImpl>(*m_wallet);
         if (!m_wallet->CreateTransaction(*locked_chain, recipients, pending->m_tx, pending->m_key, fee, change_pos,
-                fail_reason, coin_control, sign)) {
+        // Dash
+        //        fail_reason, coin_control, sign)) {
+                fail_reason, coin_control, sign, nCoinType, fUseInstantSend)) {
+        //
             return {};
         }
         return std::move(pending);
@@ -503,6 +517,12 @@ public:
     {
         return MakeHandler(m_wallet->NotifyCanGetAddressesChanged.connect(fn));
     }
+    // Dash
+    std::unique_ptr<Handler> handleNotifyAdditionalDataSyncProgressChanged(NotifyAdditionalDataSyncProgressChangedFn fn) override
+    {
+        return MakeHandler(m_wallet->NotifyAdditionalDataSyncProgressChanged.connect(fn));
+    }
+    //
 
     std::shared_ptr<CWallet> m_wallet;
 };

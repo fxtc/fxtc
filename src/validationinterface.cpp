@@ -1,5 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -28,14 +30,37 @@ struct ValidationInterfaceConnections {
     boost::signals2::scoped_connection Broadcast;
     boost::signals2::scoped_connection BlockChecked;
     boost::signals2::scoped_connection NewPoWValidBlock;
+    // FXTC BEGIN
+    // Dash
+    boost::signals2::scoped_connection AcceptedBlockHeader;
+    boost::signals2::scoped_connection NotifyHeaderTip;
+    boost::signals2::scoped_connection SyncTransaction;
+    boost::signals2::scoped_connection NotifyTransactionLock;
+    //
+    // FXTC END
 };
 
 struct MainSignalsInstance {
+    // Dash
+    boost::signals2::signal<void (const CBlockIndex *)> AcceptedBlockHeader;
+    boost::signals2::signal<void (const CBlockIndex *, bool fInitialDownload)> NotifyHeaderTip;
+    //
+
     boost::signals2::signal<void (const CBlockIndex *, const CBlockIndex *, bool fInitialDownload)> UpdatedBlockTip;
+
+    // Dash
+    boost::signals2::signal<void (const CTransaction &, const CBlock *)> SyncTransaction;
+    //
+
     boost::signals2::signal<void (const CTransactionRef &)> TransactionAddedToMempool;
     boost::signals2::signal<void (const std::shared_ptr<const CBlock> &, const CBlockIndex *pindex, const std::vector<CTransactionRef>&)> BlockConnected;
     boost::signals2::signal<void (const std::shared_ptr<const CBlock> &)> BlockDisconnected;
     boost::signals2::signal<void (const CTransactionRef &)> TransactionRemovedFromMempool;
+
+    // Dash
+    boost::signals2::signal<void (const CTransaction &)> NotifyTransactionLock;
+    //
+
     boost::signals2::signal<void (const CBlockLocator &)> ChainStateFlushed;
     boost::signals2::signal<void (int64_t nBestBlockTime, CConnman* connman)> Broadcast;
     boost::signals2::signal<void (const CBlock&, const CValidationState&)> BlockChecked;
@@ -104,6 +129,14 @@ void RegisterValidationInterface(CValidationInterface* pwalletIn) {
     conns.Broadcast = g_signals.m_internals->Broadcast.connect(std::bind(&CValidationInterface::ResendWalletTransactions, pwalletIn, std::placeholders::_1, std::placeholders::_2));
     conns.BlockChecked = g_signals.m_internals->BlockChecked.connect(std::bind(&CValidationInterface::BlockChecked, pwalletIn, std::placeholders::_1, std::placeholders::_2));
     conns.NewPoWValidBlock = g_signals.m_internals->NewPoWValidBlock.connect(std::bind(&CValidationInterface::NewPoWValidBlock, pwalletIn, std::placeholders::_1, std::placeholders::_2));
+    // FXTC BEGIN
+    // Dash
+    conns.AcceptedBlockHeader = g_signals.m_internals->AcceptedBlockHeader.connect(std::bind(&CValidationInterface::AcceptedBlockHeader, pwalletIn, std::placeholders::_1));
+    conns.NotifyHeaderTip = g_signals.m_internals->NotifyHeaderTip.connect(std::bind(&CValidationInterface::NotifyHeaderTip, pwalletIn, std::placeholders::_1, std::placeholders::_2));
+    conns.SyncTransaction = g_signals.m_internals->SyncTransaction.connect(std::bind(&CValidationInterface::SyncTransaction, pwalletIn, std::placeholders::_1, std::placeholders::_2));
+    conns.NotifyTransactionLock = g_signals.m_internals->NotifyTransactionLock.connect(std::bind(&CValidationInterface::NotifyTransactionLock, pwalletIn, std::placeholders::_1));
+    //
+    // FXTC END
 }
 
 void UnregisterValidationInterface(CValidationInterface* pwalletIn) {
@@ -141,6 +174,20 @@ void CMainSignals::MempoolEntryRemoved(CTransactionRef ptx, MemPoolRemovalReason
     }
 }
 
+// Dash
+void CMainSignals::AcceptedBlockHeader(const CBlockIndex *pindexNew) {
+    m_internals->m_schedulerClient.AddToProcessQueue([pindexNew, this] {
+        m_internals->AcceptedBlockHeader(pindexNew);
+    });
+}
+
+void CMainSignals::NotifyHeaderTip(const CBlockIndex *pindexNew, bool fInitialDownload) {
+    m_internals->m_schedulerClient.AddToProcessQueue([pindexNew, fInitialDownload, this] {
+        m_internals->NotifyHeaderTip(pindexNew, fInitialDownload);
+    });
+}
+//
+
 void CMainSignals::UpdatedBlockTip(const CBlockIndex *pindexNew, const CBlockIndex *pindexFork, bool fInitialDownload) {
     // Dependencies exist that require UpdatedBlockTip events to be delivered in the order in which
     // the chain actually updates. One way to ensure this is for the caller to invoke this signal
@@ -150,6 +197,14 @@ void CMainSignals::UpdatedBlockTip(const CBlockIndex *pindexNew, const CBlockInd
         m_internals->UpdatedBlockTip(pindexNew, pindexFork, fInitialDownload);
     });
 }
+
+// Dash
+void CMainSignals::SyncTransaction(const CTransaction &tx, const CBlock *pblock) {
+    m_internals->m_schedulerClient.AddToProcessQueue([tx, pblock, this] {
+        m_internals->SyncTransaction(tx, pblock);
+    });
+}
+//
 
 void CMainSignals::TransactionAddedToMempool(const CTransactionRef &ptx) {
     m_internals->m_schedulerClient.AddToProcessQueue([ptx, this] {
@@ -168,6 +223,14 @@ void CMainSignals::BlockDisconnected(const std::shared_ptr<const CBlock> &pblock
         m_internals->BlockDisconnected(pblock);
     });
 }
+
+// Dash
+void CMainSignals::NotifyTransactionLock(const CTransaction &tx) {
+    m_internals->m_schedulerClient.AddToProcessQueue([tx, this] {
+        m_internals->NotifyTransactionLock(tx);
+    });
+}
+//
 
 void CMainSignals::ChainStateFlushed(const CBlockLocator &locator) {
     m_internals->m_schedulerClient.AddToProcessQueue([locator, this] {

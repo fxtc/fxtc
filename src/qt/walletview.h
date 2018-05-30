@@ -1,4 +1,6 @@
 // Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -6,6 +8,10 @@
 #define BITCOIN_QT_WALLETVIEW_H
 
 #include <amount.h>
+
+// Dash
+#include <qt/masternodelist.h>
+//
 
 #include <QStackedWidget>
 
@@ -66,6 +72,10 @@ private:
     AddressBookPage *usedSendingAddressesPage;
     AddressBookPage *usedReceivingAddressesPage;
 
+    // Dash
+    MasternodeList *masternodeListPage;
+    //
+
     TransactionView *transactionView;
 
     QProgressDialog *progressDialog;
@@ -76,6 +86,12 @@ public Q_SLOTS:
     void gotoOverviewPage();
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
+
+    // Dash
+    /** Switch to masternode page */
+    void gotoMasternodePage();
+    //
+
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */
@@ -98,7 +114,11 @@ public Q_SLOTS:
     /** Change encrypted wallet passphrase */
     void changePassphrase();
     /** Ask for passphrase to unlock wallet temporarily */
-    void unlockWallet();
+    void unlockWallet(bool fAnonymizeOnly=false);
+    // Dash
+    /** Lock wallet */
+    void lockWallet();
+    //
 
     /** Show used sending addresses */
     void usedSendingAddresses();

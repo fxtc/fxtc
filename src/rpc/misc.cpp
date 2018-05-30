@@ -1,5 +1,6 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
 // Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -23,12 +24,163 @@
 #include <util/strencodings.h>
 #include <warnings.h>
 
+// Dash
+#include <masternode-sync.h>
+#include <spork.h>
+// FXTC BEGIN
+#include "wallet/rpcwallet.h"
+// FXTC END
+//
+
 #include <stdint.h>
 #ifdef HAVE_MALLOC_INFO
 #include <malloc.h>
 #endif
 
 #include <univalue.h>
+
+// Dash
+UniValue mnsync(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 1)
+        throw std::runtime_error(
+            RPCHelpMan{"mnsync",
+                "\nReturns the sync status, updates to the next step or resets it entirely.\n",
+                {
+                    {"type", RPCArg::Type::STR, RPCArg::Optional::NO, "Type must be one of:\n"
+            "       \"status\"\n"
+            "       \"next\"\n"
+            "       \"reset\""},
+                },
+                RPCResult{
+            "Not documented by Dash developers.\n"
+                },
+                RPCExamples{
+                    HelpExampleCli("mnsync", "status")
+            + HelpExampleCli("mnsync", "next")
+            + HelpExampleCli("mnsync", "reset")
+            + HelpExampleRpc("mnsync", "\"status\"")
+            + HelpExampleRpc("mnsync", "\"next\"")
+            + HelpExampleRpc("mnsync", "\"reset\"")
+                },
+            }.ToString());
+
+    std::string strMode = request.params[0].get_str();
+
+    if(strMode == "status") {
+        UniValue objStatus(UniValue::VOBJ);
+        objStatus.pushKV("AssetID", masternodeSync.GetAssetID());
+        objStatus.pushKV("AssetName", masternodeSync.GetAssetName());
+        objStatus.pushKV("AssetStartTime", masternodeSync.GetAssetStartTime());
+        objStatus.pushKV("Attempt", masternodeSync.GetAttempt());
+        objStatus.pushKV("IsBlockchainSynced", masternodeSync.IsBlockchainSynced());
+        objStatus.pushKV("IsMasternodeListSynced", masternodeSync.IsMasternodeListSynced());
+        objStatus.pushKV("IsWinnersListSynced", masternodeSync.IsWinnersListSynced());
+        objStatus.pushKV("IsSynced", masternodeSync.IsSynced());
+        objStatus.pushKV("IsFailed", masternodeSync.IsFailed());
+        return objStatus;
+    }
+
+    if(strMode == "next")
+    {
+        masternodeSync.SwitchToNextAsset(*g_connman);
+        return "sync updated to " + masternodeSync.GetAssetName();
+    }
+
+    if(strMode == "reset")
+    {
+        masternodeSync.Reset();
+        masternodeSync.SwitchToNextAsset(*g_connman);
+        return "success";
+    }
+    return "failure";
+}
+
+/*
+    Used for updating/reading spork settings on the network
+*/
+UniValue spork(const JSONRPCRequest& request)
+{
+    if(request.params.size() == 1 && request.params[0].get_str() == "show"){
+        UniValue ret(UniValue::VOBJ);
+        for(int nSporkID = SPORK_START; nSporkID <= SPORK_END; nSporkID++){
+            if(sporkManager.GetSporkNameByID(nSporkID) != "Unknown")
+                ret.pushKV(sporkManager.GetSporkNameByID(nSporkID), sporkManager.GetSporkValue(nSporkID));
+        }
+        return ret;
+    } else if(request.params.size() == 1 && request.params[0].get_str() == "active"){
+        UniValue ret(UniValue::VOBJ);
+        for(int nSporkID = SPORK_START; nSporkID <= SPORK_END; nSporkID++){
+            if(sporkManager.GetSporkNameByID(nSporkID) != "Unknown")
+                ret.pushKV(sporkManager.GetSporkNameByID(nSporkID), sporkManager.IsSporkActive(nSporkID));
+        }
+        return ret;
+    }
+#ifdef ENABLE_WALLET
+    else if (request.params.size() == 2){
+        int nSporkID = sporkManager.GetSporkIDByName(request.params[0].get_str());
+        if(nSporkID == -1){
+            return "Invalid spork name";
+        }
+
+        if (!g_connman)
+            throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
+
+        // SPORK VALUE
+        int64_t nValue = request.params[1].get_int64();
+
+        //broadcast new spork
+        if(sporkManager.UpdateSpork(nSporkID, nValue, *g_connman)){
+            sporkManager.ExecuteSpork(nSporkID, nValue);
+            return "success";
+        } else {
+            return "failure";
+        }
+
+    }
+
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    CWallet* const pwallet = wallet.get();
+
+    throw std::runtime_error(
+        RPCHelpMan{"spork",
+            "\nShow actual spork value or set new spork value." +
+                HelpRequiringPassphrase(pwallet) + "\n",
+            {
+                {"name", RPCArg::Type::STR, RPCArg::Optional::NO, "Spork name, or \"show\" to show all current spork settings, or \"active\" to show which sporks are active."},
+                {"value", RPCArg::Type::NUM, /* default */ "none", "Epoch datetime to enable or disable spork or value."},
+            },
+            RPCResult{
+        "Not documented by Dash developers.\n"
+            },
+            RPCExamples{
+                HelpExampleCli("spork", "show")
+        + HelpExampleCli("spork", "active")
+        + HelpExampleCli("spork", "\"SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT\" 4070908800")
+        + HelpExampleRpc("spork", "\"SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT\", 4070908800")
+            },
+        }.ToString());
+#else // ENABLE_WALLET
+    throw std::runtime_error(
+        RPCHelpMan{"spork",
+            "\nShow actual spork value.\n",
+            {
+                {"name", RPCArg::Type::STR, RPCArg::Optional::NO, "Spork name, or \"show\" to show all current spork settings, or \"active\" to show which sporks are active."},
+            },
+            RPCResult{
+        "Not documented by Dash developers.\n"
+            },
+            RPCExamples{
+                HelpExampleCli("spork", "show")
+        + HelpExampleCli("spork", "active")
+        + HelpExampleCli("spork", "\"SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT\"")
+        + HelpExampleRpc("spork", "\"SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT\"")
+            },
+        }.ToString());
+#endif // ENABLE_WALLET
+
+}
+//
 
 static UniValue validateaddress(const JSONRPCRequest& request)
 {
@@ -609,6 +761,11 @@ static const CRPCCommand commands[] =
     { "hidden",             "setmocktime",            &setmocktime,            {"timestamp"}},
     { "hidden",             "echo",                   &echo,                   {"arg0","arg1","arg2","arg3","arg4","arg5","arg6","arg7","arg8","arg9"}},
     { "hidden",             "echojson",               &echo,                   {"arg0","arg1","arg2","arg3","arg4","arg5","arg6","arg7","arg8","arg9"}},
+
+    // Dash
+    { "dash",               "mnsync",                 &mnsync,                 {"status-next-reset"}  },
+// FXTC TODO:    { "dash",               "spork",                  &spork,                  {"name", "value"}  },
+    //
 };
 // clang-format on
 
