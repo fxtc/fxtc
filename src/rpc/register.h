@@ -1,4 +1,6 @@
 // Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -20,6 +22,13 @@ void RegisterMiningRPCCommands(CRPCTable &tableRPC);
 /** Register raw transaction RPC commands */
 void RegisterRawTransactionRPCCommands(CRPCTable &tableRPC);
 
+// Dash
+/** Register Dash masternode RPC commands */
+void RegisterDashMasternodeRPCCommands(CRPCTable &tableRPC);
+/** Register Dash Governance RPC commands */
+void RegisterDashGovernanceRPCCommands(CRPCTable &tableRPC);
+//
+
 static inline void RegisterAllCoreRPCCommands(CRPCTable &t)
 {
     RegisterBlockchainRPCCommands(t);
@@ -27,6 +36,8 @@ static inline void RegisterAllCoreRPCCommands(CRPCTable &t)
     RegisterMiscRPCCommands(t);
     RegisterMiningRPCCommands(t);
     RegisterRawTransactionRPCCommands(t);
+    RegisterDashMasternodeRPCCommands(t);
+    RegisterDashGovernanceRPCCommands(t);
 }
 
 #endif // BITCOIN_RPC_REGISTER_H

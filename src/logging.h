@@ -54,6 +54,18 @@ namespace BCLog {
         QT          = (1 << 19),
         LEVELDB     = (1 << 20),
         ALL         = ~(uint32_t)0,
+
+        // Dash
+        // dash log flags //
+        PRIVATESEND = (1 << 23),
+        INSTANTSEND = (1 << 24),
+        MASTERNODE  = (1 << 25),
+        MNPAYMENTS  = (1 << 26),
+        MNSYNC      = (1 << 27),
+        SPORK       = (1 << 28),
+        KEEPASS     = (1 << 29),
+        GOBJECT     = (1 << 30),
+        //
     };
 
     class Logger

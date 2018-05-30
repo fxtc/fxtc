@@ -28,3 +28,4 @@ bool ShutdownRequested()
 {
   return false;
 }
+

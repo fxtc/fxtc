@@ -1,4 +1,5 @@
 # Copyright (c) 2013-2016 The Bitcoin Core developers
+# Copyright (c) 2014-2017 The Dash Core developers
 # Copyright (c) 2018 FXTC developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -229,6 +230,36 @@ BITCOIN_CORE_H = \
   zmq/zmqpublishnotifier.h \
   zmq/zmqrpc.h
 
+# dash core #
+BITCOIN_CORE_H += \
+  activemasternode.h \
+  cachemap.h \
+  cachemultimap.h \
+  dsnotificationinterface.h \
+  flatdatabase.h \
+  governance.h \
+  governance-classes.h \
+  governance-exceptions.h \
+  governance-misc.h \
+  governance-object.h \
+  governance-validators.h \
+  governance-vote.h \
+  governance-votedb.h \
+  instantx.h \
+  keepass.h \
+  masternode.h \
+  masternodeman.h \
+  masternode-payments.h \
+  masternode-sync.h \
+  masternodeconfig.h \
+  messagesigner.h \
+  netfulfilledman.h \
+  privatesend.h \
+  privatesend-client.h \
+  privatesend-server.h \
+  privatesend-util.h \
+  spork.h
+
 
 obj/build.h: FORCE
 	@$(MKDIR_P) $(builddir)/obj
@@ -289,6 +320,31 @@ libbitcoin_server_a_SOURCES = \
   versionbits.cpp \
   $(BITCOIN_CORE_H)
 
+# dash server
+libbitcoin_server_a_SOURCES += \
+  activemasternode.cpp \
+  dsnotificationinterface.cpp \
+  governance.cpp \
+  governance-classes.cpp \
+  governance-object.cpp \
+  governance-validators.cpp \
+  governance-vote.cpp \
+  governance-votedb.cpp \
+  instantx.cpp \
+  masternode.cpp \
+  masternodeman.cpp \
+  masternode-payments.cpp \
+  masternode-sync.cpp \
+  masternodeconfig.cpp \
+  messagesigner.cpp \
+  netfulfilledman.cpp \
+  privatesend.cpp \
+  privatesend-server.cpp \
+  rpc/governance.cpp \
+  rpc/masternode.cpp \
+  spork.cpp
+#
+
 if !ENABLE_WALLET
 libbitcoin_server_a_SOURCES += dummywallet.cpp
 endif
@@ -325,6 +381,13 @@ libbitcoin_wallet_a_SOURCES = \
   wallet/coinselection.cpp \
   $(BITCOIN_CORE_H)
 
+# dash wallet
+libbitcoin_wallet_a_SOURCES += \
+  keepass.cpp \
+  privatesend-client.cpp \
+  privatesend-util.cpp
+#
+
 libbitcoin_wallet_tool_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_wallet_tool_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_wallet_tool_a_SOURCES = \
@@ -332,8 +395,12 @@ libbitcoin_wallet_tool_a_SOURCES = \
   $(BITCOIN_CORE_H)
 
 # crypto primitives library
-crypto_libbitcoin_crypto_base_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libbitcoin_crypto_base_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+## FXTC BEGIN
+#crypto_libbitcoin_crypto_base_a_CPPFLAGS = $(AM_CPPFLAGS)
+#crypto_libbitcoin_crypto_base_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libbitcoin_crypto_base_a_CPPFLAGS = $(AM_CPPFLAGS) $(PIC_FLAGS)
+crypto_libbitcoin_crypto_base_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) $(PIC_FLAGS)
+## FXTC END
 crypto_libbitcoin_crypto_base_a_SOURCES = \
   crypto/aes.cpp \
   crypto/aes.h \
@@ -593,7 +660,7 @@ fxtc_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
 
 # fxtc-wallet binary #
 fxtc_wallet_SOURCES = bitcoin-wallet.cpp
-fxtc_wallet_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+fxtc_wallet_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
 fxtc_wallet_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 fxtc_wallet_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
@@ -603,10 +670,12 @@ endif
 
 fxtc_wallet_LDADD = \
   $(LIBBITCOIN_WALLET_TOOL) \
+  $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_WALLET) \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_CONSENSUS) \
+  $(LIBUNIVALUE) \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO) \
   $(LIBLEVELDB) \
@@ -614,7 +683,11 @@ fxtc_wallet_LDADD = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-fxtc_wallet_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS)
+fxtc_wallet_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
+
+if ENABLE_ZMQ
+fxtc_wallet_LDADD += $(LIBBITCOIN_ZMQ) $(ZMQ_LIBS)
+endif
 #
 
 # bitcoinconsensus library #
