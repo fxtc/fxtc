@@ -1,5 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #ifndef BITCOIN_POLICY_FEES_H
@@ -157,6 +159,11 @@ private:
     /** Decay of .9995 is a half-life of 1008 blocks or about 1 week */
     static constexpr double LONG_DECAY = .99931;
 
+    // Dash
+    /** Require greater than 95% of X fee transactions to be confirmed within Y blocks for X to be big enough */
+    static constexpr double MIN_SUCCESS_PCT = .95;
+    //-//static const double UNLIKELY_PCT = .5;
+    //
     /** Require greater than 60% of X feerate transactions to be confirmed within Y/2 blocks*/
     static constexpr double HALF_SUCCESS_PCT = .6;
     /** Require greater than 85% of X feerate transactions to be confirmed within Y blocks*/
@@ -166,6 +173,10 @@ private:
 
     /** Require an avg of 0.1 tx in the combined feerate bucket per block to have stat significance */
     static constexpr double SUFFICIENT_FEETXS = 0.1;
+    // Dash
+    /** Require only an avg of 1 tx every 5 blocks in the combined pri bucket (way less pri txs) */
+    static constexpr double SUFFICIENT_PRITXS = .2;
+    //
     /** Require an avg of 0.5 tx when using short decay since there are fewer blocks considered*/
     static constexpr double SUFFICIENT_TXS_SHORT = 0.5;
 
@@ -178,6 +189,15 @@ private:
      */
     static constexpr double MIN_BUCKET_FEERATE = 1000;
     static constexpr double MAX_BUCKET_FEERATE = 1e7;
+    // Dash
+    // Minimum and Maximum values for tracking fees and priorities
+    //-//static constexpr double MIN_FEERATE = 10;
+    //-//static constexpr double MAX_FEERATE = 1e7;
+    //-//static constexpr double INF_FEERATE = MAX_MONEY;
+    //-//static constexpr double MIN_PRIORITY = 10;
+    //-//static constexpr double MAX_PRIORITY = 1e16;
+    static constexpr double INF_PRIORITY = 1e9 * MAX_MONEY;
+    //
 
     /** Spacing of FeeRate buckets
      * We have to lump transactions into buckets based on feerate, but we want to be able
@@ -217,6 +237,17 @@ public:
      */
     CFeeRate estimateRawFee(int confTarget, double successThreshold, FeeEstimateHorizon horizon, EstimationResult *result = nullptr) const;
 
+    // Dash
+    /** Return a priority estimate */
+    //-//double estimatePriority(int confTarget);
+
+    /** Estimate priority needed to get be included in a block within
+     *  confTarget blocks. If no answer can be given at confTarget, return an
+     *  estimate at the lowest target where one can be given.
+     */
+    double estimateSmartPriority(int confTarget, int *answerFoundAtTarget, const CTxMemPool& pool);
+    //
+
     /** Write estimation data to a file */
     bool Write(CAutoFile& fileout) const;
 
@@ -249,6 +280,10 @@ private:
     std::unique_ptr<TxConfirmStats> feeStats;
     std::unique_ptr<TxConfirmStats> shortStats;
     std::unique_ptr<TxConfirmStats> longStats;
+
+    // Dash
+    std::unique_ptr<TxConfirmStats> priStats;
+    //
 
     unsigned int trackedTxs;
     unsigned int untrackedTxs;

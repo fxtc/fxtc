@@ -1,4 +1,6 @@
 // Copyright (c) 2011-2017 The Bitcoin Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -12,6 +14,12 @@
 
 #include <qt/paymentrequestplus.h>
 #include <qt/walletmodeltransaction.h>
+
+// Dash
+#ifdef ENABLE_WALLET
+#include "wallet/wallet.h"
+#endif // ENABLE_WALLET
+//
 
 #include <interfaces/wallet.h>
 #include <support/allocators/secure.h>
@@ -59,6 +67,12 @@ public:
     // Todo: This is a hack, should be replaced with a cleaner solution!
     QString address;
     QString label;
+    // Dash
+#ifdef ENABLE_WALLET
+    AvailableCoinsType inputType;
+#endif // ENABLE_WALLET
+    bool fUseInstantSend;
+    //
     CAmount amount;
     // If from a payment request, this is used for storing the memo
     QString message;
@@ -132,6 +146,9 @@ public:
     {
         Unencrypted,  // !wallet->IsCrypted()
         Locked,       // wallet->IsCrypted() && wallet->IsLocked()
+        // Dash
+        UnlockedForMixingOnly,  // wallet->IsCrypted() && !wallet->IsLocked(true) && wallet->IsLocked()
+        //
         Unlocked      // wallet->IsCrypted() && !wallet->IsLocked()
     };
 
@@ -166,14 +183,14 @@ public:
     // Wallet encryption
     bool setWalletEncrypted(bool encrypted, const SecureString &passphrase);
     // Passphrase only needed when unlocking
-    bool setWalletLocked(bool locked, const SecureString &passPhrase=SecureString());
+    bool setWalletLocked(bool locked, const SecureString &passPhrase=SecureString(), bool fMixing=false);
     bool changePassphrase(const SecureString &oldPass, const SecureString &newPass);
 
     // RAI object for unlocking wallet, returned by requestUnlock()
     class UnlockContext
     {
     public:
-        UnlockContext(WalletModel *wallet, bool valid, bool relock);
+        UnlockContext(WalletModel *wallet, bool valid, bool relock, bool was_mixing);
         ~UnlockContext();
 
         bool isValid() const { return valid; }
@@ -185,11 +202,17 @@ public:
         WalletModel *wallet;
         bool valid;
         mutable bool relock; // mutable, as it can be set to false by copying
+        // Dash
+        mutable bool was_mixing; // mutable, as it can be set to false by copying
+        //
 
         void CopyFrom(const UnlockContext& rhs);
     };
 
-    UnlockContext requestUnlock();
+    // Dash
+    //UnlockContext requestUnlock();
+    UnlockContext requestUnlock(bool fForMixingOnly = false);
+    //
 
     void loadReceiveRequests(std::vector<std::string>& vReceiveRequests);
     bool saveReceiveRequest(const std::string &sAddress, const int64_t nId, const std::string &sRequest);
@@ -247,7 +270,7 @@ Q_SIGNALS:
     // Signal emitted when wallet needs to be unlocked
     // It is valid behaviour for listeners to keep the wallet locked after this signal;
     // this means that the unlocking failed or was cancelled.
-    void requireUnlock();
+    void requireUnlock(bool fForMixingOnly=false);
 
     // Fired when a message should be reported to the user
     void message(const QString &title, const QString &message, unsigned int style);

@@ -1,5 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -529,6 +531,8 @@ public:
      * pay-to-script-hash transactions:
      */
     unsigned int GetSigOpCount(const CScript& scriptSig) const;
+
+    bool IsPayToPublicKeyHash() const;
 
     bool IsPayToScriptHash() const;
     bool IsPayToWitnessScriptHash() const;

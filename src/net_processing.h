@@ -1,5 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -34,6 +36,13 @@ static constexpr int64_t STALE_CHECK_INTERVAL = 10 * 60; // 10 minutes
 static constexpr int64_t EXTRA_PEER_CHECK_INTERVAL = 45;
 /** Minimum time an outbound-peer-eviction candidate must be connected for, in order to evict, in seconds */
 static constexpr int64_t MINIMUM_CONNECT_TIME = 30;
+
+// Dash
+/** Register with a network node to receive its signals */
+///void RegisterNodeSignals(CNodeSignals& nodeSignals);
+/** Unregister a network node */
+///void UnregisterNodeSignals(CNodeSignals& nodeSignals);
+//
 
 /** Default for BIP61 (sending reject messages) */
 static constexpr bool DEFAULT_ENABLE_BIP61 = true;

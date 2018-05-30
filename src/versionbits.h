@@ -1,4 +1,6 @@
 // Copyright (c) 2016-2017 The Bitcoin Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -35,6 +37,10 @@ struct VBDeploymentInfo {
     const char *name;
     /** Whether GBT clients can safely ignore this rule in simplified usage */
     bool gbt_force;
+    // Dash
+    /** Whether to check current MN protocol or not */
+    bool check_mn_protocol;
+    //
 };
 
 struct BIP9Stats {

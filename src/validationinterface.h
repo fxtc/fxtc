@@ -1,5 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -55,6 +57,11 @@ void SyncWithValidationInterfaceQueue();
 
 class CValidationInterface {
 protected:
+    // Dash
+    virtual void AcceptedBlockHeader(const CBlockIndex *pindexNew) {}
+    virtual void NotifyHeaderTip(const CBlockIndex *pindexNew, bool fInitialDownload) {}
+    //
+
     /**
      * Protected destructor so that instances can only be deleted by derived classes.
      * If that restriction is no longer desired, this should be made public and virtual.
@@ -75,6 +82,11 @@ protected:
      *
      * Called on a background thread.
      */
+
+    // Dash
+    virtual void SyncTransaction(const CTransaction &tx, const CBlock *pblock) {}
+    //
+
     virtual void TransactionAddedToMempool(const CTransactionRef &ptxn) {}
     /**
      * Notifies listeners of a transaction leaving mempool.
@@ -100,6 +112,11 @@ protected:
      * Called on a background thread.
      */
     virtual void BlockDisconnected(const std::shared_ptr<const CBlock> &block) {}
+
+    // Dash
+    virtual void NotifyTransactionLock(const CTransaction &tx) {}
+    //
+
     /**
      * Notifies listeners of the new active block chain on-disk.
      *
@@ -168,10 +185,29 @@ public:
     /** Unregister with mempool */
     void UnregisterWithMempoolSignals(CTxMemPool& pool);
 
+    // Dash
+    /** Notifies listeners of accepted block header */
+    void AcceptedBlockHeader(const CBlockIndex *);
+    /** Notifies listeners of updated block header tip */
+    void NotifyHeaderTip(const CBlockIndex *, bool fInitialDownload);
+    //
+
     void UpdatedBlockTip(const CBlockIndex *, const CBlockIndex *, bool fInitialDownload);
+
+    // Dash
+    /** Notifies listeners of updated transaction data (transaction, and optionally the block it is found in. */
+    void SyncTransaction(const CTransaction &, const CBlock *);
+    //
+
     void TransactionAddedToMempool(const CTransactionRef &);
     void BlockConnected(const std::shared_ptr<const CBlock> &, const CBlockIndex *pindex, const std::shared_ptr<const std::vector<CTransactionRef>> &);
     void BlockDisconnected(const std::shared_ptr<const CBlock> &);
+
+    // Dash
+    /** Notifies listeners of an updated transaction lock without new data. */
+    void NotifyTransactionLock(const CTransaction &);
+    //
+
     void ChainStateFlushed(const CBlockLocator &);
     void Inventory(const uint256 &);
     void Broadcast(int64_t nBestBlockTime, CConnman* connman);

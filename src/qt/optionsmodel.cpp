@@ -1,4 +1,6 @@
 // Copyright (c) 2011-2017 The Bitcoin Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -17,6 +19,12 @@
 #include <netbase.h>
 #include <txdb.h> // for -dbcache defaults
 #include <qt/intro.h>
+
+// Dash
+#ifdef ENABLE_WALLET
+#include <masternodeconfig.h>
+#endif
+//
 
 #include <QNetworkProxy>
 #include <QSettings>
@@ -78,6 +86,11 @@ void OptionsModel::Init(bool resetSettings)
     if (!settings.contains("fCoinControlFeatures"))
         settings.setValue("fCoinControlFeatures", false);
     fCoinControlFeatures = settings.value("fCoinControlFeatures", false).toBool();
+
+    // Dash
+    if (!settings.contains("fShowMasternodesTab"))
+    settings.setValue("fShowMasternodesTab", masternodeConfig.getCount());
+    //
 
     // These are shared with the core or have a command-line parameter
     // and we want command-line parameters to overwrite the GUI settings.
@@ -272,6 +285,10 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
 #ifdef ENABLE_WALLET
         case SpendZeroConfChange:
             return settings.value("bSpendZeroConfChange");
+        // Dash
+        case ShowMasternodesTab:
+            return settings.value("fShowMasternodesTab");
+        //
 #endif
         case DisplayUnit:
             return nDisplayUnit;
@@ -383,6 +400,14 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
                 setRestartRequired(true);
             }
             break;
+        // Dash
+        case ShowMasternodesTab:
+            if (settings.value("fShowMasternodesTab") != value) {
+                settings.setValue("fShowMasternodesTab", value);
+                setRestartRequired(true);
+            }
+            break;
+        //
 #endif
         case DisplayUnit:
             setDisplayUnit(value);

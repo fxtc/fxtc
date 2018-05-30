@@ -26,3 +26,4 @@ bool ShutdownRequested()
 {
   return false;
 }
+

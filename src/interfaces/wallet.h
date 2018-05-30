@@ -11,6 +11,7 @@
 #include <script/standard.h>           // For CTxDestination
 #include <support/allocators/secure.h> // For SecureString
 #include <ui_interface.h>              // For ChangeType
+#include <wallet/wallet.h>
 
 #include <functional>
 #include <map>
@@ -55,13 +56,22 @@ public:
     virtual bool isCrypted() = 0;
 
     //! Lock wallet.
-    virtual bool lock() = 0;
+    // Dash
+    //virtual bool lock() = 0;
+    virtual bool lock(bool fAllowMixing = false) = 0;
+    //
 
     //! Unlock wallet.
-    virtual bool unlock(const SecureString& wallet_passphrase) = 0;
+    // Dash
+    //virtual bool unlock(const SecureString& wallet_passphrase) = 0;
+    virtual bool unlock(const SecureString& wallet_passphrase, bool fForMixingOnly = false) = 0;
+    //
 
     //! Return whether wallet is locked.
-    virtual bool isLocked() = 0;
+    // Dash
+    //virtual bool isLocked() = 0;
+    virtual bool isLocked(bool fForMixing = false) = 0;
+    //
 
     //! Change wallet passphrase.
     virtual bool changeWalletPassphrase(const SecureString& old_wallet_passphrase,
@@ -137,7 +147,9 @@ public:
         bool sign,
         int& change_pos,
         CAmount& fee,
-        std::string& fail_reason) = 0;
+        std::string& fail_reason,
+        AvailableCoinsType nCoinType = ALL_COINS,
+        bool fUseInstantSend = false) = 0;
 
     //! Return whether transaction can be abandoned.
     virtual bool transactionCanBeAbandoned(const uint256& txid) = 0;
@@ -265,6 +277,12 @@ public:
     //! Register handler for watchonly changed messages.
     using WatchOnlyChangedFn = std::function<void(bool have_watch_only)>;
     virtual std::unique_ptr<Handler> handleWatchOnlyChanged(WatchOnlyChangedFn fn) = 0;
+
+    // Dash
+    //! Register handler for additional sync data progress messages.
+    using NotifyAdditionalDataSyncProgressChangedFn = std::function<void(double nSyncProgress)>;
+    virtual std::unique_ptr<Handler> handleNotifyAdditionalDataSyncProgressChanged(NotifyAdditionalDataSyncProgressChangedFn fn) = 0;
+    //
 };
 
 //! Tracking object returned by CreateTransaction and passed to CommitTransaction.

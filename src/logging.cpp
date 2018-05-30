@@ -121,6 +121,17 @@ const CLogCategoryDesc LogCategories[] =
     {BCLog::LEVELDB, "leveldb"},
     {BCLog::ALL, "1"},
     {BCLog::ALL, "all"},
+
+    // Dash
+    // dash log categories //
+    {BCLog::PRIVATESEND, "privatesend"},
+    {BCLog::INSTANTSEND, "instantsend"},
+    {BCLog::MASTERNODE, "masternode"},
+    {BCLog::SPORK, "spork"},
+    {BCLog::KEEPASS, "keepass"},
+    {BCLog::MNPAYMENTS, "mnpayments"},
+    {BCLog::GOBJECT, "gobject"},
+    //
 };
 
 bool GetLogCategory(BCLog::LogFlags& flag, const std::string& str)

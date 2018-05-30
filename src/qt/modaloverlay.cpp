@@ -1,4 +1,6 @@
 // Copyright (c) 2016-2017 The Bitcoin Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -18,7 +20,8 @@ ui(new Ui::ModalOverlay),
 bestHeaderHeight(0),
 bestHeaderDate(QDateTime()),
 layerIsVisible(false),
-userClosed(false)
+userClosed(false),
+foreverHidden(false)
 {
     ui->setupUi(this);
     connect(ui->closeButton, SIGNAL(clicked()), this, SLOT(closeClicked()));
@@ -153,6 +156,11 @@ void ModalOverlay::showHide(bool hide, bool userRequested)
     if ( (layerIsVisible && !hide) || (!layerIsVisible && hide) || (!hide && userClosed && !userRequested))
         return;
 
+    // Dash
+    if (!hide && foreverHidden)
+        return;
+    //
+
     if (!isVisible() && !hide)
         setVisible(true);
 
@@ -172,3 +180,10 @@ void ModalOverlay::closeClicked()
     showHide(true);
     userClosed = true;
 }
+
+// Dash
+void ModalOverlay::hideForever()
+{
+    foreverHidden = true;
+}
+//

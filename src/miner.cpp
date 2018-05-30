@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
 // Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -27,6 +28,11 @@
 #include <utilmoneystr.h>
 #include <validation.h>
 #include <validationinterface.h>
+
+// Dash
+#include "masternode-payments.h"
+#include "masternode-sync.h"
+//
 
 #include <algorithm>
 #include <queue>
@@ -174,6 +180,15 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     coinbaseTx.vout[0].nValue = nFees + nBlockReward;
     coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
 
+    // Dash
+    // Update coinbase transaction with additional info about masternode and governance payments,
+    // get some info back to pass to getblocktemplate
+    FillBlockPayments(coinbaseTx, nHeight, nBlockReward, pblock->txoutMasternode, pblock->voutSuperblock);
+    // LogPrintf("CreateNewBlock -- nBlockHeight %d blockReward %lld txoutMasternode %s txNew %s",
+    //             nHeight, blockReward, pblock->txoutMasternode.ToString(), txNew.ToString());
+    //
+
+    // FXTC BEGIN
     CAmount nFounderReward = GetFounderReward(nHeight, nFees + nBlockReward);
     if (nFounderReward > 0) {
         CTxDestination destination = DecodeDestination(Params().FounderAddress());
@@ -185,6 +200,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
             LogPrintf("CreateNewBlock(): invalid founder reward destination");
         }
     }
+    //
 
     pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));
     pblocktemplate->vchCoinbaseCommitment = GenerateCoinbaseCommitment(*pblock, pindexPrev, chainparams.GetConsensus());

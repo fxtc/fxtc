@@ -1,5 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -12,6 +14,7 @@
 #include <assert.h>
 #include <ios>
 #include <limits>
+#include <list>
 #include <map>
 #include <memory>
 #include <set>
@@ -565,6 +568,12 @@ template<typename Stream, typename K, typename Pred, typename A> void Serialize(
 template<typename Stream, typename K, typename Pred, typename A> void Unserialize(Stream& is, std::set<K, Pred, A>& m);
 
 /**
+ * list
+ */
+template<typename Stream, typename T, typename A> void Serialize(Stream& os, const std::list<T, A>& item);
+template<typename Stream, typename T, typename A> void Unserialize(Stream& is, std::list<T, A>& item);
+
+/**
  * shared_ptr
  */
 template<typename Stream, typename T> void Serialize(Stream& os, const std::shared_ptr<const T>& p);
@@ -823,6 +832,32 @@ void Unserialize(Stream& is, std::set<K, Pred, A>& m)
         K key;
         Unserialize(is, key);
         it = m.insert(it, key);
+    }
+}
+
+
+
+/**
+ * list
+ */
+template<typename Stream, typename T, typename A>
+void Serialize(Stream& os, const std::list<T, A>& l)
+{
+    WriteCompactSize(os, l.size());
+    for (typename std::list<T, A>::const_iterator it = l.begin(); it != l.end(); ++it)
+        Serialize(os, (*it));
+}
+
+template<typename Stream, typename T, typename A>
+void Unserialize(Stream& is, std::list<T, A>& l)
+{
+    l.clear();
+    unsigned int nSize = ReadCompactSize(is);
+    for (unsigned int i = 0; i < nSize; i++)
+    {
+        T val;
+        Unserialize(is, val);
+        l.push_back(val);
     }
 }
 
