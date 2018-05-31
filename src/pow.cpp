@@ -12,10 +12,13 @@
 #include <uint256.h>
 
 unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params) {
-    const int64_t nAvgBlocks = 24;
-
     const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
-    int64_t nPastBlocks = nAvgBlocks * ALGO_ACTIVE_COUNT;
+
+    const int64_t nPastAlgoFastBlocks = 5; // fast average for algo
+    const int64_t nPastAlgoBlocks = nPastAlgoFastBlocks * ALGO_ACTIVE_COUNT; // average for algo
+
+    const int64_t nPastFastBlocks = nPastAlgoFastBlocks * 2; //fast average for chain
+    int64_t nPastBlocks = nPastFastBlocks * ALGO_ACTIVE_COUNT; // average for chain
 
     // make sure we have at least ALGO_ACTIVE_COUNT blocks, otherwise just return powLimit
     if (!pindexLast || pindexLast->nHeight < nPastBlocks) {
@@ -26,57 +29,98 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockH
     }
 
     const CBlockIndex *pindex = pindexLast;
+    const CBlockIndex *pindexFast = pindexLast;
     arith_uint256 bnPastTargetAvg(0);
+    arith_uint256 bnPastTargetAvgFast(0);
 
     const CBlockIndex *pindexAlgo = nullptr;
+    const CBlockIndex *pindexAlgoFast = nullptr;
     const CBlockIndex *pindexAlgoLast = nullptr;
     arith_uint256 bnPastAlgoTargetAvg(0);
+    arith_uint256 bnPastAlgoTargetAvgFast(0);
 
-    // count blocks mined by actual algo
+    // count blocks mined by actual algo for secondary average
     int32_t nVersion = pblock->nVersion & ALGO_VERSION_MASK;
-    unsigned int nPastAlgoBlocks = 0;
 
-    for (unsigned int nCountBlocks = 1; nCountBlocks <= nPastBlocks; nCountBlocks++) {
-        arith_uint256 bnTarget = arith_uint256().SetCompact(pindex->nBits) / pblock->GetAlgoEfficiency(); // convert to normalized target by algo efficiency
+    unsigned int nCountBlocks = 0;
+    unsigned int nCountFastBlocks = 0;
+    unsigned int nCountAlgoBlocks = 0;
+    unsigned int nCountAlgoFastBlocks = 0;
 
+    while (nCountBlocks < nPastBlocks && nCountAlgoBlocks < nPastAlgoBlocks) {
+        arith_uint256 bnTarget = arith_uint256().SetCompact(pindex->nBits) / pindex->GetBlockHeader().GetAlgoEfficiency(); // convert to normalized target by algo efficiency
+
+        // calculate algo average
         if (nVersion == (pindex->nVersion & ALGO_VERSION_MASK))
         {
-            nPastAlgoBlocks++;
+            nCountAlgoBlocks++;
 
+            pindexAlgo = pindex;
             if (!pindexAlgoLast)
-                pindexAlgoLast=pindex;
-            else
-                pindexAlgo=pindex;
+                pindexAlgoLast = pindex;
 
-            bnPastAlgoTargetAvg = (bnPastAlgoTargetAvg * (nPastAlgoBlocks - 1) + bnTarget) / nPastAlgoBlocks;
+            // algo average
+            bnPastAlgoTargetAvg = (bnPastAlgoTargetAvg * (nCountAlgoBlocks - 1) + bnTarget) / nCountAlgoBlocks;
+            // fast algo average
+            if (nCountAlgoBlocks <= nPastAlgoFastBlocks)
+            {
+                nCountAlgoFastBlocks++;
+                pindexAlgoFast = pindex;
+                bnPastAlgoTargetAvgFast = bnPastAlgoTargetAvg;
+            }
         }
 
-        bnPastTargetAvg = (bnPastTargetAvg * (nCountBlocks - 1) + bnTarget) / nCountBlocks;
+        nCountBlocks++;
 
+        // average
+        bnPastTargetAvg = (bnPastTargetAvg * (nCountBlocks - 1) + bnTarget) / nCountBlocks;
+        // fast average
+        if (nCountBlocks <= nPastFastBlocks)
+        {
+            nCountFastBlocks++;
+            pindexFast = pindex;
+            bnPastTargetAvgFast = bnPastTargetAvg;
+        }
+
+        // next block
         if(nCountBlocks != nPastBlocks) {
             assert(pindex->pprev); // should never fail
             pindex = pindex->pprev;
         }
+    }
 
-        if (nPastAlgoBlocks == nAvgBlocks) nCountBlocks=nPastBlocks;
+    // FXTC instamine protection for blockchain
+    if (pindexLast->GetBlockTime() - pindexFast->GetBlockTime() < params.nPowTargetSpacing / 2)
+    {
+        nCountBlocks = nCountFastBlocks;
+        pindex = pindexFast;
+        bnPastTargetAvg = bnPastTargetAvgFast;
     }
 
     arith_uint256 bnNew(bnPastTargetAvg);
 
-    if (pindexAlgo && pindexAlgoLast && nPastAlgoBlocks > 1)
+    if (pindexAlgo && pindexAlgoLast && nCountAlgoBlocks > 1)
     {
+        // FXTC instamine protection for algo
+        if (pindexLast->GetBlockTime() - pindexAlgoFast->GetBlockTime() < params.nPowTargetSpacing * ALGO_ACTIVE_COUNT / 2)
+        {
+            nCountAlgoBlocks = nCountAlgoFastBlocks;
+            pindexAlgo = pindexAlgoFast;
+            bnPastAlgoTargetAvg = bnPastAlgoTargetAvgFast;
+        }
+
         bnNew = bnPastAlgoTargetAvg;
 
-        // retarget down if no new algo block is mined
-        if (pindexLast->nHeight != pindexAlgoLast->nHeight) nPastAlgoBlocks++;
-
+        // pindexLast instead of pindexAlgoLst on purpose
         int64_t nActualTimespan = pindexLast->GetBlockTime() - pindexAlgo->GetBlockTime();
-        int64_t nTargetTimespan = (nPastAlgoBlocks - 1) * params.nPowTargetSpacing * ALGO_ACTIVE_COUNT;
+        int64_t nTargetTimespan = nCountAlgoBlocks * params.nPowTargetSpacing * ALGO_ACTIVE_COUNT;
 
-        if (nActualTimespan < 1)
-            nActualTimespan = 1;
-        if (nActualTimespan > nTargetTimespan*ALGO_ACTIVE_COUNT)
-            nActualTimespan = nTargetTimespan*ALGO_ACTIVE_COUNT;
+        // higher algo diff faster
+        if (nActualTimespan < nTargetTimespan/ALGO_ACTIVE_COUNT)
+            nActualTimespan = nTargetTimespan/ALGO_ACTIVE_COUNT;
+        // lower algo diff slower
+        if (nActualTimespan > nTargetTimespan*2)
+            nActualTimespan = nTargetTimespan*2;
 
         // Retarget algo
         bnNew *= nActualTimespan;
@@ -86,12 +130,14 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockH
     }
 
     int64_t nActualTimespan = pindexLast->GetBlockTime() - pindex->GetBlockTime();
-    int64_t nTargetTimespan = nPastBlocks * params.nPowTargetSpacing;
+    int64_t nTargetTimespan = nCountBlocks * params.nPowTargetSpacing;
 
+    // higher diff faster
     if (nActualTimespan < nTargetTimespan/ALGO_ACTIVE_COUNT)
         nActualTimespan = nTargetTimespan/ALGO_ACTIVE_COUNT;
-    if (nActualTimespan > nTargetTimespan*ALGO_ACTIVE_COUNT)
-        nActualTimespan = nTargetTimespan*ALGO_ACTIVE_COUNT;
+    // lower diff slower
+    if (nActualTimespan > nTargetTimespan*2)
+        nActualTimespan = nTargetTimespan*2;
 
     // Retarget
     bnNew *= nActualTimespan;
