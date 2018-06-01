@@ -8,6 +8,7 @@
 #ifndef BITCOIN_CONSENSUS_PARAMS_H
 #define BITCOIN_CONSENSUS_PARAMS_H
 
+#include <amount.h>
 #include <uint256.h>
 #include <limits>
 #include <map>
@@ -84,7 +85,7 @@ struct Params {
     int nGovernanceMinQuorum; // Min absolute vote count to trigger an action
     int nGovernanceFilterElements;
 
-    int nMinimumSubsidy;
+    CAmount nMinimumSubsidy;
     /* Block hash that is excepted from BIP16 enforcement */
     uint256 BIP16Exception;
     /** Block height and hash at which BIP34 becomes active */
