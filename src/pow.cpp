@@ -12,6 +12,9 @@
 #include <uint256.h>
 
 unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params) {
+    if (params.fPowNoRetargeting)
+        return pindexLast->nBits;
+
     const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
 
     const int64_t nPastAlgoFastBlocks = 5; // fast average for algo
