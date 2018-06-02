@@ -1,14 +1,14 @@
 *.tar.gz
 
 *.exe
-src/bitcoin
-src/bitcoind
-src/bitcoin-cli
-src/bitcoin-tx
-src/bitcoin-wallet
-src/test/test_bitcoin
-src/test/test_bitcoin_fuzzy
-src/qt/test/test_bitcoin-qt
+src/fxtc
+src/fxtcd
+src/fxtc-cli
+src/fxtc-tx
+src/fxtc-wallet
+src/test/test_fxtc
+src/test/test_fxtc_fuzzy
+src/qt/test/test_fxtc-qt
 
 # autoreconf
 Makefile.in
@@ -82,13 +82,13 @@ src/qt/bitcoin-qt.includes
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-bitcoin-qt
-Bitcoin-Qt.app
+fxtc-qt
+FxTC-Qt.app
 background.tiff*
 
 # Unit-tests
 Makefile.test
-bitcoin-qt_test
+fxtc-qt_test
 
 # Resources cpp
 qrc_*.cpp
@@ -101,7 +101,7 @@ build
 *.gcno
 *.gcda
 /*.info
-test_bitcoin.coverage/
+test_fxtc.coverage/
 total.coverage/
 coverage_percent.txt
 
