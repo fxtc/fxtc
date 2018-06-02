@@ -580,9 +580,9 @@ static const CRPCCommand commands[] =
     { "hidden",             "echojson",               &echo,                   {"arg0","arg1","arg2","arg3","arg4","arg5","arg6","arg7","arg8","arg9"}},
     { "hidden",             "getinfo",                &getinfo_deprecated,     {}},
 
-    // Dasg
+    // Dash
     { "dash",               "mnsync",                 &mnsync,                 {"status-next-reset"}  },
-    { "dash",               "spork",                  &spork,                  {"name", "value"}  },
+// FXTC TODO:    { "dash",               "spork",                  &spork,                  {"name", "value"}  },
     //
 };
 

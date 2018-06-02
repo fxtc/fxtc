@@ -4581,8 +4581,8 @@ static const CRPCCommand commands[] =
 
     // Dash
     /* Wallet */
-    { "wallet",             "keepass",                &keepass,                {"genkey-init-setpassphrase"} },
-    { "wallet",             "instantsendtoaddress",   &instantsendtoaddress,   {"dashaddress", "amount", "comment", "comment-to", "subtractfeefromamount"} },
+// FXTC TODO:    { "wallet",             "keepass",                &keepass,                {"genkey-init-setpassphrase"} },
+// FXTC TODO:    { "wallet",             "instantsendtoaddress",   &instantsendtoaddress,   {"dashaddress", "amount", "comment", "comment-to", "subtractfeefromamount"} },
     //
 };
 
