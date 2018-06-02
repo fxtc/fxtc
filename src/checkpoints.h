@@ -21,6 +21,9 @@ namespace Checkpoints
 
 //! Returns last CBlockIndex* that is a checkpoint
 CBlockIndex* GetLastCheckpoint(const CCheckpointData& data);
+// FXTC BEGIN
+bool IsExpectedCheckpoint(const CCheckpointData& data, int nHeight, const uint256& hash);
+// FXTC END
 
 } //namespace Checkpoints
 
