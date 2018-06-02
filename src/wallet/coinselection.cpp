@@ -167,8 +167,12 @@ bool SelectCoinsBnB(std::vector<OutputGroup>& utxo_pool, const CAmount& target_v
     return true;
 }
 
+// Dash
+//static void ApproximateBestSubset(const std::vector<OutputGroup>& groups, const CAmount& nTotalLower, const CAmount& nTargetValue,
+//                                  std::vector<char>& vfBest, CAmount& nBest, int iterations = 1000)
 static void ApproximateBestSubset(const std::vector<OutputGroup>& groups, const CAmount& nTotalLower, const CAmount& nTargetValue,
-                                  std::vector<char>& vfBest, CAmount& nBest, int iterations = 1000)
+                                  std::vector<char>& vfBest, CAmount& nBest, bool fUseInstantSend, int iterations = 1000)
+//
 {
     std::vector<char> vfIncluded;
 
@@ -186,6 +190,12 @@ static void ApproximateBestSubset(const std::vector<OutputGroup>& groups, const 
         {
             for (unsigned int i = 0; i < groups.size(); i++)
             {
+                // Dash
+                //-//if (fUseInstantSend && nTotal + vValue[i].first > sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN) {
+                //-//    continue;
+                //-//}
+                //
+
                 //The solver here uses a randomized algorithm,
                 //the randomness serves no real security purpose but is just
                 //needed to prevent degenerate behavior and it is important
