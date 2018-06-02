@@ -62,12 +62,12 @@
         <translation>Ontvanger adresse</translation>
     </message>
     <message>
-        <source>These are your Bitcoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Hierdie is die adresse vanwaar u Bitcoin betalings stuur. U moet altyd die bedrag en die adres van die ontvanger nagaan voordat u enige munte stuur.</translation>
+        <source>These are your FxTCoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Hierdie is die adresse vanwaar u FxTCoin betalings stuur. U moet altyd die bedrag en die adres van die ontvanger nagaan voordat u enige munte stuur.</translation>
     </message>
     <message>
-        <source>These are your Bitcoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Hierdie is die adresse waar u Bitcoins sal ontvang. Ons beveel aan dat u 'n nuwe adres kies vir elke transaksie</translation>
+        <source>These are your FxTCoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Hierdie is die adresse waar u FxTCoins sal ontvang. Ons beveel aan dat u 'n nuwe adres kies vir elke transaksie</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -168,8 +168,8 @@
         <translation>Bevestig dat die beursie gekodifiseer is</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR BITCOINS&lt;/b&gt;!</source>
-        <translation>Waarskuwing: Indien u die beursie kodifiseer en u vergeet u wagwoord &lt;b&gt;VERLOOR U AL U BITCOINS&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR FXTCOINS&lt;/b&gt;!</source>
+        <translation>Waarskuwing: Indien u die beursie kodifiseer en u vergeet u wagwoord &lt;b&gt;VERLOOR U AL U FXTCOINS&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -330,8 +330,8 @@
         <translation>Besig met herindeksering van blokke op hardeskyf...</translation>
     </message>
     <message>
-        <source>Send coins to a Bitcoin address</source>
-        <translation>Stuur munte na 'n Bitcoin adres</translation>
+        <source>Send coins to a FxTCoin address</source>
+        <translation>Stuur munte na 'n FxTCoin adres</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -354,8 +354,8 @@
         <translation>&amp;Verifieer boodskap...</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>FxTCoin</source>
+        <translation>FxTCoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -382,12 +382,12 @@
         <translation>Kodifiseer die private sleutes wat aan jou beursie gekoppel is.</translation>
     </message>
     <message>
-        <source>Sign messages with your Bitcoin addresses to prove you own them</source>
-        <translation>Onderteken boodskappe met u Bitcoin adresse om u eienaarskap te bewys</translation>
+        <source>Sign messages with your FxTCoin addresses to prove you own them</source>
+        <translation>Onderteken boodskappe met u FxTCoin adresse om u eienaarskap te bewys</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Bitcoin addresses</source>
-        <translation>Verifieër boodskappe om seker te maak dat dit met die gespesifiseerde Bitcoin adresse</translation>
+        <source>Verify messages to ensure they were signed with specified FxTCoin addresses</source>
+        <translation>Verifieër boodskappe om seker te maak dat dit met die gespesifiseerde FxTCoin adresse</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -406,8 +406,8 @@
         <translation>Orebalk</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and bitcoin: URIs)</source>
-        <translation>Versoek betalings (genereer QR-kodes en bitcoin: URI's)</translation>
+        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
+        <translation>Versoek betalings (genereer QR-kodes en fxtcoin: URI's)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -418,8 +418,8 @@
         <translation>Vertoon die lys van gebruikte ontvangers-adresse en etikette</translation>
     </message>
     <message>
-        <source>Open a bitcoin: URI or payment request</source>
-        <translation>Skep 'n bitcoin: URI of betalingsversoek</translation>
+        <source>Open a fxtcoin: URI or payment request</source>
+        <translation>Skep 'n fxtcoin: URI of betalingsversoek</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -512,8 +512,8 @@
         <translation>Inkomende transaksie</translation>
     </message>
     <message>
-        <source>A fatal error occurred. Bitcoin can no longer continue safely and will quit.</source>
-        <translation>'N fatale fout het voorgekom. Bitcoin kan nie meer veilig voortgaan nie en sal nou toemaak.</translation>
+        <source>A fatal error occurred. FxTCoin can no longer continue safely and will quit.</source>
+        <translation>'N fatale fout het voorgekom. FxTCoin kan nie meer veilig voortgaan nie en sal nou toemaak.</translation>
     </message>
 </context>
 <context>
@@ -706,8 +706,8 @@
         <translation>Wysig stuur adres</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid Bitcoin address.</source>
-        <translation>Die ingevoerde adres "%1" is nie 'n geldige Bitcoin adres nie.</translation>
+        <source>The entered address "%1" is not a valid FxTCoin address.</source>
+        <translation>Die ingevoerde adres "%1" is nie 'n geldige FxTCoin adres nie.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -819,8 +819,8 @@
         <translation>Gebruik 'n persoonlike data gids:</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>FxTCoin</source>
+        <translation>FxTCoin</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -1184,8 +1184,8 @@
         <translation>Bedrag</translation>
     </message>
     <message>
-        <source>Enter a Bitcoin address (e.g. %1)</source>
-        <translation>Voer in 'n Bitcoin adres (bv. %1)</translation>
+        <source>Enter a FxTCoin address (e.g. %1)</source>
+        <translation>Voer in 'n FxTCoin adres (bv. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1914,8 +1914,8 @@
         <translation>Opsies:</translation>
     </message>
     <message>
-        <source>Bitcoin Core</source>
-        <translation>Bitcoin Kern</translation>
+        <source>FxTCoin Core</source>
+        <translation>FxTCoin Kern</translation>
     </message>
     <message>
         <source>Connection options:</source>

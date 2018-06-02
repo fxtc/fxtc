@@ -1,4 +1,5 @@
 // Copyright (c) 2011-2017 The Bitcoin Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -811,7 +812,7 @@ void SendCoinsDialog::coinControlChangeEdited(const QString& text)
         }
         else if (!IsValidDestination(dest)) // Invalid address
         {
-            ui->labelCoinControlChangeLabel->setText(tr("Warning: Invalid Bitcoin address"));
+            ui->labelCoinControlChangeLabel->setText(tr("Warning: Invalid FxTCoin address"));
         }
         else // Valid address
         {

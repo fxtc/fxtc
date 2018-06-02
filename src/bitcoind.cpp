@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -82,7 +83,7 @@ static bool AppInit(int argc, char* argv[])
         else
         {
             strUsage += "\nUsage:\n"
-                  "  bitcoind [options]                     " + strprintf("Start %s Daemon", PACKAGE_NAME) + "\n";
+                  "  fxtcd [options]                     " + strprintf("Start %s Daemon", PACKAGE_NAME) + "\n";
 
             strUsage += "\n" + gArgs.GetHelpMessage();
         }
@@ -113,7 +114,7 @@ static bool AppInit(int argc, char* argv[])
         // Error out when loose non-argument tokens are encountered on command line
         for (int i = 1; i < argc; i++) {
             if (!IsSwitchChar(argv[i][0])) {
-                fprintf(stderr, "Error: Command line contains unexpected token '%s', see bitcoind -h for a list of options.\n", argv[i]);
+                fprintf(stderr, "Error: Command line contains unexpected token '%s', see fxtcd -h for a list of options.\n", argv[i]);
                 return false;
             }
         }
@@ -145,7 +146,7 @@ static bool AppInit(int argc, char* argv[])
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
-            fprintf(stdout, "Bitcoin server starting\n");
+            fprintf(stdout, "FxTCoin server starting\n");
 
             // Daemonize
             if (daemon(1, 0)) { // don't chdir (1), do close FDs (0)

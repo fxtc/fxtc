@@ -1,4 +1,5 @@
 // Copyright (c) 2011-2017 The Bitcoin Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -71,7 +72,7 @@ HelpMessageDialog::HelpMessageDialog(interfaces::Node& node, QWidget *parent, bo
     } else {
         setWindowTitle(tr("Command-line options"));
         QString header = "Usage:\n"
-            "  bitcoin-qt [command-line options]                     \n";
+            "  fxtc-qt [command-line options]                     \n";
         QTextCursor cursor(ui->helpMessage->document());
         cursor.insertText(version);
         cursor.insertBlock();

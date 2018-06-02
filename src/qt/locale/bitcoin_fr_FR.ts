@@ -43,11 +43,11 @@
     </message>
     <message>
         <source>Choose the address to send coins to</source>
-        <translation>Choisissez une adresse où envoyer les bitcoins</translation>
+        <translation>Choisissez une adresse où envoyer les fxtcoins</translation>
     </message>
     <message>
         <source>Choose the address to receive coins with</source>
-        <translation>Choisissez une adresse où recevoir les bitcoins</translation>
+        <translation>Choisissez une adresse où recevoir les fxtcoins</translation>
     </message>
     <message>
         <source>C&amp;hoose</source>
@@ -62,12 +62,12 @@
         <translation>Adresses de réception</translation>
     </message>
     <message>
-        <source>These are your Bitcoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Ceci sont vos addresses Bitcoin pour envoyer vos paiements. Il faut toujours verifier les montants et l'addresse de reception avant de valider la transaction.</translation>
+        <source>These are your FxTCoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Ceci sont vos addresses FxTCoin pour envoyer vos paiements. Il faut toujours verifier les montants et l'addresse de reception avant de valider la transaction.</translation>
     </message>
     <message>
-        <source>These are your Bitcoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Ceci sont vos addresses Bitcoin pour recevoir vos paiements. Il est recommandé d'utiliser une nouvelle adresse de recepetion pour chaque transaction</translation>
+        <source>These are your FxTCoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Ceci sont vos addresses FxTCoin pour recevoir vos paiements. Il est recommandé d'utiliser une nouvelle adresse de recepetion pour chaque transaction</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -172,8 +172,8 @@
         <translation>Confirmer le chiffrement du porte-monnaie</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR BITCOINS&lt;/b&gt;!</source>
-        <translation>Attention : Si vous chiffrez votre portefeuille et que vous perdez votre mot de passe vous &lt;b&gt; PERDREZ TOUS VOS BITCOINS&lt;/b&gt; !</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR FXTCOINS&lt;/b&gt;!</source>
+        <translation>Attention : Si vous chiffrez votre portefeuille et que vous perdez votre mot de passe vous &lt;b&gt; PERDREZ TOUS VOS FXTCOINS&lt;/b&gt; !</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -184,7 +184,7 @@
         <translation>Portefeuille chiffré</translation>
     </message>
     <message>
-        <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your bitcoins from being stolen by malware infecting your computer.</source>
+        <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your fxtcoins from being stolen by malware infecting your computer.</source>
         <translation>%1 va à présent se fermer pour terminer la procédure de cryptage. N'oubliez pas que le chiffrement de votre porte-monnaie ne peut pas fournir une protection totale contre le vol par des logiciels malveillants qui infecteraient votre ordinateur.</translation>
     </message>
     <message>
@@ -334,8 +334,8 @@
         <translation>Réindexer les blocs sur le disque...</translation>
     </message>
     <message>
-        <source>Send coins to a Bitcoin address</source>
-        <translation>Envoyer des pièces à une adresse Bitcoin</translation>
+        <source>Send coins to a FxTCoin address</source>
+        <translation>Envoyer des pièces à une adresse FxTCoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -358,8 +358,8 @@
         <translation>&amp;Vérification du message</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>FxTCoin</source>
+        <translation>FxTCoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -386,8 +386,8 @@
         <translation>Crypter les clé privées qui appartiennent votre portefeuille</translation>
     </message>
     <message>
-        <source>Sign messages with your Bitcoin addresses to prove you own them</source>
-        <translation>Signer vos messages avec vos adresses Bitcoin pour prouver que vous les détenez</translation>
+        <source>Sign messages with your FxTCoin addresses to prove you own them</source>
+        <translation>Signer vos messages avec vos adresses FxTCoin pour prouver que vous les détenez</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -406,16 +406,16 @@
         <translation>Barre d'outils des onglets</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and bitcoin: URIs)</source>
-        <translation>Demander des paiements (générer QR codes et bitcoin: URIs)</translation>
+        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
+        <translation>Demander des paiements (générer QR codes et fxtcoin: URIs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
         <translation>Montrer la liste des adresses d'envois utilisées et les étiquettes</translation>
     </message>
     <message>
-        <source>Open a bitcoin: URI or payment request</source>
-        <translation>Ouvrir un bitcoin: URI ou demande de paiement</translation>
+        <source>Open a fxtcoin: URI or payment request</source>
+        <translation>Ouvrir un fxtcoin: URI ou demande de paiement</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -686,8 +686,8 @@
         <translation>Éditer l'adresse d'envoi</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid Bitcoin address.</source>
-        <translation>L'adresse entrée "%1" n'est pas une adresse Bitcoin valide.</translation>
+        <source>The entered address "%1" is not a valid FxTCoin address.</source>
+        <translation>L'adresse entrée "%1" n'est pas une adresse FxTCoin valide.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -775,8 +775,8 @@
         <translation>Utiliser votre propre répertoire</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>FxTCoin</source>
+        <translation>FxTCoin</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -860,8 +860,8 @@
         <translation>Expert</translation>
     </message>
     <message>
-        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Ouvrir le port du client Bitcoin automatiquement sur le routeur. Cela ne fonctionne que si votre routeur supporte l'UPnP et si la fonctionnalité est activée.</translation>
+        <source>Automatically open the FxTCoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Ouvrir le port du client FxTCoin automatiquement sur le routeur. Cela ne fonctionne que si votre routeur supporte l'UPnP et si la fonctionnalité est activée.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1060,8 +1060,8 @@
         <translation>Montant</translation>
     </message>
     <message>
-        <source>Enter a Bitcoin address (e.g. %1)</source>
-        <translation>Entrer une adresse Bitcoin (e.g. %1)</translation>
+        <source>Enter a FxTCoin address (e.g. %1)</source>
+        <translation>Entrer une adresse FxTCoin (e.g. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1625,8 +1625,8 @@
         <translation>Payer seulement les frais obligatoire de %1</translation>
     </message>
     <message>
-        <source>Warning: Invalid Bitcoin address</source>
-        <translation>Attention: Adresse Bitcoin Invalide</translation>
+        <source>Warning: Invalid FxTCoin address</source>
+        <translation>Attention: Adresse FxTCoin Invalide</translation>
     </message>
     <message>
         <source>(no label)</source>
@@ -2214,8 +2214,8 @@
         <translation>Impossible de démarrer le serveur HTTP. Voir le journal de débogage pour plus de détails.</translation>
     </message>
     <message>
-        <source>Bitcoin Core</source>
-        <translation>Bitcoin Core</translation>
+        <source>FxTCoin Core</source>
+        <translation>FxTCoin Core</translation>
     </message>
     <message>
         <source>&lt;category&gt; can be:</source>

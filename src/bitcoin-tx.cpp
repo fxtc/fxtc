@@ -1,4 +1,5 @@
 // Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -98,10 +99,10 @@ static int AppInitRawTx(int argc, char* argv[])
 
     if (argc < 2 || HelpRequested(gArgs)) {
         // First part of help message is specific to this utility
-        std::string strUsage = strprintf("%s bitcoin-tx utility version", PACKAGE_NAME) + " " + FormatFullVersion() + "\n\n" +
+        std::string strUsage = strprintf("%s fxtc-tx utility version", PACKAGE_NAME) + " " + FormatFullVersion() + "\n\n" +
             "Usage:\n"
-              "  bitcoin-tx [options] <hex-tx> [commands]  Update hex-encoded bitcoin transaction\n" +
-              "  bitcoin-tx [options] -create [commands]   Create hex-encoded bitcoin transaction\n" +
+              "  fxtc-tx [options] <hex-tx> [commands]  Update hex-encoded fxtcoin transaction\n" +
+              "  fxtc-tx [options] -create [commands]   Create hex-encoded fxtcoin transaction\n" +
               "\n";
         strUsage += gArgs.GetHelpMessage();
 

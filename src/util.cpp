@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -82,8 +83,8 @@
 // Application startup time (used for uptime calculation)
 const int64_t nStartupTime = GetTime();
 
-const char * const BITCOIN_CONF_FILENAME = "bitcoin.conf";
-const char * const BITCOIN_PID_FILENAME = "bitcoind.pid";
+const char * const BITCOIN_CONF_FILENAME = "fxtc.conf";
+const char * const BITCOIN_PID_FILENAME = "fxtcd.pid";
 
 ArgsManager gArgs;
 
@@ -275,7 +276,7 @@ public:
         std::pair<bool,std::string> found_result(false, std::string());
 
         // We pass "true" to GetArgHelper in order to return the last
-        // argument value seen from the command line (so "bitcoind -foo=bar
+        // argument value seen from the command line (so "fxtcd -foo=bar
         // -foo=baz" gives GetArg(am,"foo")=={true,"baz"}
         found_result = GetArgHelper(am.m_override_args, arg, true);
         if (found_result.first) {
@@ -680,7 +681,7 @@ static std::string FormatException(const std::exception* pex, const char* pszThr
     char pszModule[MAX_PATH] = "";
     GetModuleFileNameA(nullptr, pszModule, sizeof(pszModule));
 #else
-    const char* pszModule = "bitcoin";
+    const char* pszModule = "fxtc";
 #endif
     if (pex)
         return strprintf(
@@ -699,13 +700,13 @@ void PrintExceptionContinue(const std::exception* pex, const char* pszThread)
 
 fs::path GetDefaultDataDir()
 {
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Bitcoin
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Bitcoin
-    // Mac: ~/Library/Application Support/Bitcoin
-    // Unix: ~/.bitcoin
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\FxTC
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\FxTC
+    // Mac: ~/Library/Application Support/FxTC
+    // Unix: ~/.fxtc
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Bitcoin";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "FxTC";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -715,10 +716,10 @@ fs::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/Bitcoin";
+    return pathRet / "Library/Application Support/FxTC";
 #else
     // Unix
-    return pathRet / ".bitcoin";
+    return pathRet / ".fxtc";
 #endif
 #endif
 }

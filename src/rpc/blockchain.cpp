@@ -1,5 +1,6 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -1022,8 +1023,8 @@ UniValue gettxout(const JSONRPCRequest& request)
             "     \"hex\" : \"hex\",        (string) \n"
             "     \"reqSigs\" : n,          (numeric) Number of required signatures\n"
             "     \"type\" : \"pubkeyhash\", (string) The type, eg pubkeyhash\n"
-            "     \"addresses\" : [          (array of string) array of bitcoin addresses\n"
-            "        \"address\"     (string) bitcoin address\n"
+            "     \"addresses\" : [          (array of string) array of fxtcoin addresses\n"
+            "        \"address\"     (string) fxtcoin address\n"
             "        ,...\n"
             "     ]\n"
             "  },\n"
