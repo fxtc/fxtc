@@ -29,4 +29,25 @@ namespace Checkpoints {
         return nullptr;
     }
 
+    // FXTC BEGIN
+    bool IsExpectedCheckpoint(const CCheckpointData& data, int nHeight, const uint256& hash)
+    {
+        const MapCheckpoints& checkpoints = data.mapCheckpoints;
+
+        for (const MapCheckpoints::value_type& i : reverse_iterate(checkpoints))
+        {
+            // valid if block itself is checkpoint
+            if (i.first == nHeight)
+                return (i.second == hash);
+
+           // valid if block is above checkpoint
+            if (i.first < nHeight)
+                return (mapBlockIndex.find(i.second) != mapBlockIndex.end());
+        }
+
+        // valid if there are no checkpoints
+        return true;
+    }
+    // FXTC END
+
 } // namespace Checkpoints

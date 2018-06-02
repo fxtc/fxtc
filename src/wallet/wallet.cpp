@@ -3964,6 +3964,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend, CTransac
                     return false;
                 }
 
+/* FXTC TODO: something wrong here
                 // Dash
 /*                dPriority = wtxNew.tx->ComputePriority(dPriority, nBytes);
 
