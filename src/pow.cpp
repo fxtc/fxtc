@@ -23,6 +23,10 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockH
     const int64_t nPastFastBlocks = nPastAlgoFastBlocks * 2; //fast average for chain
     int64_t nPastBlocks = nPastFastBlocks * ALGO_ACTIVE_COUNT; // average for chain
 
+    // stabilizing block spacing
+    if ((pindexLast->nHeight + 1) >= 5000)
+        nPastBlocks *= 100;
+
     // make sure we have at least ALGO_ACTIVE_COUNT blocks, otherwise just return powLimit
     if (!pindexLast || pindexLast->nHeight < nPastBlocks) {
         if (pindexLast->nHeight < (int)ALGO_ACTIVE_COUNT)
@@ -51,7 +55,7 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockH
     unsigned int nCountAlgoFastBlocks = 0;
 
     while (nCountBlocks < nPastBlocks && nCountAlgoBlocks < nPastAlgoBlocks) {
-        arith_uint256 bnTarget = arith_uint256().SetCompact(pindex->nBits) / pindex->GetBlockHeader().GetAlgoEfficiency(); // convert to normalized target by algo efficiency
+        arith_uint256 bnTarget = arith_uint256().SetCompact(pindex->nBits) / pindex->GetBlockHeader().GetAlgoEfficiency(pindex->nHeight); // convert to normalized target by algo efficiency
 
         // calculate algo average
         if (nVersion == (pindex->nVersion & ALGO_VERSION_MASK))
@@ -119,8 +123,16 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockH
         int64_t nTargetTimespan = nCountAlgoBlocks * params.nPowTargetSpacing * ALGO_ACTIVE_COUNT;
 
         // higher algo diff faster
-        if (nActualTimespan < nTargetTimespan/ALGO_ACTIVE_COUNT)
-            nActualTimespan = nTargetTimespan/ALGO_ACTIVE_COUNT;
+        if ((pindexLast->nHeight + 1) < 5000)
+        {
+            if (nActualTimespan < nTargetTimespan/ALGO_ACTIVE_COUNT)
+                nActualTimespan = nTargetTimespan/ALGO_ACTIVE_COUNT;
+        }
+        else
+        {
+            if (nActualTimespan < nTargetTimespan/(10*ALGO_ACTIVE_COUNT))
+                nActualTimespan = nTargetTimespan/(10*ALGO_ACTIVE_COUNT);
+        }
         // lower algo diff slower
         if (nActualTimespan > nTargetTimespan*2)
             nActualTimespan = nTargetTimespan*2;
@@ -136,8 +148,16 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockH
     int64_t nTargetTimespan = nCountBlocks * params.nPowTargetSpacing;
 
     // higher diff faster
-    if (nActualTimespan < nTargetTimespan/ALGO_ACTIVE_COUNT)
-        nActualTimespan = nTargetTimespan/ALGO_ACTIVE_COUNT;
+    if ((pindexLast->nHeight + 1) < 5000)
+    {
+        if (nActualTimespan < nTargetTimespan/ALGO_ACTIVE_COUNT)
+            nActualTimespan = nTargetTimespan/ALGO_ACTIVE_COUNT;
+    }
+    else
+    {
+        if (nActualTimespan < nTargetTimespan/(10*ALGO_ACTIVE_COUNT))
+            nActualTimespan = nTargetTimespan/(10*ALGO_ACTIVE_COUNT);
+    }
     // lower diff slower
     if (nActualTimespan > nTargetTimespan*2)
         nActualTimespan = nTargetTimespan*2;
@@ -147,8 +167,8 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockH
     bnNew /= nTargetTimespan;
 
     // at least PoW limit
-    if ((bnPowLimit / pblock->GetAlgoEfficiency()) > bnNew)
-        bnNew *= pblock->GetAlgoEfficiency(); // convert normalized target to actual algo target
+    if ((bnPowLimit / pblock->GetAlgoEfficiency(pindexLast->nHeight+1)) > bnNew)
+        bnNew *= pblock->GetAlgoEfficiency(pindexLast->nHeight+1); // convert normalized target to actual algo target
     else
         bnNew = bnPowLimit;
 

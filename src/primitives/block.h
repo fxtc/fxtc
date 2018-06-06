@@ -83,7 +83,7 @@ public:
 
     uint256 GetPoWHash() const;
 
-    unsigned int GetAlgoEfficiency() const;
+    unsigned int GetAlgoEfficiency(int nBlockHeight) const;
 
     int64_t GetBlockTime() const
     {
