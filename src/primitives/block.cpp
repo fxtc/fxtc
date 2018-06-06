@@ -38,17 +38,28 @@ uint256 CBlockHeader::GetPoWHash() const
     return powHash;
 }
 
-unsigned int CBlockHeader::GetAlgoEfficiency() const
+unsigned int CBlockHeader::GetAlgoEfficiency(int nBlockHeight) const
 {
-    switch (nVersion & ALGO_VERSION_MASK)
-    {
-        case ALGO_SHA256D: return       1;
-        case ALGO_SCRYPT:  return   12406;
-        case ALGO_NIST5:   return   80870;
-        case ALGO_LYRA2Z:  return  495000;
-        case ALGO_X11:     return  334262;
-        default:           return       1; // FXTC TODO: we should not be here
-    }
+    if (nBlockHeight < 5000)
+        switch (nVersion & ALGO_VERSION_MASK)
+        {
+            case ALGO_SHA256D: return       1;
+            case ALGO_SCRYPT:  return   12406;
+            case ALGO_NIST5:   return   80870;
+            case ALGO_LYRA2Z:  return  495000;
+            case ALGO_X11:     return  334262;
+            default:           return       1; // FXTC TODO: we should not be here
+        }
+    else
+        switch (nVersion & ALGO_VERSION_MASK)
+        {
+            case ALGO_SHA256D: return       1;
+            case ALGO_SCRYPT:  return   13747;
+            case ALGO_NIST5:   return    2631;
+            case ALGO_LYRA2Z:  return 2014035;
+            case ALGO_X11:     return     477;
+            default:           return       1; // FXTC TODO: we should not be here
+        }
 
     return 1; // FXTC TODO: we should not be here
 }
