@@ -40,7 +40,8 @@ uint256 CBlockHeader::GetPoWHash() const
 
 unsigned int CBlockHeader::GetAlgoEfficiency(int nBlockHeight) const
 {
-    if (nBlockHeight < 5000)
+    /* FXTC TODO: preserved for future generations to not make the same mistake again
+    if (nBlockHeight < 0)
         switch (nVersion & ALGO_VERSION_MASK)
         {
             case ALGO_SHA256D: return       1;
@@ -50,7 +51,7 @@ unsigned int CBlockHeader::GetAlgoEfficiency(int nBlockHeight) const
             case ALGO_X11:     return  334262;
             default:           return       1; // FXTC TODO: we should not be here
         }
-    else
+    else*/
         switch (nVersion & ALGO_VERSION_MASK)
         {
             case ALGO_SHA256D: return       1;

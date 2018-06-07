@@ -1290,7 +1290,9 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
     int nMNPIBlock = Params().GetConsensus().nMasternodePaymentsIncreaseBlock;
     int nMNPIPeriod = Params().GetConsensus().nMasternodePaymentsIncreasePeriod;
 
-    if(nHeight >= nMNPIBlock) ret = (0.25 - 0.24 * (100.00 * nMNPIPeriod / (1.00 * nHeight + 100.00 * nMNPIPeriod ))) * blockValue; // Increase smoothly from 1% up to 25% in infinity
+    // Doubled initial reward as compensation for blockchain restart
+    //if(nHeight >= nMNPIBlock) ret = (0.25 - 0.24 * (100.00 * nMNPIPeriod / (1.00 * nHeight + 100.00 * nMNPIPeriod ))) * blockValue; // Increase smoothly from 1% up to 25% in infinity
+    if(nHeight >= nMNPIBlock) ret = (0.25 - 0.23 * (100.00 * nMNPIPeriod / (1.00 * nHeight + 100.00 * nMNPIPeriod ))) * blockValue; // Increase smoothly from 2% up to 25% in infinity
 
     return ret;
 }

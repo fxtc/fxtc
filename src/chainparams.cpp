@@ -50,7 +50,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "CNN 29/May/2018 A dramatic rescue in Paris";
+    const char* pszTimestamp = "Times 7/June/2018 May accused of deceiving ministers over Brexit";
     const CScript genesisOutputScript = CScript() << 0x0 << OP_CHECKSIG; // you find it, you get it
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
@@ -102,10 +102,10 @@ public:
         // FXTC TODO: BIP16Exception is valid for BTC blockchain only
         consensus.BIP16Exception = uint256S();
         consensus.BIP34Height = 0; // genesis
-        consensus.BIP34Hash = uint256S("0x00000ed7c000e25fe4684526c41ad13b4131449f76d7a089321fd2aebd5431a5"); // genesis hash
+        consensus.BIP34Hash = uint256S("0x000008352bd10bd9839ee23947552bf439f89156257b887e61501a24acff775c"); // genesis hash
         consensus.BIP65Height = 0; // genesis
         consensus.BIP66Height = 0; // genesis
-        consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256S("0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 86400; // one day
         consensus.nPowTargetSpacing = 60; // one minute
         consensus.fPowAllowMinDifficultyBlocks = false;
@@ -139,7 +139,7 @@ public:
         consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000600015"); // block 5
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x000005bdaeb941c7b686f7f6a03e8cf625a8d59162636a3af16fb46b44c9fc4a"); // block 5
+        consensus.defaultAssumeValid = uint256S("0x0000025f72fbd1903233e70f3be956508528cf1c7f7584b5a18c616ffaea16d2"); // block 5
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -153,10 +153,10 @@ public:
         nDefaultPort = 9468;
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock(1527587168, 6942643, 0x1e0ffff0, 536870912, consensus.nMinimumSubsidy);
+        genesis = CreateGenesisBlock(1528335299, 7117825, 0x1e0ffff0, 536870912, consensus.nMinimumSubsidy);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00000ed7c000e25fe4684526c41ad13b4131449f76d7a089321fd2aebd5431a5"));
-        assert(genesis.hashMerkleRoot == uint256S("0x4de1c1f2b3faa48f6ec2a176bd6b83bb94c02e5449f6ea54de34827b98e8fbc4"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000008352bd10bd9839ee23947552bf439f89156257b887e61501a24acff775c"));
+        assert(genesis.hashMerkleRoot == uint256S("0xe36b6a8bf04edc01c2b3d5c43349eda9d704b0f930bd6176b920e605442b4f52"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
@@ -192,12 +192,12 @@ public:
 
         checkpointData = {
             {
-                {     0, uint256S("0x00000ed7c000e25fe4684526c41ad13b4131449f76d7a089321fd2aebd5431a5")},
-                {     1, uint256S("0x00000143a05a6935178b8c697b53d7e38de5edb493381fd8f719dc4ac1c7e924")},
-                {     2, uint256S("0x00000498c7854ef659323e985d7fb565a133286511b057431d9fbab8d18df7a0")},
-                {     3, uint256S("0x00000d08644aae5cd3ba625f794f665cd374bdc64cabd4693e1ae4444357c4f0")},
-                {     4, uint256S("0x00000554ec651b44f6c2cb68982bcf492bec887499ad2bca2ed8b9de39039127")},
-                {     5, uint256S("0x000005bdaeb941c7b686f7f6a03e8cf625a8d59162636a3af16fb46b44c9fc4a")},
+                {     0, uint256S("0x000008352bd10bd9839ee23947552bf439f89156257b887e61501a24acff775c")},
+                {     1, uint256S("0x00000714735963ff832e9b69d395517284d1f96b302b6766721be09ee498fb2e")},
+                {     2, uint256S("0x000004d962ccd86f496cf4006c056da8076e3d94e0266a0bc994277aa95b44a9")},
+                {     3, uint256S("0x0000018d047631fbe58b722cb0084071b135256555ecef2924f5246a629ad9df")},
+                {     4, uint256S("0x00000e5517c7dc8dc79d3cdc69268a0b1f139ea7e6f634826e7c3bad3e9e4e46")},
+                {     5, uint256S("0x0000025f72fbd1903233e70f3be956508528cf1c7f7584b5a18c616ffaea16d2")},
             }
         };
 
@@ -247,10 +247,10 @@ public:
         // FXTC TODO: BIP16Exception is valid for BTC blockchain only
         consensus.BIP16Exception = uint256S();
         consensus.BIP34Height = 0; // genesis
-        consensus.BIP34Hash = uint256S("0x00000706ff7091032d187cf1c2515a5d7891b6797f414526ef8a277491117d08"); // genesis hash
+        consensus.BIP34Hash = uint256S("0x000000cf9c24c95589943d0d0555260eb59a4f41ca74638d29db9f4f2ff981df"); // genesis hash
         consensus.BIP65Height = 0; // genesis
         consensus.BIP66Height = 0; // genesis
-        consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256S("0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
         consensus.nPowTargetSpacing = 1 * 60; // one minute
         consensus.fPowAllowMinDifficultyBlocks = true;
@@ -284,7 +284,7 @@ public:
         consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000600015"); // block 5
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x0000080d1e920f5ad1ca8b48b669428eb285beeeea05a2ef06c8a7b37664ea46"); // block 5
+        consensus.defaultAssumeValid = uint256S("0x00000ee2212839f30411000e02c01cd8a774aa28260f0fc1b37cdf98e17a2f7c"); // block 5
 
         pchMessageStart[0] = 0x89;
         pchMessageStart[1] = 0x64;
@@ -293,10 +293,10 @@ public:
         nDefaultPort = 19468;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1527587168, 17129207, 0x1e0ffff0, 536870912, consensus.nMinimumSubsidy);
+        genesis = CreateGenesisBlock(1528335299, 18627478, 0x1e0ffff0, 536870912, consensus.nMinimumSubsidy);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00000706ff7091032d187cf1c2515a5d7891b6797f414526ef8a277491117d08"));
-        assert(genesis.hashMerkleRoot == uint256S("0x4de1c1f2b3faa48f6ec2a176bd6b83bb94c02e5449f6ea54de34827b98e8fbc4"));
+        assert(consensus.hashGenesisBlock == uint256S("000000cf9c24c95589943d0d0555260eb59a4f41ca74638d29db9f4f2ff981df"));
+        assert(genesis.hashMerkleRoot == uint256S("0xe36b6a8bf04edc01c2b3d5c43349eda9d704b0f930bd6176b920e605442b4f52"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -329,12 +329,12 @@ public:
 
         checkpointData = {
             {
-                {0, uint256S("0x00000706ff7091032d187cf1c2515a5d7891b6797f414526ef8a277491117d08")},
-                {1, uint256S("0x00000d6d8b4a171281ec0c6feb82340da83f33b55477d782d3c1b35384d77833")},
-                {2, uint256S("0x00000052e310708beb6f16770ae6781af243095abbc6930a39dd20625637873b")},
-                {3, uint256S("0x00000fa4eeb40622f75e9bbb6fe34dd076ddd084ee0255b69b91d1ab7f07431e")},
-                {4, uint256S("0x0000069f22511d97b2337099c18d218956937d9737bdd8e7fc1c381dd35271e9")},
-                {5, uint256S("0x0000080d1e920f5ad1ca8b48b669428eb285beeeea05a2ef06c8a7b37664ea46")},
+                {0, uint256S("0x000000cf9c24c95589943d0d0555260eb59a4f41ca74638d29db9f4f2ff981df")},
+                {1, uint256S("0x0000052f33150e85e4f7ca683e1ab99764d2c801152a70276c4581f5e2e93af6")},
+                {2, uint256S("0x000005641868f466fa3da0cf235fe82c9dcff748788e5a055e32cb4554254df1")},
+                {3, uint256S("0x000009ead232beff8ff446e9f5d06220ba7e616181aba2cb5dab3e1af627ddf4")},
+                {4, uint256S("0x0000042df9ea561b79d551157997b07724c1cdc6869b8dd9c98dd289b72c29f9")},
+                {5, uint256S("0x00000ee2212839f30411000e02c01cd8a774aa28260f0fc1b37cdf98e17a2f7c")},
             }
         };
 
@@ -383,7 +383,7 @@ public:
         // FXTC TODO: BIP16Exception is valid for BTC blockchain only
         consensus.BIP16Exception = uint256();
         consensus.BIP34Height = 0; // BIP34 has activated on regtest (blocks v1 are rejected in tests)
-        consensus.BIP34Hash = uint256S("0x000002439e312808612fecdf76cfcbb2d702844856ad91a67830283a33e5f8e8"); //genesis hash
+        consensus.BIP34Hash = uint256S("0x00000f72bba40f458c48d44c842cee04ff91a2ae833fea4c179fe62170714681"); //genesis hash
         consensus.BIP65Height = 0; // BIP65 activated on regtest (Used in rpc activation tests)
         consensus.BIP66Height = 0; // BIP66 activated on regtest (Used in rpc activation tests)
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
@@ -424,10 +424,10 @@ public:
         nDefaultPort = 29468;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1523632983, 29889593, 0x1e0ffff0, 536870912, consensus.nMinimumSubsidy);
+        genesis = CreateGenesisBlock(1528335299, 30924424, 0x1e0ffff0, 536870912, consensus.nMinimumSubsidy);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000002439e312808612fecdf76cfcbb2d702844856ad91a67830283a33e5f8e8"));
-        assert(genesis.hashMerkleRoot == uint256S("0xd72fc21c2e3315e4ea511b091eabd1e10fcb0518d56e692f51a5b39f5675091c"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00000f72bba40f458c48d44c842cee04ff91a2ae833fea4c179fe62170714681"));
+        assert(genesis.hashMerkleRoot == uint256S("0x4edd1885129d59d0276ef7ea548a77394837f2136f4dbb22d0acb3a7c4b2246c"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();      //!< Regtest mode doesn't have any DNS seeds.
@@ -443,7 +443,7 @@ public:
 
         checkpointData = {
             {
-                {0, uint256S("0x000002439e312808612fecdf76cfcbb2d702844856ad91a67830283a33e5f8e8")},
+                {0, uint256S("0x00000f72bba40f458c48d44c842cee04ff91a2ae833fea4c179fe62170714681")},
             }
         };
 
