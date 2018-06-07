@@ -24,12 +24,12 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockH
     int64_t nPastBlocks = nPastFastBlocks * ALGO_ACTIVE_COUNT; // average for chain
 
     // stabilizing block spacing
-    if ((pindexLast->nHeight + 1) >= 5000)
+    if ((pindexLast->nHeight + 1) >= 0)
         nPastBlocks *= 100;
 
     // make sure we have at least ALGO_ACTIVE_COUNT blocks, otherwise just return powLimit
     if (!pindexLast || pindexLast->nHeight < nPastBlocks) {
-        if (pindexLast->nHeight < (int)ALGO_ACTIVE_COUNT)
+        if (pindexLast->nHeight < nPastAlgoBlocks)
             return bnPowLimit.GetCompact();
         else
             nPastBlocks = pindexLast->nHeight;
@@ -123,16 +123,8 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockH
         int64_t nTargetTimespan = nCountAlgoBlocks * params.nPowTargetSpacing * ALGO_ACTIVE_COUNT;
 
         // higher algo diff faster
-        if ((pindexLast->nHeight + 1) < 5000)
-        {
-            if (nActualTimespan < nTargetTimespan/ALGO_ACTIVE_COUNT)
-                nActualTimespan = nTargetTimespan/ALGO_ACTIVE_COUNT;
-        }
-        else
-        {
-            if (nActualTimespan < nTargetTimespan/(10*ALGO_ACTIVE_COUNT))
-                nActualTimespan = nTargetTimespan/(10*ALGO_ACTIVE_COUNT);
-        }
+        if (nActualTimespan < 1)
+            nActualTimespan = 1;
         // lower algo diff slower
         if (nActualTimespan > nTargetTimespan*2)
             nActualTimespan = nTargetTimespan*2;
@@ -148,16 +140,8 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockH
     int64_t nTargetTimespan = nCountBlocks * params.nPowTargetSpacing;
 
     // higher diff faster
-    if ((pindexLast->nHeight + 1) < 5000)
-    {
-        if (nActualTimespan < nTargetTimespan/ALGO_ACTIVE_COUNT)
-            nActualTimespan = nTargetTimespan/ALGO_ACTIVE_COUNT;
-    }
-    else
-    {
-        if (nActualTimespan < nTargetTimespan/(10*ALGO_ACTIVE_COUNT))
-            nActualTimespan = nTargetTimespan/(10*ALGO_ACTIVE_COUNT);
-    }
+    if (nActualTimespan < 1)
+        nActualTimespan = 1;
     // lower diff slower
     if (nActualTimespan > nTargetTimespan*2)
         nActualTimespan = nTargetTimespan*2;
