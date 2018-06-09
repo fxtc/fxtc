@@ -19,6 +19,10 @@ class CSporkManager;
 */
 static const int SPORK_START                                            = 10001;
 static const int SPORK_END                                              = 10013;
+// FXTC BEGIN
+static const int SPORK_FXTC_START                                    = 94680010;
+static const int SPORK_FXTC_END                                      = 94680015;
+// FXTC END
 
 static const int SPORK_2_INSTANTSEND_ENABLED                            = 10001;
 static const int SPORK_3_INSTANTSEND_BLOCK_FILTERING                    = 10002;
@@ -29,16 +33,32 @@ static const int SPORK_10_MASTERNODE_PAY_UPDATED_NODES                  = 10009;
 static const int SPORK_12_RECONSIDER_BLOCKS                             = 10011;
 static const int SPORK_13_OLD_SUPERBLOCK_FLAG                           = 10012;
 static const int SPORK_14_REQUIRE_SENTINEL_FLAG                         = 10013;
+// FXTC BEGIN
+static const int SPORK_FXTC_01_HANDBRAKE_HEIGHT                      = 94680010;
+static const int SPORK_FXTC_01_HANDBRAKE_FORCE_SHA256D               = 94680011;
+static const int SPORK_FXTC_01_HANDBRAKE_FORCE_SCRYPT                = 94680012;
+static const int SPORK_FXTC_01_HANDBRAKE_FORCE_NIST5                 = 94680013;
+static const int SPORK_FXTC_01_HANDBRAKE_FORCE_LYRA2Z                = 94680014;
+static const int SPORK_FXTC_01_HANDBRAKE_FORCE_X11                   = 94680015;
+// FXTC END
 
 static const int64_t SPORK_2_INSTANTSEND_ENABLED_DEFAULT                = 0;            // ON
 static const int64_t SPORK_3_INSTANTSEND_BLOCK_FILTERING_DEFAULT        = 0;            // ON
-static const int64_t SPORK_5_INSTANTSEND_MAX_VALUE_DEFAULT              = 1000;         // 1000 DASH
+static const int64_t SPORK_5_INSTANTSEND_MAX_VALUE_DEFAULT              = 1000;         // 1000 FxTC
 static const int64_t SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT_DEFAULT     = 4070908800ULL;// OFF
 static const int64_t SPORK_9_SUPERBLOCKS_ENABLED_DEFAULT                = 4070908800ULL;// OFF
 static const int64_t SPORK_10_MASTERNODE_PAY_UPDATED_NODES_DEFAULT      = 4070908800ULL;// OFF
 static const int64_t SPORK_12_RECONSIDER_BLOCKS_DEFAULT                 = 0;            // 0 BLOCKS
 static const int64_t SPORK_13_OLD_SUPERBLOCK_FLAG_DEFAULT               = 4070908800ULL;// OFF
 static const int64_t SPORK_14_REQUIRE_SENTINEL_FLAG_DEFAULT             = 4070908800ULL;// OFF
+// FXTC BEGIN
+static const int64_t SPORK_FXTC_01_HANDBRAKE_HEIGHT_DEFAULT             = 4070908800ULL;// OFF;
+static const int64_t SPORK_FXTC_01_HANDBRAKE_FORCE_SHA256D_DEFAULT      = 1;            // 1x
+static const int64_t SPORK_FXTC_01_HANDBRAKE_FORCE_SCRYPT_DEFAULT       = 1;            // 1x
+static const int64_t SPORK_FXTC_01_HANDBRAKE_FORCE_NIST5_DEFAULT        = 1;            // 1x
+static const int64_t SPORK_FXTC_01_HANDBRAKE_FORCE_LYRA2Z_DEFAULT       = 1;            // 1x
+static const int64_t SPORK_FXTC_01_HANDBRAKE_FORCE_X11_DEFAULT          = 1;            // 1x
+// FXTC END
 
 extern std::map<uint256, CSporkMessage> mapSporks;
 extern CSporkManager sporkManager;
