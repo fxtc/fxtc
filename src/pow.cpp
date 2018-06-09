@@ -5,6 +5,9 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <pow.h>
+// FXTC BEGIN
+#include <spork.h>
+// FXTC END
 
 #include <arith_uint256.h>
 #include <chain.h>
@@ -156,6 +159,12 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const CBlockH
     else
         bnNew = bnPowLimit;
 
+    // mining handbrake via spork
+    if ((bnPowLimit * GetHandbrakeForce(pblock->nVersion, pindexLast->nHeight+1)) < bnNew)
+        bnNew = bnPowLimit;
+    else
+        bnNew /= GetHandbrakeForce(pblock->nVersion, pindexLast->nHeight+1);
+
     return bnNew.GetCompact();
 }
 
@@ -265,3 +274,23 @@ bool CheckProofOfWork(uint256 hash, unsigned int nBits, const Consensus::Params&
 
     return true;
 }
+
+// FXTC BEGIN
+unsigned int GetHandbrakeForce(int32_t nVersion, int nHeight)
+{
+    if (nHeight >= sporkManager.GetSporkValue(SPORK_FXTC_01_HANDBRAKE_HEIGHT))
+    {
+        switch (nVersion & ALGO_VERSION_MASK)
+        {
+            case ALGO_SHA256D: return sporkManager.GetSporkValue(SPORK_FXTC_01_HANDBRAKE_FORCE_SHA256D);
+            case ALGO_SCRYPT:  return sporkManager.GetSporkValue(SPORK_FXTC_01_HANDBRAKE_FORCE_SCRYPT);
+            case ALGO_NIST5:   return sporkManager.GetSporkValue(SPORK_FXTC_01_HANDBRAKE_FORCE_NIST5);
+            case ALGO_LYRA2Z:  return sporkManager.GetSporkValue(SPORK_FXTC_01_HANDBRAKE_FORCE_LYRA2Z);
+            case ALGO_X11:     return sporkManager.GetSporkValue(SPORK_FXTC_01_HANDBRAKE_FORCE_X11);
+            default:           return 1; // FXTC TODO: we should not be here
+        }
+    }
+
+    return 1; // FXTC TODO: we should not be here
+}
+// FXTC END

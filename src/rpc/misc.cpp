@@ -91,6 +91,12 @@ UniValue spork(const JSONRPCRequest& request)
             if(sporkManager.GetSporkNameByID(nSporkID) != "Unknown")
                 ret.push_back(Pair(sporkManager.GetSporkNameByID(nSporkID), sporkManager.GetSporkValue(nSporkID)));
         }
+        // FXTC BEGIN
+        for(int nSporkID = SPORK_FXTC_START; nSporkID <= SPORK_FXTC_END; nSporkID++){
+            if(sporkManager.GetSporkNameByID(nSporkID) != "Unknown")
+                ret.push_back(Pair(sporkManager.GetSporkNameByID(nSporkID), sporkManager.GetSporkValue(nSporkID)));
+        }
+        // FXTC END
         return ret;
     } else if(request.params.size() == 1 && request.params[0].get_str() == "active"){
         UniValue ret(UniValue::VOBJ);
@@ -98,10 +104,18 @@ UniValue spork(const JSONRPCRequest& request)
             if(sporkManager.GetSporkNameByID(nSporkID) != "Unknown")
                 ret.push_back(Pair(sporkManager.GetSporkNameByID(nSporkID), sporkManager.IsSporkActive(nSporkID)));
         }
+        // FXTC BEGIN
+        for(int nSporkID = SPORK_FXTC_START; nSporkID <= SPORK_FXTC_END; nSporkID++){
+            if(sporkManager.GetSporkNameByID(nSporkID) != "Unknown")
+                ret.push_back(Pair(sporkManager.GetSporkNameByID(nSporkID), sporkManager.IsSporkActive(nSporkID)));
+        }
+        // FXTC END
         return ret;
     }
 #ifdef ENABLE_WALLET
     else if (request.params.size() == 2){
+        RPCTypeCheck(request.params, {UniValue::VSTR, UniValue::VNUM});
+
         int nSporkID = sporkManager.GetSporkIDByName(request.params[0].get_str());
         if(nSporkID == -1){
             return "Invalid spork name";
@@ -582,7 +596,7 @@ static const CRPCCommand commands[] =
 
     // Dash
     { "dash",               "mnsync",                 &mnsync,                 {"status-next-reset"}  },
-// FXTC TODO:    { "dash",               "spork",                  &spork,                  {"name", "value"}  },
+    { "dash",               "spork",                  &spork,                  {"name", "value"}  },
     //
 };
 

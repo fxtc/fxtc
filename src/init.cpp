@@ -1324,6 +1324,14 @@ bool AppInitMain()
             threadGroup.create_thread(&ThreadScriptCheck);
     }
 
+    // Dash
+    if (gArgs.IsArgSet("-sporkkey")) // spork priv key
+    {
+        if (!sporkManager.SetPrivKey(gArgs.GetArg("-sporkkey", "")))
+            return InitError(_("Unable to sign spork message, wrong key?"));
+    }
+    //
+
     // Start the lightweight task scheduler thread
     CScheduler::Function serviceLoop = boost::bind(&CScheduler::serviceQueue, &scheduler);
     threadGroup.create_thread(boost::bind(&TraceThread<CScheduler::Function>, "scheduler", serviceLoop));
