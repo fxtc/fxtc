@@ -141,6 +141,14 @@ bool CSporkManager::IsSporkActive(int nSporkID)
             case SPORK_12_RECONSIDER_BLOCKS:                r = SPORK_12_RECONSIDER_BLOCKS_DEFAULT; break;
             case SPORK_13_OLD_SUPERBLOCK_FLAG:              r = SPORK_13_OLD_SUPERBLOCK_FLAG_DEFAULT; break;
             case SPORK_14_REQUIRE_SENTINEL_FLAG:            r = SPORK_14_REQUIRE_SENTINEL_FLAG_DEFAULT; break;
+            // FXTC BEGIN
+            case SPORK_FXTC_01_HANDBRAKE_HEIGHT :           r = SPORK_FXTC_01_HANDBRAKE_HEIGHT_DEFAULT; break;
+            case SPORK_FXTC_01_HANDBRAKE_FORCE_SHA256D:     r = SPORK_FXTC_01_HANDBRAKE_FORCE_SHA256D_DEFAULT; break;
+            case SPORK_FXTC_01_HANDBRAKE_FORCE_SCRYPT:      r = SPORK_FXTC_01_HANDBRAKE_FORCE_SCRYPT_DEFAULT; break;
+            case SPORK_FXTC_01_HANDBRAKE_FORCE_NIST5:       r = SPORK_FXTC_01_HANDBRAKE_FORCE_NIST5_DEFAULT; break;
+            case SPORK_FXTC_01_HANDBRAKE_FORCE_LYRA2Z:      r = SPORK_FXTC_01_HANDBRAKE_FORCE_LYRA2Z_DEFAULT; break;
+            case SPORK_FXTC_01_HANDBRAKE_FORCE_X11:         r = SPORK_FXTC_01_HANDBRAKE_FORCE_X11_DEFAULT; break;
+            // FXTC END
             default:
                 LogPrint(BCLog::SPORK, "CSporkManager::IsSporkActive -- Unknown Spork ID %d\n", nSporkID);
                 r = 4070908800ULL; // 2099-1-1 i.e. off by default
@@ -167,6 +175,14 @@ int64_t CSporkManager::GetSporkValue(int nSporkID)
         case SPORK_12_RECONSIDER_BLOCKS:                return SPORK_12_RECONSIDER_BLOCKS_DEFAULT;
         case SPORK_13_OLD_SUPERBLOCK_FLAG:              return SPORK_13_OLD_SUPERBLOCK_FLAG_DEFAULT;
         case SPORK_14_REQUIRE_SENTINEL_FLAG:            return SPORK_14_REQUIRE_SENTINEL_FLAG_DEFAULT;
+        // FXTC BEGIN
+        case SPORK_FXTC_01_HANDBRAKE_HEIGHT:            return SPORK_FXTC_01_HANDBRAKE_HEIGHT_DEFAULT;
+        case SPORK_FXTC_01_HANDBRAKE_FORCE_SHA256D:     return SPORK_FXTC_01_HANDBRAKE_FORCE_SHA256D_DEFAULT;
+        case SPORK_FXTC_01_HANDBRAKE_FORCE_SCRYPT:      return SPORK_FXTC_01_HANDBRAKE_FORCE_SCRYPT_DEFAULT;
+        case SPORK_FXTC_01_HANDBRAKE_FORCE_NIST5:       return SPORK_FXTC_01_HANDBRAKE_FORCE_NIST5_DEFAULT;
+        case SPORK_FXTC_01_HANDBRAKE_FORCE_LYRA2Z:      return SPORK_FXTC_01_HANDBRAKE_FORCE_LYRA2Z_DEFAULT;
+        case SPORK_FXTC_01_HANDBRAKE_FORCE_X11:         return SPORK_FXTC_01_HANDBRAKE_FORCE_X11_DEFAULT;
+        // FXTC END
         default:
             LogPrint(BCLog::SPORK, "CSporkManager::GetSporkValue -- Unknown Spork ID %d\n", nSporkID);
             return -1;
@@ -185,6 +201,14 @@ int CSporkManager::GetSporkIDByName(std::string strName)
     if (strName == "SPORK_12_RECONSIDER_BLOCKS")                return SPORK_12_RECONSIDER_BLOCKS;
     if (strName == "SPORK_13_OLD_SUPERBLOCK_FLAG")              return SPORK_13_OLD_SUPERBLOCK_FLAG;
     if (strName == "SPORK_14_REQUIRE_SENTINEL_FLAG")            return SPORK_14_REQUIRE_SENTINEL_FLAG;
+    // FXTC BEGIN
+    if (strName == "SPORK_FXTC_01_HANDBRAKE_HEIGHT")            return SPORK_FXTC_01_HANDBRAKE_HEIGHT;
+    if (strName == "SPORK_FXTC_01_HANDBRAKE_FORCE_SHA256D")     return SPORK_FXTC_01_HANDBRAKE_FORCE_SHA256D;
+    if (strName == "SPORK_FXTC_01_HANDBRAKE_FORCE_SCRYPT")      return SPORK_FXTC_01_HANDBRAKE_FORCE_SCRYPT;
+    if (strName == "SPORK_FXTC_01_HANDBRAKE_FORCE_NIST5")       return SPORK_FXTC_01_HANDBRAKE_FORCE_NIST5;
+    if (strName == "SPORK_FXTC_01_HANDBRAKE_FORCE_LYRA2Z")      return SPORK_FXTC_01_HANDBRAKE_FORCE_LYRA2Z;
+    if (strName == "SPORK_FXTC_01_HANDBRAKE_FORCE_X11")         return SPORK_FXTC_01_HANDBRAKE_FORCE_X11;
+    // FXTC END
 
     LogPrint(BCLog::SPORK, "CSporkManager::GetSporkIDByName -- Unknown Spork name '%s'\n", strName);
     return -1;
@@ -202,6 +226,14 @@ std::string CSporkManager::GetSporkNameByID(int nSporkID)
         case SPORK_12_RECONSIDER_BLOCKS:                return "SPORK_12_RECONSIDER_BLOCKS";
         case SPORK_13_OLD_SUPERBLOCK_FLAG:              return "SPORK_13_OLD_SUPERBLOCK_FLAG";
         case SPORK_14_REQUIRE_SENTINEL_FLAG:            return "SPORK_14_REQUIRE_SENTINEL_FLAG";
+        // FXTC BEGIN
+        case SPORK_FXTC_01_HANDBRAKE_HEIGHT:            return "SPORK_FXTC_01_HANDBRAKE_HEIGHT";
+        case SPORK_FXTC_01_HANDBRAKE_FORCE_SHA256D:     return "SPORK_FXTC_01_HANDBRAKE_FORCE_SHA256D";
+        case SPORK_FXTC_01_HANDBRAKE_FORCE_SCRYPT:      return "SPORK_FXTC_01_HANDBRAKE_FORCE_SCRYPT";
+        case SPORK_FXTC_01_HANDBRAKE_FORCE_NIST5:       return "SPORK_FXTC_01_HANDBRAKE_FORCE_NIST5";
+        case SPORK_FXTC_01_HANDBRAKE_FORCE_LYRA2Z:      return "SPORK_FXTC_01_HANDBRAKE_FORCE_LYRA2Z";
+        case SPORK_FXTC_01_HANDBRAKE_FORCE_X11:         return "SPORK_FXTC_01_HANDBRAKE_FORCE_X11";
+        // FXTC END
         default:
             LogPrint(BCLog::SPORK, "CSporkManager::GetSporkNameByID -- Unknown Spork ID %d\n", nSporkID);
             return "Unknown";
