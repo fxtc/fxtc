@@ -2202,22 +2202,22 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     LogPrint(BCLog::BENCH, "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs (%.2fms/blk)]\n", (unsigned)block.vtx.size(), MILLI * (nTime3 - nTime2), MILLI * (nTime3 - nTime2) / block.vtx.size(), nInputs <= 1 ? 0 : MILLI * (nTime3 - nTime2) / (nInputs-1), nTimeConnect * MICRO, nTimeConnect * MILLI / nBlocksTotal);
 
     CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, pindex->GetBlockHeader(), chainparams.GetConsensus());
-    if (block.vtx[0]->GetValueOut() > blockReward)
+    if (block.vtx[0]->GetValueOut() > blockReward * (!sporkManager.IsSporkActive(SPORK_FXTC_02_IGNORE_SLIGHTLY_HIGHER_COINBASE) ? 1 : 2))
         return state.DoS(100,
                          error("ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)",
                                block.vtx[0]->GetValueOut(), blockReward),
                                REJECT_INVALID, "bad-cb-amount");
 
     // FXTC BEGIN
-    CAmount founderReward = GetFounderReward(pindex->nHeight, blockReward);
-    if (founderReward > 0) {
+    CAmount founderReward = GetFounderReward(pindex->nHeight, block.vtx[0]->GetValueOut());
+    if (!sporkManager.IsSporkActive(SPORK_FXTC_02_IGNORE_FOUNDER_REWARD_CHECK) && founderReward > 0) {
         CTxDestination destination = DecodeDestination(Params().FounderAddress());
         if (IsValidDestination(destination)) {
             CScript FOUNDER_SCRIPT = GetScriptForDestination(destination);
             bool FounderPaid = false;
 
             for (const auto& output : block.vtx[0]->vout) {
-                if (output.scriptPubKey == FOUNDER_SCRIPT && output.nValue == founderReward) {
+                if (output.scriptPubKey == FOUNDER_SCRIPT && ((output.nValue == founderReward) || sporkManager.IsSporkActive(SPORK_FXTC_02_IGNORE_FOUNDER_REWARD_VALUE))) {
                     FounderPaid = true;
                     break;
                 }
@@ -2242,11 +2242,11 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     // TODO: resync data (both ways?) and try to reprocess this block later.
     //CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, pindex->GetBlockHeader(), chainparams.GetConsensus());
     std::string strError = "";
-    if (!IsBlockValueValid(block, pindex->nHeight, blockReward, strError)) {
+    if (!sporkManager.IsSporkActive(SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_VALUE) && !IsBlockValueValid(block, pindex->nHeight, block.vtx[0]->GetValueOut(), strError)) {
         return state.DoS(0, error("ConnectBlock(DASH): %s", strError), REJECT_INVALID, "bad-cb-amount");
     }
 
-    if (!IsBlockPayeeValid(block.vtx[0], pindex->nHeight, blockReward, pindex->GetBlockHeader())) {
+    if (!sporkManager.IsSporkActive(SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_PAYEE) && !IsBlockPayeeValid(block.vtx[0], pindex->nHeight, block.vtx[0]->GetValueOut(), pindex->GetBlockHeader())) {
         mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
         return state.DoS(0, error("ConnectBlock(DASH): couldn't find masternode or superblock payments"),
                                 REJECT_INVALID, "bad-cb-payee");
