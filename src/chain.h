@@ -194,6 +194,15 @@ public:
     //! (memory only) Total amount of work (expected number of hashes) in the chain up to and including this block
     arith_uint256 nChainWork;
 
+    // FXTC BEGIN
+    //! (memory only) Total amount of work normalized to algorithm efficiency
+    arith_uint256 nChainWorkSha256d;
+    arith_uint256 nChainWorkScrypt;
+    arith_uint256 nChainWorkNist5;
+    arith_uint256 nChainWorkLyra2Z;
+    arith_uint256 nChainWorkX11;
+    // FXTC END
+
     //! Number of transactions in this block.
     //! Note: in a potential headers-first mode, this number cannot be relied upon
     unsigned int nTx;
@@ -229,6 +238,13 @@ public:
         nDataPos = 0;
         nUndoPos = 0;
         nChainWork = arith_uint256();
+        // FXTC BEGIN
+        nChainWorkSha256d = arith_uint256();
+        nChainWorkScrypt = arith_uint256();
+        nChainWorkNist5 = arith_uint256();
+        nChainWorkLyra2Z = arith_uint256();
+        nChainWorkX11 = arith_uint256();
+        // FXTC END
         nTx = 0;
         nChainTx = 0;
         nStatus = 0;
@@ -369,8 +385,11 @@ arith_uint256 GetBlockProof(const CBlockIndex& block);
 int64_t GetBlockProofEquivalentTime(const CBlockIndex& to, const CBlockIndex& from, const CBlockIndex& tip, const Consensus::Params&);
 /** Find the forking point between two chain tips. */
 const CBlockIndex* LastCommonAncestor(const CBlockIndex* pa, const CBlockIndex* pb);
+// FXTC BEGIN
 // Return name of algorithm
 std::string GetAlgoName(int32_t nAlgo);
+int32_t GetAlgoId(std::string strAlgo);
+// FXTC END
 
 /** Used to marshal pointers into hashes for db storage. */
 class CDiskBlockIndex : public CBlockIndex

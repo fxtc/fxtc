@@ -52,7 +52,7 @@ unsigned int ParseConfirmTarget(const UniValue& value)
  * or from the last difficulty change if 'lookup' is nonpositive.
  * If 'height' is nonnegative, compute the estimate at the time when a given block was found.
  */
-static UniValue GetNetworkHashPS(int lookup, int height) {
+static UniValue GetNetworkHashPS(int lookup, int height, int32_t nAlgo) {
     CBlockIndex *pb = chainActive.Tip();
 
     if (height >= 0 && height < chainActive.Height())
@@ -84,6 +84,26 @@ static UniValue GetNetworkHashPS(int lookup, int height) {
         return 0;
 
     arith_uint256 workDiff = pb->nChainWork - pb0->nChainWork;
+    // FXTC BEGIN
+    switch (nAlgo)
+    {
+        case ALGO_SHA256D:
+            workDiff = pb->nChainWorkSha256d - pb0->nChainWorkSha256d;
+            break;
+        case ALGO_SCRYPT:
+            workDiff = pb->nChainWorkScrypt - pb0->nChainWorkScrypt;
+            break;
+        case ALGO_NIST5:
+            workDiff = pb->nChainWorkNist5 - pb0->nChainWorkNist5;
+            break;
+        case ALGO_LYRA2Z:
+            workDiff = pb->nChainWorkLyra2Z - pb0->nChainWorkLyra2Z;
+            break;
+        case ALGO_X11:
+            workDiff = pb->nChainWorkX11 - pb0->nChainWorkX11;
+            break;
+    }
+    // FXTC END
     int64_t timeDiff = maxTime - minTime;
 
     return workDiff.getdouble() / timeDiff;
@@ -91,7 +111,7 @@ static UniValue GetNetworkHashPS(int lookup, int height) {
 
 static UniValue getnetworkhashps(const JSONRPCRequest& request)
 {
-    if (request.fHelp || request.params.size() > 2)
+    if (request.fHelp || request.params.size() > 3)
         throw std::runtime_error(
             "getnetworkhashps ( nblocks height )\n"
             "\nReturns the estimated network hashes per second based on the last n blocks.\n"
@@ -100,6 +120,7 @@ static UniValue getnetworkhashps(const JSONRPCRequest& request)
             "\nArguments:\n"
             "1. nblocks     (numeric, optional, default=120) The number of blocks, or -1 for blocks since last difficulty change.\n"
             "2. height      (numeric, optional, default=-1) To estimate at the time of the given height.\n"
+            "3. algorithm   (string, optional, default=actual wallet algorithm) Filter work for selected algorithm.\n"
             "\nResult:\n"
             "x             (numeric) Hashes per second estimated\n"
             "\nExamples:\n"
@@ -108,7 +129,7 @@ static UniValue getnetworkhashps(const JSONRPCRequest& request)
        );
 
     LOCK(cs_main);
-    return GetNetworkHashPS(!request.params[0].isNull() ? request.params[0].get_int() : 120, !request.params[1].isNull() ? request.params[1].get_int() : -1);
+    return GetNetworkHashPS(!request.params[0].isNull() ? request.params[0].get_int() : 120, !request.params[1].isNull() ? request.params[1].get_int() : -1, !request.params[2].isNull() ? GetAlgoId(request.params[2].get_str()) : miningAlgo);
 }
 
 UniValue generateBlocks(std::shared_ptr<CReserveScript> coinbaseScript, int nGenerate, uint64_t nMaxTries, bool keepScript)

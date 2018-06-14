@@ -4,6 +4,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <chain.h>
+#include <util.h>
 
 /**
  * CChain implementation
@@ -185,4 +186,15 @@ std::string GetAlgoName(int32_t nAlgo)
             return std::string("x11");
     }
     return std::string("unknown");
+}
+
+int32_t GetAlgoId(std::string strAlgo)
+{
+    if (strAlgo == "sha256d")         return ALGO_SHA256D;
+    if (strAlgo == "scrypt")          return ALGO_SCRYPT;
+    if (strAlgo == "nist5")           return ALGO_NIST5;
+    if (strAlgo == "lyra2z")          return ALGO_LYRA2Z;
+    if (strAlgo == "x11")             return ALGO_X11;
+
+    return miningAlgo;
 }
