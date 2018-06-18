@@ -1273,8 +1273,14 @@ CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Param
 
     // Subsidy is cut in half every 865,000 blocks which will occur approximately every 3 years.
     nSubsidy >>= halvings;
+    // Make halvings linear since start block defined in spork
+    if (nHeight >= sporkManager.GetSporkValue(SPORK_FXTC_03_BLOCK_REWARD_SMOOTH_HALVING_START)) {
+        nSubsidy -= ((nSubsidy >> 1) * (nHeight % consensusParams.nSubsidyHalvingInterval)) / consensusParams.nSubsidyHalvingInterval;
+    }
     // Force minimum subsidy allowed
-    if (nSubsidy < consensusParams.nMinimumSubsidy) nSubsidy = consensusParams.nMinimumSubsidy;
+    if (nSubsidy < consensusParams.nMinimumSubsidy) {
+        nSubsidy = consensusParams.nMinimumSubsidy;
+    }
     // FXTC END
 
     // Hard fork to reduce the block reward by 10 extra percent (allowing budget/superblocks)
