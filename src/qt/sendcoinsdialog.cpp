@@ -282,9 +282,10 @@ void SendCoinsDialog::on_sendButton_clicked()
     // will call relock
 
     //WalletModel::UnlockContext ctx(model->requestUnlock());
-    WalletModel::EncryptionStatus encStatus = model->getEncryptionStatus();
-    if(encStatus == model->Locked || encStatus == model->UnlockedForMixingOnly)
-    {
+    // FXTC TODO: Obsolete check, remove later
+    //WalletModel::EncryptionStatus encStatus = model->getEncryptionStatus();
+    //if(encStatus == model->Locked || encStatus == model->UnlockedForMixingOnly)
+    //{
         WalletModel::UnlockContext ctx(model->requestUnlock());
         // next code is unmodified only justified right
 
@@ -294,7 +295,7 @@ void SendCoinsDialog::on_sendButton_clicked()
             fNewRecipientAllowed = true;
             return;
         }
-    }
+    //}
     //
 
     // prepare transaction for getting txFee earlier
