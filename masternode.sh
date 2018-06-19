@@ -595,17 +595,17 @@ pause(){
 	}
 	five(){
 	echo  "Check Masternode Status"
-		sudo -u fxtc -- bash -c "/usr/local/bin/fxtc-cli -testnet masternode status -conf=/home/fxtc/.fxtc/fxtc.conf -datadir=/var/lib/fxtc"
+		sudo -u fxtc -- bash -c "/usr/local/bin/fxtc-cli -conf=/home/fxtc/.fxtc/fxtc.conf -datadir=/var/lib/fxtc -testnet masternode status"
        pause
 	}
 	six(){
 	echo  "Check Masternode Sync Status"
-		sudo -u fxtc -- bash -c "/usr/local/bin/fxtc-cli -testnet mnsync status -conf=/home/fxtc/.fxtc/fxtc.conf -datadir=/var/lib/fxtc"
+		sudo -u fxtc -- bash -c "/usr/local/bin/fxtc-cli -conf=/home/fxtc/.fxtc/fxtc.conf -datadir=/var/lib/fxtc -testnet mnsync status"
        pause
 	}
 #	seven(){
 #	echo  "Check Masternode Debug"
-#		sudo -u fxtc -- bash -c "/usr/local/bin/fxtc-cli -testnet masternode debug -conf=/home/fxtc/.fxtc/fxtc.conf -datadir=/var/lib/fxtc"
+#		sudo -u fxtc -- bash -c "/usr/local/bin/fxtc-cli -conf=/home/fxtc/.fxtc/fxtc.conf -datadir=/var/lib/fxtc -testnet masternode debug"
 #       pause
 #	}
 #	six(){
@@ -689,17 +689,17 @@ pause(){
 	}
 	five(){
 	echo  "Check Masternode Status"
-		sudo -u fxtc -- bash -c "/usr/local/bin/fxtc-cli masternode status -conf=/home/fxtc/.fxtc/fxtc.conf -datadir=/var/lib/fxtc"
+		sudo -u fxtc -- bash -c "/usr/local/bin/fxtc-cli -conf=/home/fxtc/.fxtc/fxtc.conf -datadir=/var/lib/fxtc masternode status"
        pause
 	}
 	six(){
 	echo  "Check Masternode Sync Status"
-		sudo -u fxtc -- bash -c "/usr/local/bin/fxtc-cli mnsync status -conf=/home/fxtc/.fxtc/fxtc.conf -datadir=/var/lib/fxtc"
+		sudo -u fxtc -- bash -c "/usr/local/bin/fxtc-cli -conf=/home/fxtc/.fxtc/fxtc.conf -datadir=/var/lib/fxtc mnsync status"
        pause
 	}
 #	seven(){
 #	echo  "Check Masternode Debug"
-#		sudo -u fxtc -- bash -c "/usr/local/bin/fxtc-cli masternode debug -conf=/home/fxtc/.fxtc/fxtc.conf -datadir=/var/lib/fxtc"
+#		sudo -u fxtc -- bash -c "/usr/local/bin/fxtc-cli -conf=/home/fxtc/.fxtc/fxtc.conf -datadir=/var/lib/fxtc masternode debug"
 #      pause
 #	}
 #	six(){
