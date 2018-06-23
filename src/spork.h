@@ -21,7 +21,7 @@ static const int SPORK_START                                            = 10001;
 static const int SPORK_END                                              = 10013;
 // FXTC BEGIN
 static const int SPORK_FXTC_START                                    = 94680010;
-static const int SPORK_FXTC_END                                      = 94680025;
+static const int SPORK_FXTC_END                                      = 94680031;
 // FXTC END
 
 static const int SPORK_2_INSTANTSEND_ENABLED                            = 10001;
@@ -40,6 +40,7 @@ static const int SPORK_FXTC_01_HANDBRAKE_FORCE_SCRYPT                = 94680012;
 static const int SPORK_FXTC_01_HANDBRAKE_FORCE_NIST5                 = 94680013;
 static const int SPORK_FXTC_01_HANDBRAKE_FORCE_LYRA2Z                = 94680014;
 static const int SPORK_FXTC_01_HANDBRAKE_FORCE_X11                   = 94680015;
+static const int SPORK_FXTC_01_HANDBRAKE_FORCE_X16R                  = 94680016;
 
 static const int SPORK_FXTC_02_IGNORE_SLIGHTLY_HIGHER_COINBASE       = 94680021;
 static const int SPORK_FXTC_02_IGNORE_FOUNDER_REWARD_CHECK           = 94680022;
@@ -66,6 +67,7 @@ static const int64_t SPORK_FXTC_01_HANDBRAKE_FORCE_SCRYPT_DEFAULT       = 1;    
 static const int64_t SPORK_FXTC_01_HANDBRAKE_FORCE_NIST5_DEFAULT        = 1;            // 1x
 static const int64_t SPORK_FXTC_01_HANDBRAKE_FORCE_LYRA2Z_DEFAULT       = 1;            // 1x
 static const int64_t SPORK_FXTC_01_HANDBRAKE_FORCE_X11_DEFAULT          = 1;            // 1x
+static const int64_t SPORK_FXTC_01_HANDBRAKE_FORCE_X16R_DEFAULT         = 1;            // 1x
 
 static const int64_t SPORK_FXTC_02_IGNORE_SLIGHTLY_HIGHER_COINBASE_DEFAULT  = 4070908800ULL;// OFF
 static const int64_t SPORK_FXTC_02_IGNORE_FOUNDER_REWARD_CHECK_DEFAULT      = 4070908800ULL;// OFF

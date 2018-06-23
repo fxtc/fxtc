@@ -15,6 +15,7 @@
 #include <crypto/nist5.h>
 #include <crypto/scrypt.h>
 #include <crypto/x11.h>
+#include <crypto/x16r.h>
 
 uint256 CBlockHeader::GetHash() const
 {
@@ -32,6 +33,7 @@ uint256 CBlockHeader::GetPoWHash() const
         case ALGO_NIST5:   powHash = NIST5(BEGIN(nVersion), END(nNonce)); break;
         case ALGO_LYRA2Z:  lyra2z_hash(BEGIN(nVersion), BEGIN(powHash)); break;
         case ALGO_X11:     powHash = HashX11(BEGIN(nVersion), END(nNonce)); break;
+        case ALGO_X16R:    powHash = HashX16R(BEGIN(nVersion), END(nNonce), hashPrevBlock); break;
         default:           break; // FXTC TODO: we should not be here
     }
 
@@ -40,27 +42,16 @@ uint256 CBlockHeader::GetPoWHash() const
 
 unsigned int CBlockHeader::GetAlgoEfficiency(int nBlockHeight) const
 {
-    /* FXTC TODO: preserved for future generations to not make the same mistake again
-    if (nBlockHeight < 0)
-        switch (nVersion & ALGO_VERSION_MASK)
-        {
-            case ALGO_SHA256D: return       1;
-            case ALGO_SCRYPT:  return   12406;
-            case ALGO_NIST5:   return   80870;
-            case ALGO_LYRA2Z:  return  495000;
-            case ALGO_X11:     return  334262;
-            default:           return       1; // FXTC TODO: we should not be here
-        }
-    else*/
-        switch (nVersion & ALGO_VERSION_MASK)
-        {
-            case ALGO_SHA256D: return       1;
-            case ALGO_SCRYPT:  return   13747;
-            case ALGO_NIST5:   return    2631;
-            case ALGO_LYRA2Z:  return 2014035;
-            case ALGO_X11:     return     477;
-            default:           return       1; // FXTC TODO: we should not be here
-        }
+    switch (nVersion & ALGO_VERSION_MASK)
+    {
+        case ALGO_SHA256D: return       1;
+        case ALGO_SCRYPT:  return   13747;
+        case ALGO_NIST5:   return    2631;
+        case ALGO_LYRA2Z:  return 2014035;
+        case ALGO_X11:     return     477;
+        case ALGO_X16R:    return  263100;
+        default:           return       1; // FXTC TODO: we should not be here
+    }
 
     return 1; // FXTC TODO: we should not be here
 }

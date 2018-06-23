@@ -3180,6 +3180,7 @@ CBlockIndex* CChainState::AddToBlockIndex(const CBlockHeader& block)
     pindexNew->nChainWorkNist5 = (pindexNew->pprev ? pindexNew->pprev->nChainWorkNist5 : 0) + (((pindexNew->nVersion & ALGO_VERSION_MASK) == ALGO_NIST5) ? GetBlockProof(*pindexNew) : 0);
     pindexNew->nChainWorkLyra2Z = (pindexNew->pprev ? pindexNew->pprev->nChainWorkLyra2Z : 0) + (((pindexNew->nVersion & ALGO_VERSION_MASK) == ALGO_LYRA2Z) ? GetBlockProof(*pindexNew) : 0);
     pindexNew->nChainWorkX11 = (pindexNew->pprev ? pindexNew->pprev->nChainWorkX11 : 0) + (((pindexNew->nVersion & ALGO_VERSION_MASK) == ALGO_X11) ? GetBlockProof(*pindexNew) : 0);
+    pindexNew->nChainWorkX16R = (pindexNew->pprev ? pindexNew->pprev->nChainWorkX16R : 0) + (((pindexNew->nVersion & ALGO_VERSION_MASK) == ALGO_X16R) ? GetBlockProof(*pindexNew) : 0);
     // FXTC END
     pindexNew->RaiseValidity(BLOCK_VALID_TREE);
     if (pindexBestHeader == nullptr || pindexBestHeader->nChainWork < pindexNew->nChainWork)
@@ -4095,6 +4096,7 @@ bool CChainState::LoadBlockIndex(const Consensus::Params& consensus_params, CBlo
         pindex->nChainWorkNist5 = (pindex->pprev ? pindex->pprev->nChainWorkNist5 : 0) + (((pindex->nVersion & ALGO_VERSION_MASK) == ALGO_NIST5) ? GetBlockProof(*pindex) : 0);
         pindex->nChainWorkLyra2Z = (pindex->pprev ? pindex->pprev->nChainWorkLyra2Z : 0) + (((pindex->nVersion & ALGO_VERSION_MASK) == ALGO_LYRA2Z) ? GetBlockProof(*pindex) : 0);
         pindex->nChainWorkX11 = (pindex->pprev ? pindex->pprev->nChainWorkX11 : 0) + (((pindex->nVersion & ALGO_VERSION_MASK) == ALGO_X11) ? GetBlockProof(*pindex) : 0);
+        pindex->nChainWorkX16R = (pindex->pprev ? pindex->pprev->nChainWorkX16R : 0) + (((pindex->nVersion & ALGO_VERSION_MASK) == ALGO_X16R) ? GetBlockProof(*pindex) : 0);
         // FXTC END
         pindex->nTimeMax = (pindex->pprev ? std::max(pindex->pprev->nTimeMax, pindex->nTime) : pindex->nTime);
         // We can link the chain of blocks for which we've received transactions at some point.

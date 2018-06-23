@@ -102,6 +102,9 @@ static UniValue GetNetworkHashPS(int lookup, int height, int32_t nAlgo) {
         case ALGO_X11:
             workDiff = pb->nChainWorkX11 - pb0->nChainWorkX11;
             break;
+        case ALGO_X16R:
+            workDiff = pb->nChainWorkX16R - pb0->nChainWorkX16R;
+            break;
     }
     // FXTC END
     int64_t timeDiff = maxTime - minTime;

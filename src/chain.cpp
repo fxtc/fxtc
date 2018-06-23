@@ -184,6 +184,8 @@ std::string GetAlgoName(int32_t nAlgo)
             return std::string("lyra2z");
         case ALGO_X11:
             return std::string("x11");
+        case ALGO_X16R:
+            return std::string("x16r");
     }
     return std::string("unknown");
 }
@@ -195,6 +197,7 @@ int32_t GetAlgoId(std::string strAlgo)
     if (strAlgo == "nist5")           return ALGO_NIST5;
     if (strAlgo == "lyra2z")          return ALGO_LYRA2Z;
     if (strAlgo == "x11")             return ALGO_X11;
+    if (strAlgo == "x16r")            return ALGO_X16R;
 
     return miningAlgo;
 }
