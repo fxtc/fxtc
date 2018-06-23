@@ -122,6 +122,16 @@ class uint256 : public base_blob<256> {
 public:
     uint256() {}
     explicit uint256(const std::vector<unsigned char>& vch) : base_blob<256>(vch) {}
+
+    // FXTC X16R
+    int GetNibble(int index) const
+    {
+        index = 63 - index;
+        if (index % 2 == 1)
+            return(data[index / 2] >> 4);
+        return(data[index / 2] & 0x0F);
+    }
+    //
 };
 
 /* uint256 from const char *.

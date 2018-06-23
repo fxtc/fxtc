@@ -278,15 +278,25 @@ bool CheckProofOfWork(uint256 hash, unsigned int nBits, const Consensus::Params&
 // FXTC BEGIN
 unsigned int GetHandbrakeForce(int32_t nVersion, int nHeight)
 {
+    int32_t nVersionAlgo = nVersion & ALGO_VERSION_MASK;
+
+    // NIST5 braked and disabled
+    if (nVersionAlgo == ALGO_NIST5)
+    {
+        if (nHeight >= 21000) return 4070908800;
+        if (nHeight >= 19335) return 20;
+    }
+
     if (nHeight >= sporkManager.GetSporkValue(SPORK_FXTC_01_HANDBRAKE_HEIGHT))
     {
-        switch (nVersion & ALGO_VERSION_MASK)
+        switch (nVersionAlgo)
         {
             case ALGO_SHA256D: return sporkManager.GetSporkValue(SPORK_FXTC_01_HANDBRAKE_FORCE_SHA256D);
             case ALGO_SCRYPT:  return sporkManager.GetSporkValue(SPORK_FXTC_01_HANDBRAKE_FORCE_SCRYPT);
             case ALGO_NIST5:   return sporkManager.GetSporkValue(SPORK_FXTC_01_HANDBRAKE_FORCE_NIST5);
             case ALGO_LYRA2Z:  return sporkManager.GetSporkValue(SPORK_FXTC_01_HANDBRAKE_FORCE_LYRA2Z);
             case ALGO_X11:     return sporkManager.GetSporkValue(SPORK_FXTC_01_HANDBRAKE_FORCE_X11);
+            case ALGO_X16R:    return sporkManager.GetSporkValue(SPORK_FXTC_01_HANDBRAKE_FORCE_X16R);
             default:           return 1; // FXTC TODO: we should not be here
         }
     }
