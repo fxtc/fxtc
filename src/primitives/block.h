@@ -19,9 +19,10 @@ enum {
 
     ALGO_SHA256D         = (  0 << 8),
     ALGO_SCRYPT          = (  1 << 8),
-    ALGO_NIST5           = (  2 << 8),
+    ALGO_NIST5           = (  2 << 8), // inactive
     ALGO_LYRA2Z          = (  3 << 8),
     ALGO_X11             = (  4 << 8),
+    ALGO_X16R            = (  5 << 8),
 
     ALGO_NULL
 };

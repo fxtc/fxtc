@@ -209,6 +209,7 @@ public:
     arith_uint256 nChainWorkNist5;
     arith_uint256 nChainWorkLyra2Z;
     arith_uint256 nChainWorkX11;
+    arith_uint256 nChainWorkX16R;
     // FXTC END
 
     //! Number of transactions in this block.
@@ -252,6 +253,7 @@ public:
         nChainWorkNist5 = arith_uint256();
         nChainWorkLyra2Z = arith_uint256();
         nChainWorkX11 = arith_uint256();
+        nChainWorkX16R = arith_uint256();
         // FXTC END
         nTx = 0;
         nChainTx = 0;
