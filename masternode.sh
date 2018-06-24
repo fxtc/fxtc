@@ -13,7 +13,7 @@
 #LinkedIn:	https://www.linkedin.com/in/jan-terblanche-29a01874/
 #Credits: This script is a combination of different scripts, credit to these guys...
 #Github	https://github.com/marsmensch, https://gist.github.com/lukechilds, https://github.com/sucremoneda, https://github.com/chaoabunga/mnscripts
-scriptversion="v0.1"
+scriptversion="v0.1.1"
 release=""
 tags="tags/$release"
 git="https://github.com/fxtc/fxtc.git"
@@ -283,14 +283,14 @@ fi
 }
 
 function create_systemd() {
-rm -f ${systemd}/${name}.service
-echo "* Writing systemd config file ${systemd}/${name}.service"  &>> ${logfile}
-touch ${systemd}/${name}.service
-chmod 664 ${systemd}/${name}.service
 if [[ "$testnet" -eq 1  ]]; then
-cat << EOF >> ${systemd}/${name}.service
+	rm -f ${systemd}/${name}.testnet.service
+	echo "* Writing systemd config file ${systemd}/${name}.testnet.service"  &>> ${logfile}
+	touch ${systemd}/${name}.testnet.service
+	chmod 664 ${systemd}/${name}.testnet.service
+cat << EOF >> ${systemd}/${name}.testnet.service
 [Unit]
-Description=${name} Service
+Description=${name} Testnet Service
 After=network.target
 [Service]
 User=${user}
@@ -298,7 +298,7 @@ Group=${user}
 
 Type=forking
 PIDFile=${data_dir}/${name}/testnet/${name}.pid
-ExecStart=${daemon_dir}/${daemon} -daemon -testnet -pid=${data_dir}/${name}/testnet/${name}.pid -conf=${conf_dir}/${name}.conf -datadir=${data_dir}/${name}
+ExecStart=${daemon_dir}/${daemon} -daemon -testnet -port=9468 -pid=${data_dir}/${name}/testnet/${name}.pid -conf=${conf_dir}/${name}.conf -datadir=${data_dir}/${name}
 ExecStop=${cli_dir}/${cli} stop -conf=${conf_dir}/${name}.conf -datadir=${data_dir}/${name}
 
 Restart=always
@@ -313,6 +313,10 @@ StartLimitBurst=15
 WantedBy=multi-user.target
 EOF
 else
+	rm -f ${systemd}/${name}.service
+	echo "* Writing systemd config file ${systemd}/${name}.service"  &>> ${logfile}
+	touch ${systemd}/${name}.service
+	chmod 664 ${systemd}/${name}.service
 cat << EOF >> ${systemd}/${name}.service
 [Unit]
 Description=${name} Service
@@ -353,11 +357,16 @@ function set_permissions() {
 function clear_all() {
 
     echo "Deleting all ${name} related data!" &>> ${logfile}
-	systemctl stop ${name}.service &>> ${logfile}
+	if [[ "$testnet" -eq 1  ]]; then
+		systemctl stop ${name}.testnet.service &>> ${logfile}
+		rm -f ${systemd}/${name}.testnet.service &>> ${logfile}
+	else
+		systemctl stop ${name}.service &>> ${logfile}
+		rm -f ${systemd}/${name}.service &>> ${logfile}
+	fi	
     rm -f ${conf_dir}/${name}.conf &>> ${logfile}
     rm -rf ${data_dir} &>> ${logfile}
 	rm -rf ${script}/${name} &>> ${logfile}
-    rm -f ${systemd}/${name}.service &>> ${logfile}
     rm -f ${daemon_dir}/${daemon} &>> ${logfile}
 	rm -f ${cli_dir}/${cli} &>> ${logfile}
     echo "DONE!"
@@ -402,11 +411,11 @@ function source_config() {
 
 # main block of function logic starts here
     if [[ "$update" -eq 1 ]]; then
-        if [ ! -f ${daemon_dir}/${daemon} ]; then
+        if [[ ! -f "${daemon_dir}/${daemon}" ]]; then
             echo "UPDATE FAILED! Daemon hasn't been found. Please try the normal installation process by omitting the upgrade parameter."
             exit 1
         fi
-        if [ ! -f ${name}.menu.sh ]; then
+        if [[ ! -f "${data_dir}/${name}.menu.sh" ]]; then
             echo "UPDATE FAILED! Masternode activation file ${name}.menu.sh hasn't been found. Please try the normal installation process by omitting the upgrade parameter."
             exit 1
 		fi
@@ -417,7 +426,7 @@ function source_config() {
 	fi
     echo "************************* Installation Plan *****************************************"
     echo ""
-    if [[ ${update} -eq 1 ]]; then
+    if [[ "${update}" -eq 1 ]]; then
         echo "Your existing masternode will be updated with... "
         echo "$(tput bold)$(tput setaf 2) => ${name} masternode in version ${release} $(tput sgr0)"
     else
@@ -443,9 +452,9 @@ function source_config() {
     if [[ "$update" -eq 0 ]]; then
         swapcreate
     fi
-        install_packages
-        print_logo
-        build_mn
+    install_packages
+    print_logo
+    build_mn
     if [[ "$update" -eq 0 ]]; then
         create_user
         create_dirs
@@ -457,65 +466,53 @@ function source_config() {
         configure_firewall
         create_config
         create_systemd
+		change_password
     fi
-        set_permissions
-        cleanup_after
-        final_call
+    set_permissions
+    cleanup_after
     if [[ "$update" -eq 1 ]]; then
         echo  "I need to update the systemctl daemon now, else an error will occur when running 'systemctl enable' on a changed systemd process"
         systemctl daemon-reload
     fi
+	final_call
 }
 
 function start_daemon() {
-systemctl daemon-reload
-sleep 30
-systemctl enable ${name}.service
-systemctl start ${name}.service
 if [[ "$testnet" -eq 1  ]]; then
-	sudo -u ${user} -- bash -c "${daemon_dir}/${daemon} -testnet -conf=${conf_dir}/${name}.conf -datadir=${data_dir}/${name}"
+	systemctl daemon-reload
+	sleep 30
+	systemctl enable ${name}.testnet.service
+	systemctl start ${name}.testnet.service
+	sudo -u ${user} -- bash -c "${daemon_dir}/${daemon} -testnet -port=9468 -conf=${conf_dir}/${name}.conf -datadir=${data_dir}/${name}"
 else
+	systemctl daemon-reload
+	sleep 30
+	systemctl enable ${name}.service
+	systemctl start ${name}.service
 	sudo -u ${user} -- bash -c "${daemon_dir}/${daemon} -conf=${conf_dir}/${name}.conf -datadir=${data_dir}/${name}"
 fi
 sleep 5
 if [[ -z "$(pidof ${daemon})" ]]; then
-  echo -e "${name}.service is not running, please investigate. You should start by running the following commands as root:"
-  echo "systemctl start ${name}.service"
-  echo "systemctl status ${name}.service"
-  echo "less /var/log/syslog"
-  exit 1
+	if [[ "$testnet" -eq 1  ]]; then
+		echo -e "${name}.testnet.service is not running, please investigate. You should start by running the following commands as root:"
+		echo "systemctl start ${name}.testnet.service"
+		echo "systemctl status ${name}.testnet.service"
+		echo "less /var/log/syslog"
+	else
+		echo -e "${name}.service is not running, please investigate. You should start by running the following commands as root:"
+		echo "systemctl start ${name}.service"
+		echo "systemctl status ${name}.service"
+		echo "less /var/log/syslog"
+	fi
 fi
 clear
-if [[ "$testnet" -eq 1  ]]; then
-	mainnet=TESTNET
-else
-	mainnet=MAINNET
-fi
-echo "Please enter a password for user ${user}"
+}
+
+function change_password() {
+clear
+echo "Please enter a password for ${user} user"
 passwd fxtc
 clear
-print_logo
-echo "==================================================================================="
-echo "$(tput setaf 1)${name}$(tput setaf 7) masternode service is up and running as user $(tput setaf 2)$user$(tput setaf 7)"
-echo "and it is listening on RPC port $(tput setaf 3) $rpcport$(tput setaf 7) on ${mainnet}"
-echo "Configuration file is: $(tput setaf 3) $conf_dir/fxtc.conf$(tput setaf 7)"
-echo "Sentinel Configuration file is: $(tput setaf 3)${sent_dir}/sentinel.conf$(tput setaf 7)"
-echo "Sentinel Cron log file is: $(tput setaf 3)/var/log/sentinel/sentinel-cron.log$(tput setaf 7)"
-echo "VPS_IP:PORT $(tput setaf 3)$NODEIP:$port$(tput setaf 7)"
-echo "Masternode PRIVATEKEY is: $(tput setaf 3)${KEY}$(tput setaf 7)"
-echo "Your RPC user is: $(tput setaf 3)$rpcuser$(tput setaf 7)"
-echo "Your RPC password is: $(tput setaf 3)$rpcpassword$(tput setaf 7)"
-echo "A logfile for this run can be found at the following location:" 
-echo "$(tput setaf 3)$logfile$(tput setaf 7)"
-#echo "Run $(tput setaf 3)systemctl start ${name}.service$(tput setaf 7) as root to start the masternode service"
-#echo "Run $(tput setaf 3)systemctl status ${name}.service$(tput setaf 7) as root to check if the service is running"
-#echo "Run $(tput setaf 3)systemctl stop ${name}.service$(tput setaf 7) as root to stop the masternode service"
-echo "$(tput setaf 1)Please run this script to check the health of your masternode$(tput setaf 7)"
-echo "$(tput setaf 3) => $(tput setaf 7)bash $(tput setaf 3)${data_dir}/${name}.menu.sh$(tput setaf 7)"
-echo "==================================================================================="
-su fxtc
-cd ~/
-cd ~/
 }
 
 function build_mn() {
@@ -523,8 +520,16 @@ function build_mn() {
     if [[ ! -f ${daemon_dir}/${daemon} ]] || [[ "$update" -eq 1 ]]; then
         # if coin directory (name) exists, we remove it, to make a clean git clone
         if [[ -d ${script}/${name} ]]; then
-			echo "deleting ${script}/${name} for clean cloning" &>> ${logfile}
+			echo "Deleting ${script}/${name} for clean cloning" &>> ${logfile}
             rm -rf ${script}/${name}    &>> ${logfile}
+			echo "Stopping $(tput setaf 1)${daemon}$(tput setaf 7) daemon" &>> ${logfile}
+			if [[ "$testnet" -eq 1  ]]; then
+				systemctl stop ${name}.testnet.service &>> ${logfile}
+				sudo -u fxtc -- bash -c "/usr/local/bin/fxtc-cli -testnet stop -conf=/home/fxtc/.fxtc/fxtc.conf -datadir=/var/lib/fxtc"
+			else
+				systemctl stop ${name}.service &>> ${logfile}
+				sudo -u fxtc -- bash -c "/usr/local/bin/fxtc-cli stop -conf=/home/fxtc/.fxtc/fxtc.conf -datadir=/var/lib/fxtc"
+			fi
         fi
         cd ${script}                       &>> ${logfile}
         git clone ${git} ${name}                    &>> ${logfile}
@@ -533,7 +538,7 @@ function build_mn() {
         echo "* Checking out desired GIT tag: ${release}"
         git checkout ${release}                             &>> ${logfile}
 		if [[ "$update" -eq 1 ]]; then
-            echo "update given, deleting the old daemon NOW!" &>> ${logfile}
+            echo "Updated source files, deleting the old daemon NOW!" &>> ${logfile}
             rm -f ${daemon_dir}/${daemon}
             # old daemon must be removed before compilation. Would be better to remove it afterwards, however not possible with current structure
             if [ -f ${daemon_dir}/${daemon} ]; then
@@ -543,21 +548,21 @@ function build_mn() {
         fi
 
     # compilation starts here
-	chmod u+x share/genbuild.sh
-	chmod u+x src/leveldb/build_detect_platform
-	chmod u+x ./autogen.sh && ./autogen.sh
-                ./autogen.sh
-				./configure --without-gui
-				make
-				cd ${script}/${name}/src
-				strip fxtcd
-				strip fxtc-cli
-				chmod 755 fxtcd fxtc-cli
-				mv fxtcd ${daemon_dir}/${daemon}
-				mv fxtc-cli ${cli_dir}/${cli}
-        else
-                echo "* Daemon already in place at ${daemon_dir}/${daemon}, not compiling"
-        fi
+		chmod u+x share/genbuild.sh
+		chmod u+x src/leveldb/build_detect_platform
+		chmod u+x ./autogen.sh && ./autogen.sh
+		./autogen.sh
+		./configure --without-gui
+		make
+		cd ${script}/${name}/src
+		strip fxtcd
+		strip fxtc-cli
+		chmod 755 fxtcd fxtc-cli
+		mv fxtcd ${daemon_dir}/${daemon}
+		mv fxtc-cli ${cli_dir}/${cli}
+    else
+        echo "* Daemon already in place at ${daemon_dir}/${daemon}, not compiling"
+    fi
 
         # if it's not available after compilation, theres something wrong
         if [[ ! -f ${daemon_dir}/${daemon} ]]; then
@@ -570,6 +575,7 @@ function create_script() {					&> /dev/null
 if [[ "$testnet" -eq 1  ]]; then
 (cat > ${data_dir}/${name}.menu.sh) << "EOF" 	&> /dev/null
 #!/bin/bash
+latest_release=$(curl --silent "https://api.github.com/repos/fxtc/fxtc/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
 pause(){ 
   read -p "Press [Enter] key to continue..." fackEnterKey 
 	} 
@@ -580,7 +586,7 @@ pause(){
 	}
 	two(){
 	echo "Check systemd status"
-		systemctl status fxtc.service
+		systemctl status fxtc.testnet.service
 		pause
 	}
 	three(){
@@ -664,6 +670,7 @@ EOF
 else
 (cat > ${data_dir}/${name}.menu.sh) << "EOF" 	&> /dev/null
 #!/bin/bash
+latest_release=$(curl --silent "https://api.github.com/repos/fxtc/fxtc/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
 pause(){ 
   read -p "Press [Enter] key to continue..." fackEnterKey 
 	} 
@@ -772,19 +779,19 @@ function get_help(){
     echo "-c or --clear: Clear ALL ${name} masternode data";
     echo "-s or --sentinel: Adds sentinel";
     echo "-n or --startnode: Start masternode after installation to sync with blockchain";
-    echo "-u or --update: Updates the ${name} masternode deamon";
+    echo "-u or --update: Updates the ${name} masternode deamon and cli";
     echo "-t or --testnet: Configures the masternode for TESTNET";
     exit 1;
 }
 
 function final_call() {
-    # note outstanding tasks that need manual work
+
 clear
-	echo "******************! ALMOST DONE !******************************"
+	echo "**************************! ALMOST DONE !******************************"
     if [[ "$update" -eq 0 ]]; then
 		echo "Your $(tput setaf 1)${name}$(tput setaf 7) masternode installation and configuration is almost complete"
     else
-        echo "Your $(tput setaf 1)${name}$(tput setaf 7) masternode daemon has been updated! (but not yet activated)"
+        echo "Your $(tput setaf 1)${name}$(tput setaf 7) masternode daemon has been updated!"
     fi
     # config script - wip
 	if [[ "$update" -eq 0 ]]; then
@@ -796,7 +803,33 @@ clear
         echo "** Your node is starting up"
 		start_daemon
     fi
-
+if [[ "$testnet" -eq 1  ]]; then
+	mainnet=TESTNET
+else
+	mainnet=MAINNET
+fi
+print_logo
+echo "==================================================================================="
+echo "$(tput setaf 1)${name}$(tput setaf 7) masternode service is up and running as user $(tput setaf 2)$user$(tput setaf 7)"
+echo "and it is listening on RPC port $(tput setaf 3) $rpcport$(tput setaf 7) on ${mainnet}"
+echo "Configuration file is: $(tput setaf 3) $conf_dir/${name}.conf$(tput setaf 7)"
+echo "Sentinel Configuration file is: $(tput setaf 3)${sent_dir}/sentinel.conf$(tput setaf 7)"
+echo "Sentinel Cron log file is: $(tput setaf 3)/var/log/sentinel/sentinel-cron.log$(tput setaf 7)"
+echo "VPS_IP:PORT $(tput setaf 3)$NODEIP:$port$(tput setaf 7)"
+echo "Masternode PRIVATEKEY is: $(tput setaf 3)${KEY}$(tput setaf 7)"
+echo "Your RPC user is: $(tput setaf 3)$rpcuser$(tput setaf 7)"
+echo "Your RPC password is: $(tput setaf 3)$rpcpassword$(tput setaf 7)"
+echo "A logfile for this run can be found at the following location:" 
+echo "$(tput setaf 3)$logfile$(tput setaf 7)"
+#echo "Run $(tput setaf 3)systemctl start ${name}.service$(tput setaf 7) as root to start the masternode service"
+#echo "Run $(tput setaf 3)systemctl status ${name}.service$(tput setaf 7) as root to check if the service is running"
+#echo "Run $(tput setaf 3)systemctl stop ${name}.service$(tput setaf 7) as root to stop the masternode service"
+echo "$(tput setaf 1)Please run this script to check the health of your masternode$(tput setaf 7)"
+echo "$(tput setaf 3) => $(tput setaf 7)bash $(tput setaf 3)${data_dir}/${name}.menu.sh$(tput setaf 7)"
+echo "==================================================================================="
+su fxtc
+cd ~/
+cd ~/
 }
 
 ##################------------Menu()---------#####################################
