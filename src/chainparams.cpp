@@ -100,7 +100,7 @@ public:
         consensus.nGovernanceFilterElements = 20000;
 
         // FXTC TODO: BIP16Exception is valid for BTC blockchain only
-        consensus.BIP16Exception = uint256S();
+        consensus.BIP16Exception = uint256();
         consensus.BIP34Height = 0; // genesis
         consensus.BIP34Hash = uint256S("0x000008352bd10bd9839ee23947552bf439f89156257b887e61501a24acff775c"); // genesis hash
         consensus.BIP65Height = 0; // genesis
@@ -248,7 +248,7 @@ public:
         consensus.nGovernanceFilterElements = 500;
 
         // FXTC TODO: BIP16Exception is valid for BTC blockchain only
-        consensus.BIP16Exception = uint256S();
+        consensus.BIP16Exception = uint256();
         consensus.BIP34Height = 0; // genesis
         consensus.BIP34Hash = uint256S("0x000000cf9c24c95589943d0d0555260eb59a4f41ca74638d29db9f4f2ff981df"); // genesis hash
         consensus.BIP65Height = 0; // genesis
