@@ -1,3 +1,6 @@
+RTM branch is 0.16! Use master branch at your own risk!
+=======================================================
+
 FxTC Core integration/staging tree
 ==================================
 
@@ -7,7 +10,7 @@ Linux Build Instructions and Notes
 ==================================
 
 Dependencies
-----------------------
+------------
 1.  Update packages
 
         sudo apt-get update
@@ -29,7 +32,7 @@ Dependencies
         sudo apt-get install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler libqrencode-dev
 
 Build
-----------------------
+-----
 1.  Clone the source:
 
         git clone https://github.com/fxtc/fxtc.git
@@ -56,5 +59,5 @@ See (doc/build-osx.md) for instructions on building on Mac OS X.
 
 
 Windows (64/32 bit) Build Instructions and Notes
-=====================================
+================================================
 See (doc/build-windows.md) for instructions on building on Windows 64/32 bit.

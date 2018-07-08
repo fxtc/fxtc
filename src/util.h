@@ -168,6 +168,12 @@ enum class OptionsCategory {
     COMMANDS,
     REGISTER_COMMANDS,
 
+    // FXTC BEGIN
+    // Dash
+    DASH_FEATURES,
+    //
+    // FXTC END
+
     HIDDEN // Always the last option to avoid printing these in the help
 };
 
@@ -297,6 +303,11 @@ public:
      * Add argument
      */
     void AddArg(const std::string& name, const std::string& help, const bool debug_only, const OptionsCategory& cat);
+
+    /**
+     * Add many hidden arguments
+     */
+    void AddHiddenArgs(const std::vector<std::string>& args);
 
     /**
      * Clear available arguments

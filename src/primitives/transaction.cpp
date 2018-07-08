@@ -70,6 +70,7 @@ uint256 CMutableTransaction::GetHash() const
     return SerializeHash(*this, SER_GETHASH, SERIALIZE_TRANSACTION_NO_WITNESS);
 }
 
+// Dash
 std::string CMutableTransaction::ToString() const
 {
     std::string str;
@@ -85,7 +86,7 @@ std::string CMutableTransaction::ToString() const
         str += "    " + vout[i].ToString() + "\n";
     return str;
 }
-
+//
 
 uint256 CTransaction::ComputeHash() const
 {

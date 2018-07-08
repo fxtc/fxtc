@@ -88,7 +88,7 @@ class MultiWalletTest(BitcoinTestFramework):
         self.nodes[0].assert_start_raises_init_error(['-walletdir=bad'], 'Error: Specified -walletdir "bad" does not exist')
         # should not initialize if the specified walletdir is not a directory
         not_a_dir = wallet_dir('notadir')
-        open(not_a_dir, 'a').close()
+        open(not_a_dir, 'a', encoding="utf8").close()
         self.nodes[0].assert_start_raises_init_error(['-walletdir=' + not_a_dir], 'Error: Specified -walletdir "' + not_a_dir + '" is not a directory')
 
         self.log.info("Do not allow -zapwallettxes with multiwallet")
@@ -211,6 +211,10 @@ class MultiWalletTest(BitcoinTestFramework):
         # Fail to load if wallet file is a symlink
         assert_raises_rpc_error(-4, "Wallet file verification failed: Invalid -wallet path 'w8_symlink'", self.nodes[0].loadwallet, 'w8_symlink')
 
+        # Fail to load if a directory is specified that doesn't contain a wallet
+        os.mkdir(wallet_dir('empty_wallet_dir'))
+        assert_raises_rpc_error(-18, "Directory empty_wallet_dir does not contain a wallet.dat file", self.nodes[0].loadwallet, 'empty_wallet_dir')
+
         self.log.info("Test dynamic wallet creation.")
 
         # Fail to create a wallet if it already exists.
@@ -233,6 +237,33 @@ class MultiWalletTest(BitcoinTestFramework):
         assert_equal(w10.getwalletinfo()['walletname'], new_wallet_name)
 
         assert new_wallet_name in self.nodes[0].listwallets()
+
+        self.log.info("Test dynamic wallet unloading")
+
+        # Test `unloadwallet` errors
+        assert_raises_rpc_error(-1, "JSON value is not a string as expected", self.nodes[0].unloadwallet)
+        assert_raises_rpc_error(-18, "Requested wallet does not exist or is not loaded", self.nodes[0].unloadwallet, "dummy")
+        assert_raises_rpc_error(-18, "Requested wallet does not exist or is not loaded", node.get_wallet_rpc("dummy").unloadwallet)
+        assert_raises_rpc_error(-8, "Cannot unload the requested wallet", w1.unloadwallet, "w2"),
+
+        # Successfully unload the specified wallet name
+        self.nodes[0].unloadwallet("w1")
+        assert 'w1' not in self.nodes[0].listwallets()
+
+        # Successfully unload the wallet referenced by the request endpoint
+        w2.unloadwallet()
+        assert 'w2' not in self.nodes[0].listwallets()
+
+        # Successfully unload all wallets
+        for wallet_name in self.nodes[0].listwallets():
+            self.nodes[0].unloadwallet(wallet_name)
+        assert_equal(self.nodes[0].listwallets(), [])
+        assert_raises_rpc_error(-32601, "Method not found (wallet method is disabled because no wallet is loaded)", self.nodes[0].getwalletinfo)
+
+        # Successfully load a previously unloaded wallet
+        self.nodes[0].loadwallet('w1')
+        assert_equal(self.nodes[0].listwallets(), ['w1'])
+        assert_equal(w1.getwalletinfo()['walletname'], 'w1')
 
 if __name__ == '__main__':
     MultiWalletTest().main()
