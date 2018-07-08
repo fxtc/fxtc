@@ -13,6 +13,9 @@
 #include "masternodeman.h"
 #include "messagesigner.h"
 #include "script/standard.h"
+// FXTC BEGIN
+#include <shutdown.h>
+// FXTC END
 #include "util.h"
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"

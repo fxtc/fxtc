@@ -13,6 +13,9 @@
 #include "netmessagemaker.h"
 #include "reverse_iterator.h"
 #include "script/sign.h"
+// FXTC BEGIN
+#include <shutdown.h>
+// FXTC END
 #include "txmempool.h"
 #include "util.h"
 #include "utilmoneystr.h"

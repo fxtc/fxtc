@@ -12,6 +12,9 @@
 #include "masternodeman.h"
 #include "netmessagemaker.h"
 #include "script/interpreter.h"
+// FXTC BEGIN
+#include <shutdown.h>
+// FXTC END
 #include "txmempool.h"
 #include "util.h"
 #include "utilmoneystr.h"
