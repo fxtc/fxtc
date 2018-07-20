@@ -264,8 +264,6 @@ void Shutdown()
     flatdb3.Dump(governance);
     CFlatDB<CNetFulfilledRequestManager> flatdb4("netfulfilled.dat", "magicFulfilledCache");
     flatdb4.Dump(netfulfilledman);
-
-    //UnregisterNodeSignals(GetNodeSignals());
     //
 
     if (fFeeEstimatesInitialized)
@@ -1390,9 +1388,6 @@ bool AppInitMain()
 
     peerLogic.reset(new PeerLogicValidation(&connman, scheduler));
     RegisterValidationInterface(peerLogic.get());
-    // Dash
-    //RegisterNodeSignals(GetNodeSignals());
-    //
 
     // sanitize comments per BIP-0014, format user agent and check total size
     std::vector<std::string> uacomments;
