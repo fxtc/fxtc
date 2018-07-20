@@ -134,12 +134,6 @@ protected:
      * Called on a background thread.
      */
     virtual void ChainStateFlushed(const CBlockLocator &locator) {}
-    /**
-     * Notifies listeners about an inventory item being seen on the network.
-     *
-     * Called on a background thread.
-     */
-    virtual void Inventory(const uint256 &hash) {}
     /** Tells listeners to broadcast their data. */
     virtual void ResendWalletTransactions(int64_t nBestBlockTime, CConnman* connman) {}
     /**
@@ -209,7 +203,6 @@ public:
     //
 
     void ChainStateFlushed(const CBlockLocator &);
-    void Inventory(const uint256 &);
     void Broadcast(int64_t nBestBlockTime, CConnman* connman);
     void BlockChecked(const CBlock&, const CValidationState&);
     void NewPoWValidBlock(const CBlockIndex *, const std::shared_ptr<const CBlock>&);

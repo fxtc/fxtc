@@ -402,6 +402,13 @@ public:
     unsigned int GetReceiveFloodSize() const;
 
     void WakeMessageHandler();
+
+    /** Attempts to obfuscate tx time through exponentially distributed emitting.
+        Works assuming that a single interval is used.
+        Variable intervals will result in privacy decrease.
+    */
+    int64_t PoissonNextSendInbound(int64_t now, int average_interval_seconds);
+
 private:
     struct ListenSocket {
         SOCKET socket;
@@ -540,6 +547,8 @@ private:
      *  This takes the place of a feeler connection */
     std::atomic_bool m_try_another_outbound_peer;
 
+    std::atomic<int64_t> m_next_send_inv_to_incoming{0};
+
     friend struct CConnmanTest;
 };
 extern std::unique_ptr<CConnman> g_connman;
@@ -572,7 +581,7 @@ class NetEventsInterface
 {
 public:
     virtual bool ProcessMessages(CNode* pnode, std::atomic<bool>& interrupt) = 0;
-    virtual bool SendMessages(CNode* pnode, std::atomic<bool>& interrupt) = 0;
+    virtual bool SendMessages(CNode* pnode) = 0;
     virtual void InitializeNode(CNode* pnode) = 0;
     virtual void FinalizeNode(NodeId id, bool& update_connection_time) = 0;
 
@@ -992,6 +1001,6 @@ public:
 
 
 /** Return a timestamp in the future (in microseconds) for exponentially distributed events. */
-int64_t PoissonNextSend(int64_t nNow, int average_interval_seconds);
+int64_t PoissonNextSend(int64_t now, int average_interval_seconds);
 
 #endif // BITCOIN_NET_H

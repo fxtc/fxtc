@@ -79,6 +79,8 @@ RPC changes
    `getmempoolentry` when verbosity is set to `true` with sub-fields `ancestor`, `base`, `modified`
    and `descendant` denominated in BTC. This new field deprecates previous fee fields, such as
    `fee`, `modifiedfee`, `ancestorfee` and `descendantfee`.
+- The new RPC `getzmqnotifications` returns information about active ZMQ
+  notifications.
 
 External wallet files
 ---------------------
@@ -128,6 +130,11 @@ Low-level RPC changes
 ### Logging
 
 - The log timestamp format is now ISO 8601 (e.g. "2018-02-28T12:34:56Z").
+
+- When running bitcoind with `-debug` but without `-daemon`, logging to stdout
+  is now the default behavior. Setting `-printtoconsole=1` no longer implicitly
+  disables logging to debug.log. Instead, logging to file can be explicitly disabled
+  by setting `-debuglogfile=0`.
 
 Miner block size removed
 ------------------------
