@@ -124,6 +124,10 @@ void DummyWalletInit::AddWalletOptions() const
 const WalletInitInterface& g_wallet_init_interface = DummyWalletInit();
 #endif
 
+// Dash
+static CDSNotificationInterface* pdsNotificationInterface = NULL;
+//
+
 #ifdef WIN32
 // Win32 LevelDB doesn't use filedescriptors, and the ones used for
 // accessing block files don't count towards the fd_set size limit
@@ -308,11 +312,13 @@ void Shutdown()
     }
 #endif
 
+    // Dash
     if (pdsNotificationInterface) {
         UnregisterValidationInterface(pdsNotificationInterface);
         delete pdsNotificationInterface;
         pdsNotificationInterface = NULL;
     }
+    //
 
 #ifndef WIN32
     try {
@@ -1481,8 +1487,10 @@ bool AppInitMain()
     uint64_t nMaxOutboundLimit = 0; //unlimited unless -maxuploadtarget is set
     uint64_t nMaxOutboundTimeframe = MAX_UPLOAD_TIMEFRAME;
 
+    // Dash
     pdsNotificationInterface = new CDSNotificationInterface(connman);
     RegisterValidationInterface(pdsNotificationInterface);
+    //
 
     if (gArgs.IsArgSet("-maxuploadtarget")) {
         nMaxOutboundLimit = gArgs.GetArg("-maxuploadtarget", DEFAULT_MAX_UPLOAD_TARGET)*1024*1024;

@@ -18,6 +18,10 @@
 #include "script/standard.h"
 #include "util.h"
 
+// FXTC BEGIN
+extern void Misbehaving(NodeId nodeid, int howmuch, const std::string& message="");
+// FXTC END
+
 /** Masternode manager */
 CMasternodeMan mnodeman;
 

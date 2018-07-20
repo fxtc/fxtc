@@ -12,6 +12,10 @@
 
 #include <boost/lexical_cast.hpp>
 
+// FXTC BEGIN
+extern void Misbehaving(NodeId nodeid, int howmuch, const std::string& message="");
+// FXTC END
+
 class CSporkMessage;
 class CSporkManager;
 

@@ -129,6 +129,18 @@ enum AvailableCoinsType
     ONLY_MASTERNODE_COLLATERAL, // find masternode outputs including locked ones (use with caution)
     ONLY_PRIVATESEND_COLLATERAL
 };
+
+// FXTC TODO: CompactTallyItem removed from Bitcoin Core 0.17
+struct CompactTallyItem
+{
+    CTxDestination txdest;
+    CAmount nAmount;
+    std::vector<CTxIn> vecTxIn;
+    CompactTallyItem()
+    {
+        nAmount = 0;
+    }
+};
 //
 
 //! Default for -addresstype
@@ -306,8 +318,7 @@ public:
     // FXTC BEGIN
     //int GetDepthInMainChain() const;
     int GetDepthInMainChainBTC() const;
-    int GetDepthInMainChain(const CBlockIndex* &pindexRet, bool enableIX = true) const;
-    int GetDepthInMainChain(bool enableIX = true) const { const CBlockIndex *pindexRet; return GetDepthInMainChain(pindexRet, enableIX); }
+    int GetDepthInMainChain(bool enableIX = true) const;
     // FXTC END
     //
 

@@ -16,6 +16,10 @@
 #include "netmessagemaker.h"
 #include "util.h"
 
+// FXTC BEGIN
+extern void Misbehaving(NodeId nodeid, int howmuch, const std::string& message="");
+// FXTC END
+
 CGovernanceManager governance;
 
 int nSubmittedFinalBudget;
