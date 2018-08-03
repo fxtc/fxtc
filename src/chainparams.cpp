@@ -121,10 +121,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000002d06d46bfee2cc0b40"); // block 20646
+        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000005abbb9db23febeb29a"); // block 79192
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x0000000000000024378a8a15c8a31f0c823a1b441ba909b13ef1bfb59c3b4cfd"); // block 20502
+        consensus.defaultAssumeValid = uint256S("0x00000000000008372e5c5cfc4b572f64039418441c78b48d8c09e23f860d098a"); // block 79000
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -192,8 +192,12 @@ public:
                 {  6500, uint256S("0x00000000000005791814b081a738d30237676b8043a2f75ee7d0e58b9d371b8c")},
                 { 16000, uint256S("0x000000000000002735d856b3f57d805b9903f2a9c9f5e5291530cb6bf2d572cc")},
                 { 20502, uint256S("0x0000000000000024378a8a15c8a31f0c823a1b441ba909b13ef1bfb59c3b4cfd")},
+                { 79000, uint256S("0x00000000000008372e5c5cfc4b572f64039418441c78b48d8c09e23f860d098a")},
             }
         };
+        // FXTC BEGIN
+        consensus.nlastValidPowHashHeight = 79000;
+        // FXTC
 
         chainTxData = ChainTxData{
             // Data as of block 000005bdaeb941c7b686f7f6a03e8cf625a8d59162636a3af16fb46b44c9fc4a (height 5).
@@ -336,6 +340,9 @@ public:
                 {5, uint256S("0x00000ee2212839f30411000e02c01cd8a774aa28260f0fc1b37cdf98e17a2f7c")},
             }
         };
+        // FXTC BEGIN
+        consensus.nlastValidPowHashHeight = 5;
+        // FXTC
 
         chainTxData = ChainTxData{
             // Data as of block 00000706ff7091032d187cf1c2515a5d7891b6797f414526ef8a277491117d08 (height 0)
@@ -451,6 +458,9 @@ public:
                 {0, uint256S("0x00000f72bba40f458c48d44c842cee04ff91a2ae833fea4c179fe62170714681")},
             }
         };
+        // FXTC BEGIN
+        consensus.nlastValidPowHashHeight = 0;
+        // FXTC
 
         chainTxData = ChainTxData{
             0,
