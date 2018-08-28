@@ -53,7 +53,6 @@
 #include <sstream>
 
 #include <boost/algorithm/string/replace.hpp>
-#include <boost/algorithm/string/join.hpp>
 #include <boost/thread.hpp>
 
 #if defined(NDEBUG)
@@ -187,7 +186,7 @@ public:
     // Manual block validity manipulation:
     bool PreciousBlock(CValidationState& state, const CChainParams& params, CBlockIndex* pindex) LOCKS_EXCLUDED(cs_main);
     bool InvalidateBlock(CValidationState& state, const CChainParams& chainparams, CBlockIndex* pindex) EXCLUSIVE_LOCKS_REQUIRED(cs_main);
-    bool ResetBlockFailureFlags(CBlockIndex* pindex) EXCLUSIVE_LOCKS_REQUIRED(cs_main);
+    void ResetBlockFailureFlags(CBlockIndex* pindex) EXCLUSIVE_LOCKS_REQUIRED(cs_main);
 
     bool ReplayBlocks(const CChainParams& params, CCoinsView* view);
     bool RewindBlockIndex(const CChainParams& params);
@@ -2422,6 +2421,13 @@ static void DoWarning(const std::string& strWarning)
     }
 }
 
+/** Private helper function that concatenates warning messages. */
+static void AppendWarning(std::string& res, const std::string& warn)
+{
+    if (!res.empty()) res += ", ";
+    res += warn;
+}
+
 /** Check warning conditions and do some notifications on new chain tip set. */
 void static UpdateTip(const CBlockIndex *pindexNew, const CChainParams& chainParams) {
     // New best block
@@ -2433,7 +2439,7 @@ void static UpdateTip(const CBlockIndex *pindexNew, const CChainParams& chainPar
         g_best_block_cv.notify_all();
     }
 
-    std::vector<std::string> warningMessages;
+    std::string warningMessages;
     if (!IsInitialBlockDownload())
     {
         int nUpgraded = 0;
@@ -2446,7 +2452,7 @@ void static UpdateTip(const CBlockIndex *pindexNew, const CChainParams& chainPar
                 if (state == ThresholdState::ACTIVE) {
                     DoWarning(strWarning);
                 } else {
-                    warningMessages.push_back(strWarning);
+                    AppendWarning(warningMessages, strWarning);
                 }
             }
         }
@@ -2459,7 +2465,7 @@ void static UpdateTip(const CBlockIndex *pindexNew, const CChainParams& chainPar
             pindex = pindex->pprev;
         }
         if (nUpgraded > 0)
-            warningMessages.push_back(strprintf(_("%d of last 100 blocks have unexpected version"), nUpgraded));
+            AppendWarning(warningMessages, strprintf(_("%d of last 100 blocks have unexpected version"), nUpgraded));
         if (nUpgraded > 100/2)
         {
             std::string strWarning = _("Warning: Unknown block versions being mined! It's possible unknown rules are in effect");
@@ -2473,7 +2479,7 @@ void static UpdateTip(const CBlockIndex *pindexNew, const CChainParams& chainPar
       FormatISO8601DateTime(pindexNew->GetBlockTime()),
       GuessVerificationProgress(chainParams.TxData(), pindexNew), pcoinsTip->DynamicMemoryUsage() * (1.0 / (1<<20)), pcoinsTip->GetCacheSize());
     if (!warningMessages.empty())
-        LogPrintf(" warning='%s'", boost::algorithm::join(warningMessages, ", ")); /* Continued */
+        LogPrintf(" warning='%s'", warningMessages); /* Continued */
     LogPrintf("\n");
 
 }
@@ -3106,7 +3112,7 @@ bool InvalidateBlock(CValidationState& state, const CChainParams& chainparams, C
     return g_chainstate.InvalidateBlock(state, chainparams, pindex);
 }
 
-bool CChainState::ResetBlockFailureFlags(CBlockIndex *pindex) {
+void CChainState::ResetBlockFailureFlags(CBlockIndex *pindex) {
     AssertLockHeld(cs_main);
 
     int nHeight = pindex->nHeight;
@@ -3138,9 +3144,9 @@ bool CChainState::ResetBlockFailureFlags(CBlockIndex *pindex) {
         }
         pindex = pindex->pprev;
     }
-    return true;
 }
-bool ResetBlockFailureFlags(CBlockIndex *pindex) {
+
+void ResetBlockFailureFlags(CBlockIndex *pindex) {
     return g_chainstate.ResetBlockFailureFlags(pindex);
 }
 

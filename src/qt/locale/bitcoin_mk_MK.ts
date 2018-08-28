@@ -498,6 +498,10 @@
         <source>&amp;Save Image...</source>
         <translation>&amp;Сними Слика...</translation>
     </message>
+    <message>
+        <source>Wallet</source>
+        <translation>Паричник</translation>
+    </message>
     </context>
 <context>
     <name>RecentRequestsTableModel</name>
@@ -586,12 +590,8 @@
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Options:</source>
-        <translation>Опции:</translation>
-    </message>
-    <message>
         <source>FxTCoin Core</source>
-        <translation>Биткоин Core</translation>
+        <translation>FxTCоин Core</translation>
     </message>
     <message>
         <source>Warning</source>
