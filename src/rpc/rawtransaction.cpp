@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -437,7 +437,7 @@ CMutableTransaction ConstructTransaction(const UniValue& inputs_in, const UniVal
         }
     }
 
-    if (!rbf.isNull() && rbfOptIn != SignalsOptInRBF(rawTx)) {
+    if (!rbf.isNull() && rawTx.vin.size() > 0 && rbfOptIn != SignalsOptInRBF(rawTx)) {
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter combination: Sequence number(s) contradict replaceable option");
     }
 
@@ -563,7 +563,6 @@ static UniValue decoderawtransaction(const JSONRPCRequest& request)
             + HelpExampleRpc("decoderawtransaction", "\"hexstring\"")
         );
 
-    LOCK(cs_main);
     RPCTypeCheck(request.params, {UniValue::VSTR, UniValue::VBOOL});
 
     CMutableTransaction mtx;
@@ -628,9 +627,8 @@ static UniValue decodescript(const JSONRPCRequest& request)
         // P2SH and witness programs cannot be wrapped in P2WSH, if this script
         // is a witness program, don't return addresses for a segwit programs.
         if (type.get_str() == "pubkey" || type.get_str() == "pubkeyhash" || type.get_str() == "multisig" || type.get_str() == "nonstandard") {
-            txnouttype which_type;
             std::vector<std::vector<unsigned char>> solutions_data;
-            Solver(script, which_type, solutions_data);
+            txnouttype which_type = Solver(script, solutions_data);
             // Uncompressed pubkeys cannot be used with segwit checksigs.
             // If the script contains an uncompressed pubkey, skip encoding of a segwit program.
             if ((which_type == TX_PUBKEY) || (which_type == TX_MULTISIG)) {
@@ -1461,11 +1459,8 @@ UniValue decodepsbt(const JSONRPCRequest& request)
                 UniValue keypath(UniValue::VOBJ);
                 keypath.pushKV("pubkey", HexStr(entry.first));
 
-                uint32_t fingerprint = entry.second.at(0);
-                keypath.pushKV("master_fingerprint", strprintf("%08x", bswap_32(fingerprint)));
-
-                entry.second.erase(entry.second.begin());
-                keypath.pushKV("path", WriteHDKeypath(entry.second));
+                keypath.pushKV("master_fingerprint", strprintf("%08x", ReadBE32(entry.second.fingerprint)));
+                keypath.pushKV("path", WriteHDKeypath(entry.second.path));
                 keypaths.push_back(keypath);
             }
             in.pushKV("bip32_derivs", keypaths);
@@ -1523,12 +1518,8 @@ UniValue decodepsbt(const JSONRPCRequest& request)
             for (auto entry : output.hd_keypaths) {
                 UniValue keypath(UniValue::VOBJ);
                 keypath.pushKV("pubkey", HexStr(entry.first));
-
-                uint32_t fingerprint = entry.second.at(0);
-                keypath.pushKV("master_fingerprint", strprintf("%08x", bswap_32(fingerprint)));
-
-                entry.second.erase(entry.second.begin());
-                keypath.pushKV("path", WriteHDKeypath(entry.second));
+                keypath.pushKV("master_fingerprint", strprintf("%08x", ReadBE32(entry.second.fingerprint)));
+                keypath.pushKV("path", WriteHDKeypath(entry.second.path));
                 keypaths.push_back(keypath);
             }
             out.pushKV("bip32_derivs", keypaths);
@@ -1649,8 +1640,7 @@ UniValue finalizepsbt(const JSONRPCRequest& request)
     for (unsigned int i = 0; i < psbtx.tx->vin.size(); ++i) {
         PSBTInput& input = psbtx.inputs.at(i);
 
-        SignatureData sigdata;
-        complete &= SignPSBTInput(DUMMY_SIGNING_PROVIDER, *psbtx.tx, input, sigdata, i, 1);
+        complete &= SignPSBTInput(DUMMY_SIGNING_PROVIDER, *psbtx.tx, input, i, 1);
     }
 
     UniValue result(UniValue::VOBJ);
@@ -1663,12 +1653,12 @@ UniValue finalizepsbt(const JSONRPCRequest& request)
             mtx.vin[i].scriptWitness = psbtx.inputs[i].final_script_witness;
         }
         ssTx << mtx;
-        result.push_back(Pair("hex", HexStr(ssTx.begin(), ssTx.end())));
+        result.pushKV("hex", HexStr(ssTx.begin(), ssTx.end()));
     } else {
         ssTx << psbtx;
-        result.push_back(Pair("psbt", EncodeBase64((unsigned char*)ssTx.data(), ssTx.size())));
+        result.pushKV("psbt", EncodeBase64((unsigned char*)ssTx.data(), ssTx.size()));
     }
-    result.push_back(Pair("complete", complete));
+    result.pushKV("complete", complete);
 
     return result;
 }

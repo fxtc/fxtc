@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2017 The Bitcoin Core developers
+# Copyright (c) 2017-2018 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test that the wallet can send and receive using all combinations of address types.
@@ -143,7 +143,7 @@ class AddressTypeTest(BitcoinTestFramework):
             assert(False)
 
     def test_change_output_type(self, node_sender, destinations, expected_type):
-        txid = self.nodes[node_sender].sendmany(fromaccount="", amounts=dict.fromkeys(destinations, 0.001))
+        txid = self.nodes[node_sender].sendmany(dummy="", amounts=dict.fromkeys(destinations, 0.001))
         raw_tx = self.nodes[node_sender].getrawtransaction(txid)
         tx = self.nodes[node_sender].decoderawtransaction(raw_tx)
 

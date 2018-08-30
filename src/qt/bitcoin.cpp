@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2017 The Bitcoin Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
 // Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
@@ -82,13 +82,10 @@ static void InitMessage(const std::string &message)
     LogPrintf("init message: %s\n", message);
 }
 
-/*
-   Translate string to current locale using Qt.
- */
-static std::string Translate(const char* psz)
-{
+/** Translate string to current locale using Qt. */
+const std::function<std::string(const char*)> G_TRANSLATION_FUN = [](const char* psz) {
     return QCoreApplication::translate("bitcoin-core", psz).toStdString();
-}
+};
 
 static QString GetLangTerritory()
 {
@@ -359,7 +356,7 @@ void BitcoinApplication::createWindow(const NetworkStyle *networkStyle)
     window = new BitcoinGUI(m_node, platformStyle, networkStyle, 0);
 
     pollShutdownTimer = new QTimer(window);
-    connect(pollShutdownTimer, SIGNAL(timeout()), window, SLOT(detectShutdown()));
+    connect(pollShutdownTimer, &QTimer::timeout, window, &BitcoinGUI::detectShutdown);
 }
 
 void BitcoinApplication::createSplashScreen(const NetworkStyle *networkStyle)
@@ -368,8 +365,8 @@ void BitcoinApplication::createSplashScreen(const NetworkStyle *networkStyle)
     // We don't hold a direct pointer to the splash screen after creation, but the splash
     // screen will take care of deleting itself when slotFinish happens.
     splash->show();
-    connect(this, SIGNAL(splashFinished(QWidget*)), splash, SLOT(slotFinish(QWidget*)));
-    connect(this, SIGNAL(requestedShutdown()), splash, SLOT(close()));
+    connect(this, &BitcoinApplication::splashFinished, splash, &SplashScreen::slotFinish);
+    connect(this, &BitcoinApplication::requestedShutdown, splash, &QWidget::close);
 }
 
 void BitcoinApplication::startThread()
@@ -381,14 +378,14 @@ void BitcoinApplication::startThread()
     executor->moveToThread(coreThread);
 
     /*  communication to and from thread */
-    connect(executor, SIGNAL(initializeResult(bool)), this, SLOT(initializeResult(bool)));
-    connect(executor, SIGNAL(shutdownResult()), this, SLOT(shutdownResult()));
-    connect(executor, SIGNAL(runawayException(QString)), this, SLOT(handleRunawayException(QString)));
-    connect(this, SIGNAL(requestedInitialize()), executor, SLOT(initialize()));
-    connect(this, SIGNAL(requestedShutdown()), executor, SLOT(shutdown()));
+    connect(executor, &BitcoinCore::initializeResult, this, &BitcoinApplication::initializeResult);
+    connect(executor, &BitcoinCore::shutdownResult, this, &BitcoinApplication::shutdownResult);
+    connect(executor, &BitcoinCore::runawayException, this, &BitcoinApplication::handleRunawayException);
+    connect(this, &BitcoinApplication::requestedInitialize, executor, &BitcoinCore::initialize);
+    connect(this, &BitcoinApplication::requestedShutdown, executor, &BitcoinCore::shutdown);
     /*  make sure executor object is deleted in its own thread */
-    connect(this, SIGNAL(stopThread()), executor, SLOT(deleteLater()));
-    connect(this, SIGNAL(stopThread()), coreThread, SLOT(quit()));
+    connect(this, &BitcoinApplication::stopThread, executor, &QObject::deleteLater);
+    connect(this, &BitcoinApplication::stopThread, coreThread, &QThread::quit);
 
     coreThread->start();
 }
@@ -448,9 +445,9 @@ void BitcoinApplication::addWallet(WalletModel* walletModel)
         window->setCurrentWallet(walletModel->getWalletName());
     }
 
-    connect(walletModel, SIGNAL(coinsSent(WalletModel*, SendCoinsRecipient, QByteArray)),
-        paymentServer, SLOT(fetchPaymentACK(WalletModel*, const SendCoinsRecipient&, QByteArray)));
-    connect(walletModel, SIGNAL(unload()), this, SLOT(removeWallet()));
+    connect(walletModel, &WalletModel::coinsSent,
+        paymentServer, &PaymentServer::fetchPaymentACK);
+    connect(walletModel, &WalletModel::unload, this, &BitcoinApplication::removeWallet);
 
     m_wallet_models.push_back(walletModel);
 #endif
@@ -510,13 +507,12 @@ void BitcoinApplication::initializeResult(bool success)
 #ifdef ENABLE_WALLET
         // Now that initialization/startup is done, process any command-line
         // bitcoin: URIs or payment requests:
-        connect(paymentServer, SIGNAL(receivedPaymentRequest(SendCoinsRecipient)),
-                         window, SLOT(handlePaymentRequest(SendCoinsRecipient)));
-        connect(window, SIGNAL(receivedURI(QString)),
-                         paymentServer, SLOT(handleURIOrFile(QString)));
-        connect(paymentServer, SIGNAL(message(QString,QString,unsigned int)),
-                         window, SLOT(message(QString,QString,unsigned int)));
-        QTimer::singleShot(100, paymentServer, SLOT(uiReady()));
+        connect(paymentServer, &PaymentServer::receivedPaymentRequest, window, &BitcoinGUI::handlePaymentRequest);
+        connect(window, &BitcoinGUI::receivedURI, paymentServer, &PaymentServer::handleURIOrFile);
+        connect(paymentServer, &PaymentServer::message, [this](const QString& title, const QString& message, unsigned int style) {
+            window->message(title, message, style);
+        });
+        QTimer::singleShot(100, paymentServer, &PaymentServer::uiReady);
 #endif
         pollShutdownTimer->start(200);
     } else {
@@ -625,7 +621,6 @@ int main(int argc, char *argv[])
     // Now that QSettings are accessible, initialize translations
     QTranslator qtTranslatorBase, qtTranslator, translatorBase, translator;
     initTranslations(qtTranslatorBase, qtTranslator, translatorBase, translator);
-    translationInterface.Translate.connect(Translate);
 
     // Show help message immediately after parsing command-line options (for "-lang") and setting locale,
     // but before showing splash screen.

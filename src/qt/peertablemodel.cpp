@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2017 The Bitcoin Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -113,7 +113,7 @@ PeerTableModel::PeerTableModel(interfaces::Node& node, ClientModel *parent) :
 
     // set up timer for auto refresh
     timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), SLOT(refresh()));
+    connect(timer, &QTimer::timeout, this, &PeerTableModel::refresh);
     timer->setInterval(MODEL_UPDATE_DELAY);
 
     // load initial data

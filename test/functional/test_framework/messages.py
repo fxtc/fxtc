@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Copyright (c) 2010 ArtForz -- public domain half-a-node
 # Copyright (c) 2012 Jeff Garzik
-# Copyright (c) 2010-2017 The Bitcoin Core developers
+# Copyright (c) 2010-2018 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Bitcoin test framework primitive and message structures
@@ -32,6 +32,7 @@ MY_SUBVERSION = b"/python-mininode-tester:0.0.3/"
 MY_RELAY = 1 # from version 70001 onwards, fRelay should be appended to version messages (BIP37)
 
 MAX_INV_SZ = 50000
+MAX_LOCATOR_SZ = 101
 MAX_BLOCK_BASE_SIZE = 1000000
 
 COIN = 100000000  # 1 btc in satoshis
@@ -903,28 +904,17 @@ class msg_version():
 
     def deserialize(self, f):
         self.nVersion = struct.unpack("<i", f.read(4))[0]
-        if self.nVersion == 10300:
-            self.nVersion = 300
         self.nServices = struct.unpack("<Q", f.read(8))[0]
         self.nTime = struct.unpack("<q", f.read(8))[0]
         self.addrTo = CAddress()
         self.addrTo.deserialize(f, False)
 
-        if self.nVersion >= 106:
-            self.addrFrom = CAddress()
-            self.addrFrom.deserialize(f, False)
-            self.nNonce = struct.unpack("<Q", f.read(8))[0]
-            self.strSubVer = deser_string(f)
-        else:
-            self.addrFrom = None
-            self.nNonce = None
-            self.strSubVer = None
-            self.nStartingHeight = None
+        self.addrFrom = CAddress()
+        self.addrFrom.deserialize(f, False)
+        self.nNonce = struct.unpack("<Q", f.read(8))[0]
+        self.strSubVer = deser_string(f)
 
-        if self.nVersion >= 209:
-            self.nStartingHeight = struct.unpack("<i", f.read(4))[0]
-        else:
-            self.nStartingHeight = None
+        self.nStartingHeight = struct.unpack("<i", f.read(4))[0]
 
         if self.nVersion >= 70001:
             # Relay field is optional for version 70001 onwards

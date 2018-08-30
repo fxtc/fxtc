@@ -31,7 +31,7 @@ namespace {
 class PendingWalletTxImpl : public PendingWalletTx
 {
 public:
-    PendingWalletTxImpl(CWallet& wallet) : m_wallet(wallet), m_key(&wallet) {}
+    explicit PendingWalletTxImpl(CWallet& wallet) : m_wallet(wallet), m_key(&wallet) {}
 
     const CTransaction& get() override { return *m_tx; }
 
@@ -57,7 +57,7 @@ public:
 };
 
 //! Construct wallet tx struct.
-WalletTx MakeWalletTx(CWallet& wallet, const CWalletTx& wtx)
+static WalletTx MakeWalletTx(CWallet& wallet, const CWalletTx& wtx) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
 {
     WalletTx result;
     result.tx = wtx.tx;
@@ -85,7 +85,7 @@ WalletTx MakeWalletTx(CWallet& wallet, const CWalletTx& wtx)
 }
 
 //! Construct wallet tx status struct.
-WalletTxStatus MakeWalletTxStatus(const CWalletTx& wtx)
+static WalletTxStatus MakeWalletTxStatus(const CWalletTx& wtx) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
 {
     WalletTxStatus result;
     auto mi = ::mapBlockIndex.find(wtx.hashBlock);
@@ -104,7 +104,7 @@ WalletTxStatus MakeWalletTxStatus(const CWalletTx& wtx)
 }
 
 //! Construct wallet TxOut struct.
-WalletTxOut MakeWalletTxOut(CWallet& wallet, const CWalletTx& wtx, int n, int depth)
+static WalletTxOut MakeWalletTxOut(CWallet& wallet, const CWalletTx& wtx, int n, int depth) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
 {
     WalletTxOut result;
     result.txout = wtx.tx->vout[n];
@@ -117,7 +117,7 @@ WalletTxOut MakeWalletTxOut(CWallet& wallet, const CWalletTx& wtx, int n, int de
 class WalletImpl : public Wallet
 {
 public:
-    WalletImpl(const std::shared_ptr<CWallet>& wallet) : m_shared_wallet(wallet), m_wallet(*wallet.get()) {}
+    explicit WalletImpl(const std::shared_ptr<CWallet>& wallet) : m_shared_wallet(wallet), m_wallet(*wallet.get()) {}
 
     bool encryptWallet(const SecureString& wallet_passphrase) override
     {

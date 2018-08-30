@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -24,6 +24,8 @@
 #include <support/events.h>
 
 #include <univalue.h>
+
+const std::function<std::string(const char*)> G_TRANSLATION_FUN = nullptr;
 
 static const char DEFAULT_RPCCONNECT[] = "127.0.0.1";
 static const int DEFAULT_HTTP_CLIENT_TIMEOUT=900;
@@ -50,8 +52,8 @@ static void SetupCliArgs()
     gArgs.AddArg("-rpcuser=<user>", "Username for JSON-RPC connections", false, OptionsCategory::OPTIONS);
     gArgs.AddArg("-rpcwait", "Wait for RPC server to start", false, OptionsCategory::OPTIONS);
     gArgs.AddArg("-rpcwallet=<walletname>", "Send RPC for non-default wallet on RPC server (needs to exactly match corresponding -wallet option passed to fxtcd)", false, OptionsCategory::OPTIONS);
-    gArgs.AddArg("-stdin", "Read extra arguments from standard input, one per line until EOF/Ctrl-D (recommended for sensitive information such as passphrases).  When combined with -stdinrpcpass, the first line from standard input is used for the RPC password.", false, OptionsCategory::OPTIONS);
-    gArgs.AddArg("-stdinrpcpass", strprintf("Read RPC password from standard input as a single line.  When combined with -stdin, the first line from standard input is used for the RPC password."), false, OptionsCategory::OPTIONS);
+    gArgs.AddArg("-stdin", "Read extra arguments from standard input, one per line until EOF/Ctrl-D (recommended for sensitive information such as passphrases). When combined with -stdinrpcpass, the first line from standard input is used for the RPC password.", false, OptionsCategory::OPTIONS);
+    gArgs.AddArg("-stdinrpcpass", "Read RPC password from standard input as a single line. When combined with -stdin, the first line from standard input is used for the RPC password.", false, OptionsCategory::OPTIONS);
 
     // Hidden
     gArgs.AddArg("-h", "", false, OptionsCategory::HIDDEN);
@@ -105,14 +107,13 @@ static int AppInitRPC(int argc, char* argv[])
         return EXIT_FAILURE;
     }
     if (argc < 2 || HelpRequested(gArgs) || gArgs.IsArgSet("-version")) {
-        std::string strUsage = strprintf("%s RPC client version", PACKAGE_NAME) + " " + FormatFullVersion() + "\n";
+        std::string strUsage = PACKAGE_NAME " RPC client version " + FormatFullVersion() + "\n";
         if (!gArgs.IsArgSet("-version")) {
-            strUsage += "\nUsage:\n"
-                  "  fxtc-cli [options] <command> [params]  " + strprintf("Send command to %s", PACKAGE_NAME) + "\n" +
-                  "  fxtc-cli [options] -named <command> [name=value] ... " + strprintf("Send command to %s (with named arguments)", PACKAGE_NAME) + "\n" +
-                  "  fxtc-cli [options] help                List commands\n" +
-                  "  fxtc-cli [options] help <command>      Get help for a command\n";
-
+            strUsage += "\n"
+                "Usage:  fxtc-cli [options] <command> [params]  Send command to " PACKAGE_NAME "\n"
+                "or:     fxtc-cli [options] -named <command> [name=value]...  Send command to " PACKAGE_NAME " (with named arguments)\n"
+                "or:     fxtc-cli [options] help                List commands\n"
+                "or:     fxtc-cli [options] help <command>      Get help for a command\n";
             strUsage += "\n" + gArgs.GetHelpMessage();
         }
 

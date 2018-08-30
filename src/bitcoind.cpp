@@ -24,6 +24,8 @@
 
 #include <stdio.h>
 
+const std::function<std::string(const char*)> G_TRANSLATION_FUN = nullptr;
+
 /* Introduction text for doxygen: */
 
 /*! \mainpage Developer documentation
@@ -72,7 +74,7 @@ static bool AppInit(int argc, char* argv[])
 
     // Process help and version before taking care about datadir
     if (HelpRequested(gArgs) || gArgs.IsArgSet("-version")) {
-        std::string strUsage = strprintf("%s Daemon", PACKAGE_NAME) + " version " + FormatFullVersion() + "\n";
+        std::string strUsage = PACKAGE_NAME " Daemon version " + FormatFullVersion() + "\n";
 
         if (gArgs.IsArgSet("-version"))
         {
@@ -80,9 +82,7 @@ static bool AppInit(int argc, char* argv[])
         }
         else
         {
-            strUsage += "\nUsage:\n"
-                  "  fxtcd [options]                     " + strprintf("Start %s Daemon", PACKAGE_NAME) + "\n";
-
+            strUsage += "\nUsage:  fxtcd [options]                     Start " PACKAGE_NAME " Daemon\n";
             strUsage += "\n" + gArgs.GetHelpMessage();
         }
 

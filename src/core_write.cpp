@@ -1,4 +1,4 @@
-// Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2009-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -141,8 +141,7 @@ void ScriptToUniv(const CScript& script, UniValue& out, bool include_address)
     out.pushKV("hex", HexStr(script.begin(), script.end()));
 
     std::vector<std::vector<unsigned char>> solns;
-    txnouttype type;
-    Solver(script, type, solns);
+    txnouttype type = Solver(script, solns);
     out.pushKV("type", GetTxnOutputType(type));
 
     CTxDestination address;

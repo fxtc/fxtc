@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2017 The Bitcoin Core developers
+// Copyright (c) 2016-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -80,18 +80,16 @@ static void SipHash_32b(benchmark::State& state)
 static void FastRandom_32bit(benchmark::State& state)
 {
     FastRandomContext rng(true);
-    uint32_t x = 0;
     while (state.KeepRunning()) {
-        x += rng.rand32();
+        rng.rand32();
     }
 }
 
 static void FastRandom_1bit(benchmark::State& state)
 {
     FastRandomContext rng(true);
-    uint32_t x = 0;
     while (state.KeepRunning()) {
-        x += rng.randbool();
+        rng.randbool();
     }
 }
 

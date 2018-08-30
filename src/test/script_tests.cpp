@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2017 The Bitcoin Core developers
+// Copyright (c) 2011-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -369,7 +369,7 @@ public:
         std::vector<unsigned char> vchSig, r, s;
         uint32_t iter = 0;
         do {
-            key.Sign(hash, vchSig, iter++);
+            key.Sign(hash, vchSig, false, iter++);
             if ((lenS == 33) != (vchSig[5 + vchSig[3]] == 33)) {
                 NegateSignatureS(vchSig);
             }
@@ -937,17 +937,19 @@ BOOST_AUTO_TEST_CASE(script_build)
         }
     }
 
+#ifdef UPDATE_JSON_TESTS
     std::string strGen;
-
+#endif
     for (TestBuilder& test : tests) {
         test.Test();
         std::string str = JSONPrettyPrint(test.GetJSON());
-#ifndef UPDATE_JSON_TESTS
+#ifdef UPDATE_JSON_TESTS
+        strGen += str + ",\n";
+#else
         if (tests_set.count(str) == 0) {
             BOOST_CHECK_MESSAGE(false, "Missing auto script_valid test: " + test.GetComment());
         }
 #endif
-        strGen += str + ",\n";
     }
 
 #ifdef UPDATE_JSON_TESTS
