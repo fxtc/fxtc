@@ -42,7 +42,7 @@ void CSporkManager::LoadSporksFromDB()
     // FXTC END
         // Since not all spork IDs are in use, we have to exclude undefined IDs
         std::string strSpork = sporkManager.GetSporkNameByID(i);
-        if (strSpork == "Unknown") continue;
+        if (strSpork.substr(0,7) == "Unknown") continue;
 
         // attempt to read spork from sporkDB
         CSporkMessage spork;
