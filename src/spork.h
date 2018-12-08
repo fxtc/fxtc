@@ -1,4 +1,5 @@
 // Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2017 The PIVX developers
 // Copyright (c) 2018 FXTC developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -9,6 +10,13 @@
 #include <hash.h>
 #include <net.h>
 #include <util/strencodings.h>
+
+// FXTC BEGIN
+class CSporkDB;
+
+/** Global variable that points to the spork database (protected by cs_main) */
+extern std::unique_ptr<CSporkDB> pSporkDB;
+//FXTC END
 
 class CSporkMessage;
 class CSporkManager;
@@ -145,6 +153,9 @@ public:
 
     CSporkManager() {}
 
+    // FXTC BEGIN
+    void LoadSporksFromDB();
+    // FXTC END
     void ProcessSpork(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman);
     void ExecuteSpork(int nSporkID, int nValue);
     bool UpdateSpork(int nSporkID, int64_t nValue, CConnman& connman);
