@@ -52,6 +52,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
+// FXTC BEGIN
+// Dasg
 #include "activemasternode.h"
 #include "dsnotificationinterface.h"
 #include "flat-database.h"
@@ -71,6 +73,11 @@
 #endif // ENABLE_WALLET
 #include "privatesend-server.h"
 #include "spork.h"
+// Pivx
+#include "sporkdb.h"
+//
+//
+// FXTC END
 
 #ifndef WIN32
 #include <signal.h>
@@ -303,6 +310,9 @@ void Shutdown()
         pcoinscatcher.reset();
         pcoinsdbview.reset();
         pblocktree.reset();
+        // FXTC START
+        pSporkDB.reset();
+        // FXTC END
     }
     g_wallet_init_interface.Stop();
 
@@ -1541,6 +1551,10 @@ bool AppInitMain()
                 // fails if it's still open from the previous loop. Close it first:
                 pblocktree.reset();
                 pblocktree.reset(new CBlockTreeDB(nBlockTreeDBCache, false, fReset));
+                // FXTC BEGIN
+                pSporkDB.reset();
+                pSporkDB.reset(new CSporkDB(0, false, false));
+                // FXTC END
 
                 if (fReset) {
                     pblocktree->WriteReindexing(true);
@@ -1548,6 +1562,12 @@ bool AppInitMain()
                     if (fPruneMode)
                         CleanupBlockRevFiles();
                 }
+
+                // FXTC BEGIN
+                uiInterface.InitMessage(_("Loading sporks..."));
+                sporkManager.LoadSporksFromDB();
+                uiInterface.InitMessage(_("Loading block index..."));
+                // FXTC END
 
                 if (ShutdownRequested()) break;
 

@@ -10,6 +10,13 @@
 #include "net.h"
 #include "utilstrencodings.h"
 
+// FXTC BEGIN
+class CSporkDB;
+
+/** Global variable that points to the spork database (protected by cs_main) */
+extern std::unique_ptr<CSporkDB> pSporkDB;
+//FXTC END
+
 class CSporkMessage;
 class CSporkManager;
 
@@ -145,6 +152,9 @@ public:
 
     CSporkManager() {}
 
+    // FXTC BEGIN
+    void LoadSporksFromDB();
+    // FXTC END
     void ProcessSpork(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman);
     void ExecuteSpork(int nSporkID, int nValue);
     bool UpdateSpork(int nSporkID, int64_t nValue, CConnman& connman);

@@ -225,6 +225,7 @@ BITCOIN_CORE_H += \
   governance-votedb.h \
   instantx.h \
   keepass.h \
+  leveldbwrapper.h \
   masternode.h \
   masternodeman.h \
   masternode-payments.h \
@@ -236,7 +237,8 @@ BITCOIN_CORE_H += \
   privatesend-client.h \
   privatesend-server.h \
   privatesend-util.h \
-  spork.h
+  spork.h \
+  sporkdb.h
 
 
 obj/build.h: FORCE
@@ -304,6 +306,7 @@ libbitcoin_server_a_SOURCES += \
   governance-vote.cpp \
   governance-votedb.cpp \
   instantx.cpp \
+  leveldbwrapper.cpp \
   masternode.cpp \
   masternodeman.cpp \
   masternode-payments.cpp \
@@ -315,7 +318,8 @@ libbitcoin_server_a_SOURCES += \
   privatesend-server.cpp \
   rpc/governance.cpp \
   rpc/masternode.cpp \
-  spork.cpp
+  spork.cpp \
+  sporkdb.cpp
 
 
 if ENABLE_ZMQ
