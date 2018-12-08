@@ -35,7 +35,11 @@ std::unique_ptr<CSporkDB> pSporkDB = NULL;
 // PIVX: on startup load spork values from previous session if they exist in the sporkDB
 void CSporkManager::LoadSporksFromDB()
 {
-    for (int i = SPORK_START; i <= SPORK_END; ++i) {
+    // FXTC BEGIN
+    //for (int i = SPORK_START; i <= SPORK_END; ++i) {
+    for (int i = SPORK_START; i <= SPORK_FXTC_END; ++i) {
+        if (i > SPORK_END && i < SPORK_FXTC_START) i = SPORK_FXTC_START;
+    // FXTC END
         // Since not all spork IDs are in use, we have to exclude undefined IDs
         std::string strSpork = sporkManager.GetSporkNameByID(i);
         if (strSpork == "Unknown") continue;
