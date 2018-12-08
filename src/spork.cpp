@@ -1,4 +1,5 @@
 // Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2017 The PiVX developers
 // Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -9,6 +10,10 @@
 #include <net_processing.h>
 #include <netmessagemaker.h>
 #include <spork.h>
+
+// Pivx
+#include <sporkdb.h>
+//
 
 #include <boost/lexical_cast.hpp>
 
@@ -22,6 +27,45 @@ class CSporkManager;
 CSporkManager sporkManager;
 
 std::map<uint256, CSporkMessage> mapSporks;
+
+// FXTC BEGIN
+std::unique_ptr<CSporkDB> pSporkDB = NULL;
+
+// PIVX: on startup load spork values from previous session if they exist in the sporkDB
+void CSporkManager::LoadSporksFromDB()
+{
+    // FXTC BEGIN
+    //for (int i = SPORK_START; i <= SPORK_END; ++i) {
+    for (int i = SPORK_START; i <= SPORK_FXTC_END; ++i) {
+        if (i > SPORK_END && i < SPORK_FXTC_START) i = SPORK_FXTC_START;
+    // FXTC END
+        // Since not all spork IDs are in use, we have to exclude undefined IDs
+        std::string strSpork = sporkManager.GetSporkNameByID(i);
+        if (strSpork.substr(0,7) == "Unknown") continue;
+
+        // attempt to read spork from sporkDB
+        CSporkMessage spork;
+        if (!pSporkDB->ReadSpork(i, spork)) {
+            LogPrintf("%s : no previous value for %s found in database\n", __func__, strSpork);
+            continue;
+        }
+
+        // add spork to memory
+        mapSporks[spork.GetHash()] = spork;
+        mapSporksActive[spork.nSporkID] = spork;
+        std::time_t result = spork.nValue;
+        // If SPORK Value is greater than 1,000,000 assume it's actually a Date and then convert to a more readable format
+        if (spork.nValue > 1000000) {
+            LogPrintf("%s : loaded spork %s with value %d : %s", __func__,
+                      sporkManager.GetSporkNameByID(spork.nSporkID), spork.nValue,
+                      std::ctime(&result));
+        } else {
+            LogPrintf("%s : loaded spork %s with value %d\n", __func__,
+                      sporkManager.GetSporkNameByID(spork.nSporkID), spork.nValue);
+        }
+    }
+}
+// FXTC END
 
 void CSporkManager::ProcessSpork(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman)
 {
@@ -67,6 +111,10 @@ void CSporkManager::ProcessSpork(CNode* pfrom, const std::string& strCommand, CD
         //does a task if needed
         ExecuteSpork(spork.nSporkID, spork.nValue);
 
+        // FXTC BEGIN
+        // PIVX: add to spork database.
+        pSporkDB->WriteSpork(spork.nSporkID, spork);
+        // FXTC END
     } else if (strCommand == NetMsgType::GETSPORKS) {
 
         std::map<int, CSporkMessage>::iterator it = mapSporksActive.begin();

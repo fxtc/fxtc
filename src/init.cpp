@@ -1,6 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2017 The PIVX developers
 // Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -75,6 +76,10 @@
 #endif // ENABLE_WALLET
 #include <privatesend-server.h>
 #include <spork.h>
+//
+
+// Pivx
+#include <sporkdb.h>
 //
 
 #ifndef WIN32
@@ -316,6 +321,9 @@ void Shutdown(InitInterfaces& interfaces)
         pcoinscatcher.reset();
         pcoinsdbview.reset();
         pblocktree.reset();
+        // FXTC START
+        pSporkDB.reset();
+        // FXTC END
     }
     for (const auto& client : interfaces.chain_clients) {
         client->stop();
@@ -1573,6 +1581,10 @@ bool AppInitMain(InitInterfaces& interfaces)
                 // fails if it's still open from the previous loop. Close it first:
                 pblocktree.reset();
                 pblocktree.reset(new CBlockTreeDB(nBlockTreeDBCache, false, fReset));
+                // FXTC BEGIN
+                pSporkDB.reset();
+                pSporkDB.reset(new CSporkDB(0, false, false));
+                // FXTC END
 
                 if (fReset) {
                     pblocktree->WriteReindexing(true);
@@ -1580,6 +1592,12 @@ bool AppInitMain(InitInterfaces& interfaces)
                     if (fPruneMode)
                         CleanupBlockRevFiles();
                 }
+
+                // FXTC BEGIN
+                uiInterface.InitMessage(_("Loading sporks..."));
+                sporkManager.LoadSporksFromDB();
+                uiInterface.InitMessage(_("Loading block index..."));
+                // FXTC END
 
                 if (ShutdownRequested()) break;
 

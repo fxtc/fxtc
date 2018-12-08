@@ -258,7 +258,8 @@ BITCOIN_CORE_H += \
   privatesend-client.h \
   privatesend-server.h \
   privatesend-util.h \
-  spork.h
+  spork.h \
+  sporkdb.h
 
 
 obj/build.h: FORCE
@@ -342,7 +343,8 @@ libbitcoin_server_a_SOURCES += \
   privatesend-server.cpp \
   rpc/governance.cpp \
   rpc/masternode.cpp \
-  spork.cpp
+  spork.cpp \
+  sporkdb.cpp
 #
 
 if !ENABLE_WALLET
