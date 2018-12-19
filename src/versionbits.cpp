@@ -22,11 +22,12 @@ const struct VBDeploymentInfo VersionBitsDeploymentInfo[Consensus::MAX_VERSION_B
         /*.name =*/ "segwit",
         /*.gbt_force =*/ true,
         /*.check_mn_protocol =*/ false,
-    },
-    {
-        /*.name =*/ "dip0001",
-        /*.gbt_force =*/ true,
-        /*.check_mn_protocol =*/ true,
+    // FXTC TODO:
+    //},
+    //{
+    //    /*.name =*/ "dip0001",
+    //    /*.gbt_force =*/ true,
+    //    /*.check_mn_protocol =*/ true,
     }
 };
 

@@ -247,8 +247,9 @@ uint64_t nPruneTarget = 0;
 int64_t nMaxTipAge = DEFAULT_MAX_TIP_AGE;
 bool fEnableReplacement = DEFAULT_ENABLE_REPLACEMENT;
 
+// FXTC TODO:
 // Dash
-std::atomic<bool> fDIP0001ActiveAtTip{false};
+//std::atomic<bool> fDIP0001ActiveAtTip{false};
 //
 
 uint256 hashAssumeValid;

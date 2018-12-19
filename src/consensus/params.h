@@ -23,7 +23,8 @@ enum DeploymentPos
     DEPLOYMENT_SEGWIT, // Deployment of BIP141, BIP143, and BIP147.
 
     // Dash
-    DEPLOYMENT_DIP0001, // Deployment of DIP0001 and lower transaction fees.
+    // FXTC TODO:
+    //DEPLOYMENT_DIP0001, // Deployment of DIP0001 and lower transaction fees.
     //
 
     // NOTE: Also add new deployments to VersionBitsDeploymentInfo in versionbits.cpp
