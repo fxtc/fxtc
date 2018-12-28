@@ -7,6 +7,7 @@
 #include "masternode.h"
 #include "masternode-sync.h"
 #include "masternodeman.h"
+#include "netbase.h"
 #include "protocol.h"
 
 // Keep track of the active Masternode
@@ -186,7 +187,12 @@ void CActiveMasternode::ManageStateInitial(CConnman& connman)
 
     // FXTC BEGIN
     //if(!connman.ConnectNode(CAddress(service, NODE_NETWORK), NULL, false, true)) {
-    if(!connman.OpenNetworkConnection(CAddress(service, NODE_NETWORK), false, nullptr, NULL, false, false, false, true)) {
+    //if(!connman.OpenNetworkConnection(CAddress(service, NODE_NETWORK), false, nullptr, NULL, false, false, false, true)) {
+    SOCKET hSocket;
+    bool fConnected = ConnectSocketDirectly(service, hSocket, nConnectTimeout, true) && IsSelectableSocket(hSocket);
+    CloseSocket(hSocket);
+
+    if (!fConnected) {
     // FXTC END
         nState = ACTIVE_MASTERNODE_NOT_CAPABLE;
         strNotCapableReason = "Could not connect to " + service.ToString();
