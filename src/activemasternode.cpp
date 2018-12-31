@@ -188,9 +188,12 @@ void CActiveMasternode::ManageStateInitial(CConnman& connman)
     // FXTC BEGIN
     //if(!connman.ConnectNode(CAddress(service, NODE_NETWORK), NULL, false, true)) {
     //if(!connman.OpenNetworkConnection(CAddress(service, NODE_NETWORK), false, nullptr, NULL, false, false, false, true)) {
-    SOCKET hSocket;
-    bool fConnected = ConnectSocketDirectly(service, hSocket, nConnectTimeout, true) && IsSelectableSocket(hSocket);
-    CloseSocket(hSocket);
+    bool fConnected = false;
+    SOCKET hSocket = CreateSocket(service);
+    if (hSocket != INVALID_SOCKET) {
+        fConnected = ConnectSocketDirectly(service, hSocket, nConnectTimeout, true) && IsSelectableSocket(hSocket);
+        CloseSocket(hSocket);
+    }
 
     if (!fConnected) {
     // FXTC END
