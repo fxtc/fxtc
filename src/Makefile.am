@@ -213,7 +213,7 @@ BITCOIN_CORE_H += \
   cachemap.h \
   cachemultimap.h \
   dsnotificationinterface.h \
-  flatdatabase.h \
+  flat-database.h \
   governance.h \
   governance-classes.h \
   governance-exceptions.h \
