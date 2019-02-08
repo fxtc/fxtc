@@ -1,6 +1,8 @@
 FxTC Core integration/staging tree
 ==================================
 
+[![Build Status](https://travis-ci.org/fxtc/fxtc.svg?branch=0.18)](https://travis-ci.org/fxtc/fxtc)
+
 https://fixedtradecoin.org
 
 Linux Build Instructions and Notes
