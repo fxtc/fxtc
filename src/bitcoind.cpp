@@ -24,6 +24,9 @@
 #include <walletinitinterface.h>
 
 #include <stdio.h>
+// VELES BEGIN
+#include <masternodeconfig.h>
+// VELES END
 
 const std::function<std::string(const char*)> G_TRANSLATION_FUN = nullptr;
 
@@ -112,6 +115,17 @@ static bool AppInit(int argc, char* argv[])
             fprintf(stderr, "Error: %s\n", e.what());
             return false;
         }
+
+        // VELES BEGIN
+        // Dash
+        // parse masternode.conf
+        std::string strErr;
+        if(!masternodeConfig.read(strErr)) {
+            fprintf(stderr,"Error reading masternode configuration file: %s\n", strErr.c_str());
+            return false;
+        }
+        //
+        // VELES END
 
         // Error out when loose non-argument tokens are encountered on command line
         for (int i = 1; i < argc; i++) {
