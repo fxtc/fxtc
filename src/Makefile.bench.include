@@ -1,5 +1,5 @@
 # Copyright (c) 2015-2016 The Bitcoin Core developers
-# Copyright (c) 2018 FXTC developers
+# Copyright (c) 2018-2019 FXTC developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -40,6 +40,7 @@ bench_bench_fxtc_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 bench_bench_fxtc_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_WALLET) \
+  $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_CRYPTO) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
@@ -49,7 +50,9 @@ bench_bench_fxtc_LDADD = \
   $(LIBLEVELDB_SSE42) \
   $(LIBMEMENV) \
   $(LIBSECP256K1) \
-  $(LIBUNIVALUE)
+  $(LIBUNIVALUE) \
+  $(EVENT_PTHREADS_LIBS) \
+  $(EVENT_LIBS)
 
 if ENABLE_ZMQ
 bench_bench_fxtc_LDADD += $(LIBBITCOIN_ZMQ) $(ZMQ_LIBS)
@@ -59,7 +62,7 @@ if ENABLE_WALLET
 bench_bench_fxtc_SOURCES += bench/coin_selection.cpp
 endif
 
-bench_bench_fxtc_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS)
+bench_bench_fxtc_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(MINIUPNPC_LIBS)
 bench_bench_fxtc_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 CLEAN_BITCOIN_BENCH = bench/*.gcda bench/*.gcno $(GENERATED_BENCH_FILES)

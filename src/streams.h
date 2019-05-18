@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2018-2019 FxTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -452,7 +453,8 @@ public:
     unsigned int GetSerializeSize(const T& obj)
     {
         // Tells the size of the object if serialized to this stream
-        return ::GetSerializeSize(obj, nType, nVersion);
+        //return ::GetSerializeSize(obj, nType, nVersion);
+        return ::GetSerializeSize(obj, nVersion);
     }
     // FXTC END
 

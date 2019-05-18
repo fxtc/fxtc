@@ -1,5 +1,5 @@
 # Copyright (c) 2013-2016 The Bitcoin Core developers
-# Copyright (c) 2018 FXTC developers
+# Copyright (c) 2018-2019 FXTC developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -58,7 +58,7 @@ qt_test_test_fxtc_qt_SOURCES += \
   qt/test/wallettests.cpp \
   wallet/test/wallet_test_fixture.cpp
 if ENABLE_BIP70
-qt_test_test_bitcoin_qt_SOURCES += \
+qt_test_test_fxtc_qt_SOURCES += \
   qt/test/paymentservertests.cpp
 endif # ENABLE_BIP70
 endif # ENABLE_WALLET

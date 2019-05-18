@@ -1,5 +1,5 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018-2019 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -9,7 +9,10 @@
 #include "primitives/transaction.h"
 #include "platformstyle.h"
 #include "sync.h"
-#include "util.h"
+// FXTC BEGIN
+//#include "util.h"
+#include "util/system.h"
+// FXTC END
 
 #include <QMenu>
 #include <QTimer>

@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018-2019 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -863,19 +863,22 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn, bool fFlushOnClose)
                         const TxItems & txOrdered = wtxOrdered;
                         for (TxItems::const_reverse_iterator it = txOrdered.rbegin(); it != txOrdered.rend(); ++it)
                         {
-                            CWalletTx *const pwtx = (*it).second.first;
+                            // FXTC BEGIN
+                            //CWalletTx *const pwtx = (*it).second.first;
+                            CWalletTx *const pwtx = (*it).second;
                             if (pwtx == &wtx)
                                 continue;
-                            CAccountingEntry *const pacentry = (*it).second.second;
+                            //CAccountingEntry *const pacentry = (*it).second.second;
                             int64_t nSmartTime;
-                            if (pwtx)
+                            //if (pwtx)
                             {
                                 nSmartTime = pwtx->nTimeSmart;
                                 if (!nSmartTime)
                                     nSmartTime = pwtx->nTimeReceived;
                             }
-                            else
-                                nSmartTime = pacentry->nTime;
+                            //else
+                            //    nSmartTime = pacentry->nTime;
+                            // FXTC END
                             if (nSmartTime <= latestTolerated)
                             {
                                 latestEntry = nSmartTime;
@@ -899,7 +902,13 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn, bool fFlushOnClose)
         // FXTC TODO:
         // Dash
             for(unsigned int i = 0; i < wtx.tx->vout.size(); ++i) {
-                if (IsMine(wtx.tx->vout[i]) && !IsSpent(hash, i)) {
+                // FXTC BEGIN
+                //auto locked_chain = pwallet->chain().lock();
+                auto locked_chain = chain().lock();
+                //LOCK(pwallet->cs_wallet);
+                LOCK(cs_wallet);
+                // FXTC END
+                if (IsMine(wtx.tx->vout[i]) && !IsSpent(*locked_chain, hash, i)) {
                     setWalletUTXO.insert(COutPoint(hash, i));
                 }
             }
@@ -2114,8 +2123,15 @@ CAmount CWalletTx::GetAnonymizedCredit(bool fUseCache) const
         return 0;
 
     // Must wait until coinbase is safely deep enough in the chain before valuing it
-    if (IsCoinBase() && GetBlocksToMaturity() > 0)
+    // FXTC BEGIN
+    {
+    auto locked_chain = pwallet->chain().lock();
+    LOCK(pwallet->cs_wallet);
+    //if (IsCoinBase() && GetBlocksToMaturity() > 0)
+    if (IsCoinBase() && GetBlocksToMaturity(*locked_chain) > 0)
         return 0;
+    }
+    // FXTC END
 
     if (fUseCache && fAnonymizedCreditCached)
         return nAnonymizedCreditCached;
@@ -2127,7 +2143,14 @@ CAmount CWalletTx::GetAnonymizedCredit(bool fUseCache) const
         const CTxOut &txout = tx->vout[i];
         const COutPoint outpoint = COutPoint(hashTx, i);
 
-        if(pwallet->IsSpent(hashTx, i) || !pwallet->IsDenominated(outpoint)) continue;
+        // FXTC BEGIN
+        {
+        auto locked_chain = pwallet->chain().lock();
+        LOCK(pwallet->cs_wallet);
+        //if(pwallet->IsSpent(hashTx, i) || !pwallet->IsDenominated(outpoint)) continue;
+        if(pwallet->IsSpent(*locked_chain, hashTx, i) || !pwallet->IsDenominated(outpoint)) continue;
+        }
+        //
 
         const int nRounds = pwallet->GetOutpointPrivateSendRounds(outpoint);
         if(nRounds >= privateSendClient.nPrivateSendRounds){
@@ -2148,13 +2171,26 @@ CAmount CWalletTx::GetDenominatedCredit(bool unconfirmed, bool fUseCache) const
         return 0;
 
     // Must wait until coinbase is safely deep enough in the chain before valuing it
-    if (IsCoinBase() && GetBlocksToMaturity() > 0)
+    // FXTC BEGIN
+    {
+    auto locked_chain = pwallet->chain().lock();
+    LOCK(pwallet->cs_wallet);
+    //if (IsCoinBase() && GetBlocksToMaturity() > 0)
+    if (IsCoinBase() && GetBlocksToMaturity(*locked_chain) > 0)
         return 0;
+    }
+    // FXTC END
 
-    int nDepth = GetDepthInMainChain(false);
+    // FXTC BEGIN
+    {
+    auto locked_chain = pwallet->chain().lock();
+    LOCK(pwallet->cs_wallet);
+    //int nDepth = GetDepthInMainChain(false);
+    int nDepth = GetDepthInMainChain(*locked_chain, false);
     if(nDepth < 0) return 0;
 
-    bool isUnconfirmed = IsTrusted() && nDepth == 0;
+    //bool isUnconfirmed = IsTrusted() && nDepth == 0;
+    bool isUnconfirmed = IsTrusted(*locked_chain) && nDepth == 0;
     if(unconfirmed != isUnconfirmed) return 0;
 
     if (fUseCache) {
@@ -2170,7 +2206,7 @@ CAmount CWalletTx::GetDenominatedCredit(bool unconfirmed, bool fUseCache) const
     {
         const CTxOut &txout = tx->vout[i];
 
-        if(pwallet->IsSpent(hashTx, i) || !CPrivateSend::IsDenominatedAmount(tx->vout[i].nValue)) continue;
+        if(pwallet->IsSpent(*locked_chain, hashTx, i) || !CPrivateSend::IsDenominatedAmount(tx->vout[i].nValue)) continue;
 
         nCredit += pwallet->GetCredit(txout, ISMINE_SPENDABLE);
         if (!MoneyRange(nCredit))
@@ -2185,6 +2221,9 @@ CAmount CWalletTx::GetDenominatedCredit(bool unconfirmed, bool fUseCache) const
         fDenomConfCreditCached = true;
     }
     return nCredit;
+
+    }
+    // FXTC END
 }
 //
 
@@ -2360,10 +2399,17 @@ CAmount CWallet::GetAnonymizedBalance() const
         if (setWalletTxesCounted.find(outpoint.hash) != setWalletTxesCounted.end()) continue;
         setWalletTxesCounted.insert(outpoint.hash);
 
+        // FXTC BEGIN
+        {
+        auto locked_chain = chain().lock();
+        LOCK(cs_wallet);
         for (map<uint256, CWalletTx>::const_iterator it = mapWallet.find(outpoint.hash); it != mapWallet.end() && it->first == outpoint.hash; ++it) {
-            if (it->second.IsTrusted())
+            //if (it->second.IsTrusted())
+            if (it->second.IsTrusted(*locked_chain))
                 nTotal += it->second.GetAnonymizedCredit();
         }
+        }
+        // FXTC END
     }
 
     return nTotal;
@@ -2583,7 +2629,7 @@ CAmount CWallet::GetAvailableBalance(const CCoinControl* coinControl) const
 
 void CWallet::AvailableCoins(interfaces::Chain::Lock& locked_chain, std::vector<COutput> &vCoins, bool fOnlySafe, const CCoinControl *coinControl, bool fIncludeZeroValue, AvailableCoinsType nCoinType, bool fUseInstantSend, const CAmount &nMinimumAmount, const CAmount &nMaximumAmount, const CAmount &nMinimumSumAmount, const uint64_t nMaximumCount, const int nMinDepth, const int nMaxDepth) const
 {
-    return AvailableCoins(interfaces::Chain::Lock& locked_chain, vCoins, fOnlySafe, coinControl, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount, nMinDepth, nMaxDepth, fIncludeZeroValue, nCoinType, fUseInstantSend);
+    return AvailableCoins(locked_chain, vCoins, fOnlySafe, coinControl, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount, nMinDepth, nMaxDepth, fIncludeZeroValue, nCoinType, fUseInstantSend);
 }
 
 void CWallet::AvailableCoins(interfaces::Chain::Lock& locked_chain, std::vector<COutput> &vCoins, bool fOnlySafe, const CCoinControl *coinControl, const CAmount &nMinimumAmount, const CAmount &nMaximumAmount, const CAmount &nMinimumSumAmount, const uint64_t nMaximumCount, const int nMinDepth, const int nMaxDepth, bool fIncludeZeroValue, AvailableCoinsType nCoinType, bool fUseInstantSend) const
@@ -2966,8 +3012,11 @@ bool CWallet::SelectCoinsByDenominations(int nDenom, CAmount nValueMin, CAmount 
     vCoinsRet.clear();
     nValueRet = 0;
 
+    auto locked_chain = chain().lock();
+    LOCK(cs_wallet);
+
     vector<COutput> vCoins;
-    AvailableCoins(vCoins, true, NULL, false, ONLY_DENOMINATED);
+    AvailableCoins(*locked_chain, vCoins, true, NULL, false, ONLY_DENOMINATED);
 
     std::random_shuffle(vCoins.rbegin(), vCoins.rend(), GetRandInt);
 
@@ -3062,6 +3111,11 @@ bool CWallet::SelectCoinsGrouppedByAddresses(std::vector<CompactTallyItem>& vecT
 
     CAmount nSmallestDenom = CPrivateSend::GetSmallestDenomination();
 
+    // FXTC BEGIN
+    auto locked_chain = chain().lock();
+    LOCK(cs_wallet);
+    // FXTC END
+
     // Tally
     map<CTxDestination, CompactTallyItem> mapTally;
     std::set<uint256> setWalletTxesCounted;
@@ -3075,8 +3129,12 @@ bool CWallet::SelectCoinsGrouppedByAddresses(std::vector<CompactTallyItem>& vecT
 
         const CWalletTx& wtx = (*it).second;
 
-        if(wtx.IsCoinBase() && wtx.GetBlocksToMaturity() > 0) continue;
-        if(fSkipUnconfirmed && !wtx.IsTrusted()) continue;
+        // FXTC BEGIN
+        //if(wtx.IsCoinBase() && wtx.GetBlocksToMaturity() > 0) continue;
+        if(wtx.IsCoinBase() && wtx.GetBlocksToMaturity(*locked_chain) > 0) continue;
+        //if(fSkipUnconfirmed && !wtx.IsTrusted()) continue;
+        if(fSkipUnconfirmed && !wtx.IsTrusted(*locked_chain)) continue;
+        // FXTC END
 
         for (unsigned int i = 0; i < wtx.tx->vout.size(); i++) {
             CTxDestination txdest;
@@ -3085,7 +3143,10 @@ bool CWallet::SelectCoinsGrouppedByAddresses(std::vector<CompactTallyItem>& vecT
             isminefilter mine = ::IsMine(*this, txdest);
             if(!(mine & filter)) continue;
 
-            if(IsSpent(outpoint.hash, i) || IsLockedCoin(outpoint.hash, i)) continue;
+            // FXTC BEGIN
+            //if(IsSpent(outpoint.hash, i) || IsLockedCoin(outpoint.hash, i)) continue;
+            if(IsSpent(*locked_chain, outpoint.hash, i) || IsLockedCoin(outpoint.hash, i)) continue;
+            // FXTC END
 
             if(fSkipDenominated && CPrivateSend::IsDenominatedAmount(wtx.tx->vout[i].nValue)) continue;
 
@@ -3143,13 +3204,21 @@ bool CWallet::SelectCoinsGrouppedByAddresses(std::vector<CompactTallyItem>& vecT
 
 bool CWallet::SelectCoinsDark(CAmount nValueMin, CAmount nValueMax, std::vector<CTxIn>& vecTxInRet, CAmount& nValueRet, int nPrivateSendRoundsMin, int nPrivateSendRoundsMax) const
 {
+    // FXTC BEGIN
+    auto locked_chain = chain().lock();
+    LOCK(cs_wallet);
+    // FXTC END
+
     CCoinControl *coinControl=NULL;
 
     vecTxInRet.clear();
     nValueRet = 0;
 
     vector<COutput> vCoins;
-    AvailableCoins(vCoins, true, coinControl, false, nPrivateSendRoundsMin < 0 ? ONLY_NONDENOMINATED : ONLY_DENOMINATED);
+    // FXTC BEGIN
+    //AvailableCoins(vCoins, true, coinControl, false, nPrivateSendRoundsMin < 0 ? ONLY_NONDENOMINATED : ONLY_DENOMINATED);
+    AvailableCoins(*locked_chain, vCoins, true, coinControl, false, nPrivateSendRoundsMin < 0 ? ONLY_NONDENOMINATED : ONLY_DENOMINATED);
+    // FXTC END
 
     //order the array so largest nondenom are first, then denominations, then very small inputs.
     sort(vCoins.rbegin(), vCoins.rend(), CompareByPriority());
@@ -3182,9 +3251,17 @@ bool CWallet::SelectCoinsDark(CAmount nValueMin, CAmount nValueMax, std::vector<
 
 bool CWallet::GetCollateralTxDSIn(CTxDSIn& txdsinRet, CAmount& nValueRet) const
 {
+    // FXTC BEGIN
+    auto locked_chain = chain().lock();
+    LOCK(cs_wallet);
+    // FXTC END
+
     vector<COutput> vCoins;
 
-    AvailableCoins(vCoins);
+    // FXTC BEGIN
+    //AvailableCoins(vCoins);
+    AvailableCoins(*locked_chain, vCoins);
+    // FXTC END
 
     for (const COutput& out : vCoins)
     {
@@ -3201,12 +3278,20 @@ bool CWallet::GetCollateralTxDSIn(CTxDSIn& txdsinRet, CAmount& nValueRet) const
 
 bool CWallet::GetMasternodeOutpointAndKeys(COutPoint& outpointRet, CPubKey& pubKeyRet, CKey& keyRet, std::string strTxHash, std::string strOutputIndex)
 {
+    // FXTC BEGIN
+    auto locked_chain = chain().lock();
+    LOCK(cs_wallet);
+    // FXTC END
+
     // wait for reindex and/or import to finish
     if (fImporting || fReindex) return false;
 
     // Find possible candidates
     std::vector<COutput> vPossibleCoins;
-    AvailableCoins(vPossibleCoins, true, NULL, false, ONLY_MASTERNODE_COLLATERAL);
+    // FXTC BEGIN
+    //AvailableCoins(vPossibleCoins, true, NULL, false, ONLY_MASTERNODE_COLLATERAL);
+    AvailableCoins(*locked_chain, vPossibleCoins, true, NULL, false, ONLY_MASTERNODE_COLLATERAL);
+    // FXTC END
     if(vPossibleCoins.empty()) {
         LogPrintf("CWallet::GetMasternodeOutpointAndKeys -- Could not locate any valid masternode vin\n");
         return false;
@@ -3261,12 +3346,20 @@ int CWallet::CountInputsWithAmount(CAmount nInputAmount)
 {
     CAmount nTotal = 0;
     {
+        // FXTC BEGIN
+        auto locked_chain = chain().lock();
+        // FXTC END
+
         LOCK2(cs_main, cs_wallet);
         for (map<uint256, CWalletTx>::const_iterator it = mapWallet.begin(); it != mapWallet.end(); ++it)
         {
             const CWalletTx* pcoin = &(*it).second;
-            if (pcoin->IsTrusted()){
-                int nDepth = pcoin->GetDepthInMainChain(false);
+            // FXTC BEGIN
+            //if (pcoin->IsTrusted()){
+            if (pcoin->IsTrusted(*locked_chain)){
+                //int nDepth = pcoin->GetDepthInMainChain();
+                int nDepth = pcoin->GetDepthInMainChain(*locked_chain);
+            // FXTC END
 
                 for (unsigned int i = 0; i < pcoin->tx->vout.size(); i++) {
                     COutput out = COutput(pcoin, i, nDepth, true, true, true); // FXTC TODO: last bool is fSafe
@@ -3274,7 +3367,10 @@ int CWallet::CountInputsWithAmount(CAmount nInputAmount)
 
                     if(out.tx->tx->vout[out.i].nValue != nInputAmount) continue;
                     if(!CPrivateSend::IsDenominatedAmount(pcoin->tx->vout[i].nValue)) continue;
-                    if(IsSpent(out.tx->GetHash(), i) || IsMine(pcoin->tx->vout[i]) != ISMINE_SPENDABLE || !IsDenominated(outpoint)) continue;
+                    // FXTC BEGIN
+                    //if(IsSpent(out.tx->GetHash(), i) || IsMine(pcoin->tx->vout[i]) != ISMINE_SPENDABLE || !IsDenominated(outpoint)) continue;
+                    if(IsSpent(*locked_chain, out.tx->GetHash(), i) || IsMine(pcoin->tx->vout[i]) != ISMINE_SPENDABLE || !IsDenominated(outpoint)) continue;
+                    // FXTC END
 
                     nTotal++;
                 }
@@ -3287,8 +3383,16 @@ int CWallet::CountInputsWithAmount(CAmount nInputAmount)
 
 bool CWallet::HasCollateralInputs(bool fOnlyConfirmed) const
 {
+    // FXTC BEGIN
+    auto locked_chain = chain().lock();
+    LOCK(cs_wallet);
+    // FXTC END
+
     vector<COutput> vCoins;
-    AvailableCoins(vCoins, fOnlyConfirmed, NULL, false, ONLY_PRIVATESEND_COLLATERAL);
+    // FXTC BEGIN
+    //AvailableCoins(vCoins, fOnlyConfirmed, NULL, false, ONLY_PRIVATESEND_COLLATERAL);
+    AvailableCoins(*locked_chain, vCoins, fOnlyConfirmed, NULL, false, ONLY_PRIVATESEND_COLLATERAL);
+    // FXTC END
 
     return !vCoins.empty();
 }
@@ -3334,6 +3438,11 @@ bool CWallet::CreateCollateralTransaction(CMutableTransaction& txCollateral, std
 
 bool CWallet::GetBudgetSystemCollateralTX(CTransactionRef& tx, uint256 hash, CAmount amount, bool fUseInstantSend)
 {
+    // FXTC BEGIN
+    auto locked_chain = chain().lock();
+    LOCK(cs_wallet);
+    // FXTC END
+
     // make our change address
     CReserveKey reservekey(this);
 
@@ -3347,7 +3456,10 @@ bool CWallet::GetBudgetSystemCollateralTX(CTransactionRef& tx, uint256 hash, CAm
     vecSend.push_back((CRecipient){scriptChange, amount, false});
 
     CCoinControl *coinControl=NULL;
-    bool success = CreateTransaction(vecSend, tx, reservekey, nFeeRet, nChangePosRet, strFail, *coinControl, true, ALL_COINS, fUseInstantSend);
+    // FXTC BEGIN
+    //bool success = CreateTransaction(vecSend, tx, reservekey, nFeeRet, nChangePosRet, strFail, *coinControl, true, ALL_COINS, fUseInstantSend);
+    bool success = CreateTransaction(*locked_chain, vecSend, tx, reservekey, nFeeRet, nChangePosRet, strFail, *coinControl, true, ALL_COINS, fUseInstantSend);
+    // FXTC END
     if(!success){
         LogPrintf("CWallet::GetBudgetSystemCollateralTX -- Error: %s\n", strFail);
         return false;
@@ -3737,6 +3849,12 @@ bool CWallet::CreateTransaction(interfaces::Chain::Lock& locked_chain, const std
                         return false;
                     }
 
+                    // FXTC BEGIN
+                    {
+                    auto locked_chain = chain().lock();
+                    LOCK(cs_wallet);
+                    // FXTC END
+
                     for(auto pcoin : setCoins)
                     {
                         CAmount nCredit = pcoin.txout.nValue;
@@ -3745,12 +3863,19 @@ bool CWallet::CreateTransaction(interfaces::Chain::Lock& locked_chain, const std
                         //a chance at a free transaction.
                         //But mempool inputs might still be in the mempool, so their age stays 0
                         auto it = mapWallet.find(pcoin.outpoint.hash);
-                        int age = it->second.GetDepthInMainChain();
+                        // FXTC BEGIN
+                        //int age = it->second.GetDepthInMainChain();
+                        int age = it->second.GetDepthInMainChain(*locked_chain);
+                        // FXTC END
                         assert(age >= 0);
                         if (age != 0)
                             age += 1;
                         dPriority += (double)nCredit * age;
                     }
+
+                    // FXTC BEGIN
+                    }
+                    // FXTC END
                     //
                 } else {
                     bnb_used = false;
@@ -4127,10 +4252,17 @@ DBErrors CWallet::LoadWallet(bool& fFirstRunRet)
 
     // Dash
     {
+        // FXTC BEGIN
+        auto locked_chain = chain().lock();
+        // FXTC END
+
         LOCK2(cs_main, cs_wallet);
         for (auto& pair : mapWallet) {
             for(unsigned int i = 0; i < pair.second.tx->vout.size(); ++i) {
-                if (IsMine(pair.second.tx->vout[i]) && !IsSpent(pair.first, i)) {
+                // FXTC BEGIN
+                //if (IsMine(pair.second.tx->vout[i]) && !IsSpent(pair.first, i)) {
+                if (IsMine(pair.second.tx->vout[i]) && !IsSpent(*locked_chain, pair.first, i)) {
+                // FXTC END
                     setWalletUTXO.insert(COutPoint(pair.first, i));
                 }
             }
@@ -5408,7 +5540,7 @@ int CMerkleTx::GetDepthInMainChain(interfaces::Chain::Lock& locked_chain, bool e
 {
     // FXTC BEGIN
     //int nResult = GetDepthInMainChainBTC(pindexRet);
-    int nResult = GetDepthInMainChainBTC();
+    int nResult = GetDepthInMainChainBTC(locked_chain);
     // FXTC END
 
     if (nResult == 0 && !mempool.exists(GetHash()))

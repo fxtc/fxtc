@@ -1,7 +1,7 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018-2019 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -125,7 +125,7 @@ static UniValue getnetworkhashps(const JSONRPCRequest& request)
                 {
                     {"nblocks", RPCArg::Type::NUM, /* opt */ true, /* default_val */ "120", "The number of blocks, or -1 for blocks since last difficulty change."},
                     {"height", RPCArg::Type::NUM, /* opt */ true, /* default_val */ "-1", "To estimate at the time of the given height."},
-                    {"algorithm", RPCArg::Type::STR, /* opt */ true, /* default_val */ miningAlgo, "Filter work for selected algorithm.."},
+                    {"algorithm", RPCArg::Type::STR, /* opt */ true, /* default_val */ "", "Filter work for selected algorithm.."},
                 }}
                 .ToString() +
             "\nResult:\n"
@@ -757,13 +757,13 @@ static UniValue getblocktemplate(const JSONRPCRequest& request)
         CTxDestination address1;
         ExtractDestination(pblock->txoutMasternode.scriptPubKey, address1);
         std::string address2 = EncodeDestination(address1);
-        masternodeObj.push_back(Pair("payee", address2.c_str()));
-        masternodeObj.push_back(Pair("script", HexStr(pblock->txoutMasternode.scriptPubKey.begin(), pblock->txoutMasternode.scriptPubKey.end())));
-        masternodeObj.push_back(Pair("amount", pblock->txoutMasternode.nValue));
+        masternodeObj.pushKV("payee", address2.c_str());
+        masternodeObj.pushKV("script", HexStr(pblock->txoutMasternode.scriptPubKey.begin(), pblock->txoutMasternode.scriptPubKey.end()));
+        masternodeObj.pushKV("amount", pblock->txoutMasternode.nValue);
     }
-    result.push_back(Pair("masternode", masternodeObj));
-    result.push_back(Pair("masternode_payments_started", pindexPrev->nHeight + 1 > Params().GetConsensus().nMasternodePaymentsStartBlock));
-    result.push_back(Pair("masternode_payments_enforced", sporkManager.IsSporkActive(SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT)));
+    result.pushKV("masternode", masternodeObj);
+    result.pushKV("masternode_payments_started", pindexPrev->nHeight + 1 > Params().GetConsensus().nMasternodePaymentsStartBlock);
+    result.pushKV("masternode_payments_enforced", sporkManager.IsSporkActive(SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT));
 
     UniValue superblockObjArray(UniValue::VARR);
     if(pblock->voutSuperblock.size()) {
@@ -772,25 +772,25 @@ static UniValue getblocktemplate(const JSONRPCRequest& request)
             CTxDestination address1;
             ExtractDestination(txout.scriptPubKey, address1);
             std::string address2 = EncodeDestination(address1);
-            entry.push_back(Pair("payee", address2.c_str()));
-            entry.push_back(Pair("script", HexStr(txout.scriptPubKey.begin(), txout.scriptPubKey.end())));
-            entry.push_back(Pair("amount", txout.nValue));
+            entry.pushKV("payee", address2.c_str());
+            entry.pushKV("script", HexStr(txout.scriptPubKey.begin(), txout.scriptPubKey.end()));
+            entry.pushKV("amount", txout.nValue);
             superblockObjArray.push_back(entry);
         }
     }
-    result.push_back(Pair("superblock", superblockObjArray));
-    result.push_back(Pair("superblocks_started", pindexPrev->nHeight + 1 > Params().GetConsensus().nSuperblockStartBlock));
-    result.push_back(Pair("superblocks_enabled", sporkManager.IsSporkActive(SPORK_9_SUPERBLOCKS_ENABLED)));
+    result.pushKV("superblock", superblockObjArray);
+    result.pushKV("superblocks_started", pindexPrev->nHeight + 1 > Params().GetConsensus().nSuperblockStartBlock);
+    result.pushKV("superblocks_enabled", sporkManager.IsSporkActive(SPORK_9_SUPERBLOCKS_ENABLED));
     //
 
     // FXTC BEGIN
     CAmount founderReward = GetFounderReward(pindexPrev->nHeight+1,pblock->vtx[0]->GetValueOut());
     if (founderReward > 0) {
         UniValue founderRewardObj(UniValue::VOBJ);
-        founderRewardObj.push_back(Pair("founderpayee", Params().FounderAddress().c_str()));
-        founderRewardObj.push_back(Pair("amount", founderReward));
-        result.push_back(Pair("founderreward", founderRewardObj));
-        result.push_back(Pair("founder_reward_enforced", true));
+        founderRewardObj.pushKV("founderpayee", Params().FounderAddress().c_str());
+        founderRewardObj.pushKV("amount", founderReward);
+        result.pushKV("founderreward", founderRewardObj);
+        result.pushKV("founder_reward_enforced", true);
     }
     //FXTC END
 

@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2019 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018-2019 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -529,7 +529,7 @@ private:
 
     std::unique_ptr<CSemaphore> semOutbound;
     // Dash
-    std::unique_ptr<CSemaphore> semMasternodeOutbound{NULL};
+    std::unique_ptr<CSemaphore> semMasternodeOutbound;
     //
     std::unique_ptr<CSemaphore> semAddnode;
     int nMaxConnections;

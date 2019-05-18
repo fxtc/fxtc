@@ -1,4 +1,5 @@
 // Copyright (c) 2012-2014 The Bitcoin developers
+// Copyright (c) 2018-2019 FxTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,7 +9,7 @@
 #include "clientversion.h"
 #include "serialize.h"
 #include "streams.h"
-#include "util.h"
+#include "util/system.h"
 #include "version.h"
 
 #include <boost/filesystem/path.hpp>
