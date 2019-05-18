@@ -14,7 +14,8 @@
 #include <wincrypt.h>
 #endif
 #include <logging.h>  // for LogPrint()
-#include <utiltime.h> // for GetTime()
+#include <sync.h>     // for WAIT_LOCK
+#include <util/time.h> // for GetTime()
 
 #include <stdlib.h>
 #include <chrono>
@@ -36,7 +37,7 @@
 #include <sys/random.h>
 #endif
 #ifdef HAVE_SYSCTL_ARND
-#include <utilstrencodings.h> // for ARRAYLEN
+#include <util/strencodings.h> // for ARRAYLEN
 #include <sys/sysctl.h>
 #endif
 
@@ -297,7 +298,7 @@ void RandAddSeedSleep()
 }
 
 
-static std::mutex cs_rng_state;
+static Mutex cs_rng_state;
 static unsigned char rng_state[32] = {0};
 static uint64_t rng_counter = 0;
 
@@ -307,7 +308,7 @@ static void AddDataToRng(void* data, size_t len) {
     hasher.Write((const unsigned char*)data, len);
     unsigned char buf[64];
     {
-        std::unique_lock<std::mutex> lock(cs_rng_state);
+        WAIT_LOCK(cs_rng_state, lock);
         hasher.Write(rng_state, sizeof(rng_state));
         hasher.Write((const unsigned char*)&rng_counter, sizeof(rng_counter));
         ++rng_counter;
@@ -339,7 +340,7 @@ void GetStrongRandBytes(unsigned char* out, int num)
 
     // Combine with and update state
     {
-        std::unique_lock<std::mutex> lock(cs_rng_state);
+        WAIT_LOCK(cs_rng_state, lock);
         hasher.Write(rng_state, sizeof(rng_state));
         hasher.Write((const unsigned char*)&rng_counter, sizeof(rng_counter));
         ++rng_counter;
@@ -399,6 +400,7 @@ uint256 FastRandomContext::rand256()
 
 std::vector<unsigned char> FastRandomContext::randbytes(size_t len)
 {
+    if (requires_seed) RandomSeed();
     std::vector<unsigned char> ret(len);
     if (len > 0) {
         rng.Output(&ret[0], len);
@@ -462,6 +464,20 @@ FastRandomContext::FastRandomContext(bool fDeterministic) : requires_seed(!fDete
     }
     uint256 seed;
     rng.SetKey(seed.begin(), 32);
+}
+
+FastRandomContext& FastRandomContext::operator=(FastRandomContext&& from) noexcept
+{
+    requires_seed = from.requires_seed;
+    rng = from.rng;
+    std::copy(std::begin(from.bytebuf), std::end(from.bytebuf), std::begin(bytebuf));
+    bytebuf_size = from.bytebuf_size;
+    bitbuf = from.bitbuf;
+    bitbuf_size = from.bitbuf_size;
+    from.requires_seed = true;
+    from.bytebuf_size = 0;
+    from.bitbuf_size = 0;
+    return *this;
 }
 
 void RandomInit()

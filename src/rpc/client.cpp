@@ -5,7 +5,7 @@
 
 #include <rpc/client.h>
 #include <rpc/protocol.h>
-#include <util.h>
+#include <util/system.h>
 
 #include <set>
 #include <stdint.h>
@@ -18,6 +18,7 @@ public:
     std::string paramName;  //!< parameter name
 };
 
+// clang-format off
 /**
  * Specify a (method, idx, name) here if the argument is a non-string RPC
  * argument and needs to be converted from JSON.
@@ -44,7 +45,6 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "listreceivedbyaddress", 0, "minconf" },
     { "listreceivedbyaddress", 1, "include_empty" },
     { "listreceivedbyaddress", 2, "include_watchonly" },
-    { "listreceivedbyaddress", 3, "address_filter" },
     { "listreceivedbylabel", 0, "minconf" },
     { "listreceivedbylabel", 1, "include_empty" },
     { "listreceivedbylabel", 2, "include_watchonly" },
@@ -150,7 +150,6 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "logging", 0, "include" },
     { "logging", 1, "exclude" },
     { "disconnectnode", 1, "nodeid" },
-    { "addwitnessaddress", 1, "p2sh" },
     // Echo with conversion (For testing only)
     { "echojson", 0, "arg0" },
     { "echojson", 1, "arg1" },
@@ -165,7 +164,10 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "rescanblockchain", 0, "start_height"},
     { "rescanblockchain", 1, "stop_height"},
     { "createwallet", 1, "disable_private_keys"},
+    { "getnodeaddresses", 0, "count"},
+    { "stop", 0, "wait" },
 };
+// clang-format on
 
 class CRPCConvertTable
 {

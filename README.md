@@ -1,10 +1,19 @@
-RTM branch is 0.16! Use master branch at your own risk!
+RTM branch is 0.17! Use master branch at your own risk!
 =======================================================
 
 FxTC Core integration/staging tree
 ==================================
 
+[![Build Status](https://travis-ci.org/fxtc/fxtc.svg?branch=master)](https://travis-ci.org/fxtc/fxtc)
+
 https://fixedtradecoin.org
+
+Development Process
+-------------------
+
+The `master` branch is regularly built and tested, but is not guaranteed to be
+completely stable. [Tags](https://github.com/fxtc/fxtc/tags) are created
+regularly to indicate new official, stable release versions of FxTC Core.
 
 Linux Build Instructions and Notes
 ==================================

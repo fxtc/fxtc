@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2011-2019 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
 // Copyright (c) 2018 FXTC developers
 // Distributed under the MIT software license, see the accompanying
@@ -21,6 +21,10 @@
 #include <QMenu>
 #include <QPoint>
 #include <QSystemTrayIcon>
+
+#ifdef Q_OS_MAC
+#include <qt/macos_appnap.h>
+#endif
 
 #include <memory>
 
@@ -84,6 +88,11 @@ public:
     void removeAllWallets();
 #endif // ENABLE_WALLET
     bool enableWallet = false;
+
+    /** Get the tray icon status.
+        Some systems have not "system tray" or "notification area" available.
+    */
+    bool hasTrayIcon() const { return trayIcon; }
 
 protected:
     void changeEvent(QEvent *e);
@@ -155,6 +164,10 @@ private:
     HelpMessageDialog* helpMessageDialog = nullptr;
     ModalOverlay* modalOverlay = nullptr;
 
+#ifdef Q_OS_MAC
+    CAppNapInhibitor* m_app_nap_inhibitor = nullptr;
+#endif
+
     /** Keep track of previous number of blocks, to detect progress */
     int prevBlocks = 0;
     int spinnerFrame = 0;
@@ -191,6 +204,8 @@ private:
 Q_SIGNALS:
     /** Signal raised when a URI was entered or dragged to the GUI */
     void receivedURI(const QString &uri);
+    /** Signal raised when RPC console shown */
+    void consoleShown(RPCConsole* console);
 
 public Q_SLOTS:
     /** Set number of connections shown in the UI */
@@ -215,7 +230,7 @@ public Q_SLOTS:
     void message(const QString &title, const QString &message, unsigned int style, bool *ret = nullptr);
 
 #ifdef ENABLE_WALLET
-    bool setCurrentWallet(const QString& name);
+    bool setCurrentWallet(WalletModel* wallet_model);
     bool setCurrentWalletBySelectorIndex(int index);
     /** Set the UI status indicators based on the currently selected wallet.
     */
@@ -232,7 +247,7 @@ private:
      @param[in] hdEnabled         current hd enabled status
      @see WalletModel::EncryptionStatus
      */
-    void setHDStatus(int hdEnabled);
+    void setHDStatus(bool privkeyDisabled, int hdEnabled);
 
 public Q_SLOTS:
     bool handlePaymentRequest(const SendCoinsRecipient& recipient);
@@ -301,6 +316,9 @@ public Q_SLOTS:
 #ifndef Q_OS_MAC
     /** Handle tray icon clicked */
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
+#else
+    /** Handle macOS Dock icon clicked */
+    void macosDockIconActivated();
 #endif
 
     /** Show window if hidden, unminimize when minimized, rise when obscured or show if hidden and fToggleHidden is true */

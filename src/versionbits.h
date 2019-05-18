@@ -32,17 +32,6 @@ enum class ThresholdState {
 // will either be nullptr or a block with (height + 1) % Period() == 0.
 typedef std::map<const CBlockIndex*, ThresholdState> ThresholdConditionCache;
 
-struct VBDeploymentInfo {
-    /** Deployment name */
-    const char *name;
-    /** Whether GBT clients can safely ignore this rule in simplified usage */
-    bool gbt_force;
-    // Dash
-    /** Whether to check current MN protocol or not */
-    bool check_mn_protocol;
-    //
-};
-
 struct BIP9Stats {
     int period;
     int threshold;
@@ -50,8 +39,6 @@ struct BIP9Stats {
     int count;
     bool possible;
 };
-
-extern const struct VBDeploymentInfo VersionBitsDeploymentInfo[];
 
 /**
  * Abstract class that implements BIP9-style threshold logic, and caches results.

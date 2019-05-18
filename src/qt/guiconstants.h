@@ -51,5 +51,6 @@ static const int MAX_URI_LENGTH = 255;
 #define QAPP_ORG_DOMAIN "fixedtradecoin.org"
 #define QAPP_APP_NAME_DEFAULT "FxTC-Qt"
 #define QAPP_APP_NAME_TESTNET "FxTC-Qt-testnet"
+#define QAPP_APP_NAME_REGTEST "FxTC-Qt-regtest"
 
 #endif // BITCOIN_QT_GUICONSTANTS_H

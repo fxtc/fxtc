@@ -64,12 +64,6 @@ public:
     size_t size() const { return stream->size(); }
 };
 
-template<typename S>
-OverrideStream<S> WithOrVersion(S* s, int nVersionFlag)
-{
-    return OverrideStream<S>(s, s->GetType(), s->GetVersion() | nVersionFlag);
-}
-
 /* Minimal stream for overwriting and/or appending to an existing byte vector
  *
  * The referenced vector will grow as necessary
@@ -126,12 +120,6 @@ class CVectorWriter
     {
         return nType;
     }
-    void seek(size_t nSize)
-    {
-        nPos += nSize;
-        if(nPos > vchData.size())
-            vchData.resize(nPos);
-    }
 private:
     const int nType;
     const int nVersion;
@@ -158,9 +146,11 @@ public:
      * @param[in]  pos Starting position. Vector index where reads should start.
      */
     VectorReader(int type, int version, const std::vector<unsigned char>& data, size_t pos)
-        : m_type(type), m_version(version), m_data(data)
+        : m_type(type), m_version(version), m_data(data), m_pos(pos)
     {
-        seek(pos);
+        if (m_pos > m_data.size()) {
+            throw std::ios_base::failure("VectorReader(...): end of data (m_pos > m_data.size())");
+        }
     }
 
     /*
@@ -202,14 +192,6 @@ public:
         }
         memcpy(dst, m_data.data() + m_pos, n);
         m_pos = pos_next;
-    }
-
-    void seek(size_t n)
-    {
-        m_pos += n;
-        if (m_pos > m_data.size()) {
-            throw std::ios_base::failure("VectorReader::seek(): end of data");
-        }
     }
 };
 
@@ -538,7 +520,7 @@ public:
     explicit BitStreamReader(IStream& istream) : m_istream(istream) {}
 
     /** Read the specified number of bits from the stream. The data is returned
-     * in the nbits least signficant bits of a 64-bit uint.
+     * in the nbits least significant bits of a 64-bit uint.
      */
     uint64_t Read(int nbits) {
         if (nbits < 0 || nbits > 64) {
@@ -770,7 +752,7 @@ protected:
 
 public:
     CBufferedFile(FILE *fileIn, uint64_t nBufSize, uint64_t nRewindIn, int nTypeIn, int nVersionIn) :
-        nType(nTypeIn), nVersion(nVersionIn), nSrcPos(0), nReadPos(0), nReadLimit((uint64_t)(-1)), nRewind(nRewindIn), vchBuf(nBufSize, 0)
+        nType(nTypeIn), nVersion(nVersionIn), nSrcPos(0), nReadPos(0), nReadLimit(std::numeric_limits<uint64_t>::max()), nRewind(nRewindIn), vchBuf(nBufSize, 0)
     {
         src = fileIn;
     }
@@ -855,7 +837,7 @@ public:
 
     // prevent reading beyond a certain position
     // no argument removes the limit
-    bool SetLimit(uint64_t nPos = (uint64_t)(-1)) {
+    bool SetLimit(uint64_t nPos = std::numeric_limits<uint64_t>::max()) {
         if (nPos < nReadPos)
             return false;
         nReadLimit = nPos;

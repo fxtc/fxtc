@@ -445,7 +445,6 @@ public:
     std::string GetCommand() const;
     std::string ToString() const;
 
-    // TODO: make private (improves encapsulation)
 public:
     int type;
     uint256 hash;
