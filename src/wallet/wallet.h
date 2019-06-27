@@ -17,11 +17,9 @@
 #include <streams.h>
 #include <tinyformat.h>
 #include <ui_interface.h>
+#include <util/system.h>
 #include <util/strencodings.h>
 #include <validationinterface.h>
-#include <script/ismine.h>
-#include <script/sign.h>
-#include <util/system.h>
 #include <wallet/crypter.h>
 #include <wallet/coinselection.h>
 #include <wallet/walletdb.h>

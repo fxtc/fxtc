@@ -1,6 +1,6 @@
 // Copyright (c) 2014-2017 The Dash Core developers
 // Copyright (c) 2017 The PiVX developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018-2019 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,10 +10,11 @@
 #include <net_processing.h>
 #include <netmessagemaker.h>
 #include <spork.h>
-
+// FXTC BEGIN
 // Pivx
 #include <sporkdb.h>
 //
+// FXTC END
 
 #include <boost/lexical_cast.hpp>
 
@@ -56,7 +57,7 @@ void CSporkManager::LoadSporksFromDB()
         std::time_t result = spork.nValue;
         // If SPORK Value is greater than 1,000,000 assume it's actually a Date and then convert to a more readable format
         if (spork.nValue > 1000000) {
-            LogPrintf("%s : loaded spork %s with value %d : %s", __func__,
+            LogPrintf("%s : loaded spork %s with value %d : %s\n", __func__,
                       sporkManager.GetSporkNameByID(spork.nSporkID), spork.nValue,
                       std::ctime(&result));
         } else {

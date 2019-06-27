@@ -1,10 +1,10 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018-2019 FXTC developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef MASTERNODE_PAYMENTS_H
-#define MASTERNODE_PAYMENTS_H
+#ifndef DASH_MASTERNODE_PAYMENTS_H
+#define DASH_MASTERNODE_PAYMENTS_H
 
 #include <core_io.h>
 #include <key.h>
@@ -224,4 +224,4 @@ public:
     void UpdatedBlockTip(const CBlockIndex *pindex, CConnman& connman);
 };
 
-#endif
+#endif //DASH_MASTERNODE_PAYMENTS_H

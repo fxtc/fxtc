@@ -50,7 +50,7 @@ static void DuplicateInputs(benchmark::State& state)
         ActivateBestChain(cvstate, chainparams);
         assert(::chainActive.Tip() != nullptr);
         const bool witness_enabled{IsWitnessEnabled(::chainActive.Tip(), chainparams.GetConsensus())};
-        assert(witness_enabled);
+//        assert(witness_enabled);
     }
 
     CBlock block{};

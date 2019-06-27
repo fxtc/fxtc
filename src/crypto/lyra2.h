@@ -17,8 +17,8 @@
 * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifndef LYRA2_H_
-#define LYRA2_H_
+#ifndef LYRA_CRYPTO_LYRA2_H
+#define LYRA_CRYPTO_LYRA2_H
 
 #include <stdint.h>
 
@@ -50,4 +50,4 @@ int LYRA2_old(void *K, uint64_t kLen, const void *pwd, uint64_t pwdlen, const vo
 
 #endif
 
-#endif /* LYRA2_H_ */
+#endif // LYRA_CRYPTO_LYRA2_H

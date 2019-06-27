@@ -1,3 +1,4 @@
+// Copyright (c) 2018-2019 FXTC developers
 /**
 * A simple implementation of Blake2b's internal permutation
 * in the form of a sponge.
@@ -21,8 +22,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
-#include "Sponge.h"
-#include "Lyra2.h"
+#include <crypto/sponge.h>
+#include <crypto/lyra2.h>
 
 
 

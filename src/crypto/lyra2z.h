@@ -1,5 +1,5 @@
-#ifndef LYRA2RE_H
-#define LYRA2RE_H
+#ifndef ZCOIN_CRYPTO_LYRA2Z_H
+#define ZCOIN_CRYPTO_LYRA2Z_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -11,4 +11,4 @@ extern "C" {
 }
 #endif
 
-#endif
+#endif // ZCOIN_CRYPTO_LYRA2Z_H

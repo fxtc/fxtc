@@ -1,3 +1,4 @@
+// Copyright (c) 2018-2019 FXTC developers
 /**
 * Header file for Blake2b's internal permutation in the form of a sponge.
 * This code is based on the original Blake2b's implementation provided by
@@ -19,8 +20,8 @@
 * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifndef SPONGE_H_
-#define SPONGE_H_
+#ifndef LYRA_CRYPTO_SPONGE_H
+#define LYRA_CRYPTO_SPONGE_H
 
 #include <stdint.h>
 
@@ -105,4 +106,4 @@ void printArray(unsigned char *array, unsigned int size, char *name);
 /////////////
 
 
-#endif /* SPONGE_H_ */
+#endif // LYRA_CRYPTO_SPONGE_H

@@ -1,3 +1,4 @@
+// Copyright (c) 2018-2019 FXTC developers
 /* $Id: whirlpool.c 227 2010-06-16 17:28:38Z tp $ */
 /*
  * WHIRLPOOL implementation.
@@ -49,7 +50,7 @@
 #include <stddef.h>
 #include <string.h>
 
-#include "sph_whirlpool.h"
+#include <crypto/sph_whirlpool.h>
 
 #ifdef __cplusplus
  extern "C"{
@@ -3442,19 +3443,19 @@ ROUND_FUN(whirlpool1, old1)
 
 #define RFUN   whirlpool_round
 #define HASH   whirlpool
-#include "md_helper.c"
+#include <crypto/md_helper.c>
 #undef RFUN
 #undef HASH
 
 #define RFUN   whirlpool0_round
 #define HASH   whirlpool0
-#include "md_helper.c"
+#include <crypto/md_helper.c>
 #undef RFUN
 #undef HASH
 
 #define RFUN   whirlpool1_round
 #define HASH   whirlpool1
-#include "md_helper.c"
+#include <crypto/md_helper.c>
 #undef RFUN
 #undef HASH
 

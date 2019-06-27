@@ -1,3 +1,4 @@
+// Copyright (c) 2018-2019 FXTC developers
 /* $Id: sph_cubehash.h 180 2010-05-08 02:29:25Z tp $ */
 /**
  * CubeHash interface. CubeHash is a family of functions which differ by
@@ -8,7 +9,7 @@
  * ==========================(LICENSE BEGIN)============================
  *
  * Copyright (c) 2007-2010  Projet RNRT SAPHIR
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -16,10 +17,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -34,15 +35,15 @@
  * @author   Thomas Pornin <thomas.pornin@cryptolog.com>
  */
 
-#ifndef SPH_CUBEHASH_H__
-#define SPH_CUBEHASH_H__
+#ifndef RNRT_CRYPTO_SPH_CUBEHASH_H
+#define RNRT_CRYPTO_SPH_CUBEHASH_H
 
 #ifdef __cplusplus
 extern "C"{
 #endif
 
 #include <stddef.h>
-#include "sph_types.h"
+#include <crypto/sph_types.h>
 
 /**
  * Output size (in bits) for CubeHash-224.
@@ -289,4 +290,4 @@ void sph_cubehash512_addbits_and_close(
 }
 #endif
 
-#endif
+#endif // RNRT_CRYPTO_SPH_CUBEHASH_H

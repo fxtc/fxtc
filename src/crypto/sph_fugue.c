@@ -1,7 +1,9 @@
+// Copyright (c) 2018-2019 FXTC developers
+
 #include <stddef.h>
 #include <string.h>
 
-#include "sph_fugue.h"
+#include <crypto/sph_fugue.h>
 
 #ifdef __cplusplus
 extern "C"{

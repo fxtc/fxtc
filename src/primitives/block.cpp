@@ -12,7 +12,7 @@
 #include <crypto/common.h>
 
 // FXTC BEGIN
-#include <crypto/Lyra2Z.h>
+#include <crypto/lyra2z.h>
 #include <crypto/nist5.h>
 #include <crypto/scrypt.h>
 #include <crypto/x11.h>

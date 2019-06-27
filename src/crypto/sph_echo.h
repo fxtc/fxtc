@@ -1,3 +1,4 @@
+// Copyright (c) 2018-2019 FXTC developers
 /* $Id: sph_echo.h 216 2010-06-08 09:46:57Z tp $ */
 /**
  * ECHO interface. ECHO is a family of functions which differ by
@@ -7,7 +8,7 @@
  * ==========================(LICENSE BEGIN)============================
  *
  * Copyright (c) 2007-2010  Projet RNRT SAPHIR
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -15,10 +16,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -33,15 +34,15 @@
  * @author   Thomas Pornin <thomas.pornin@cryptolog.com>
  */
 
-#ifndef SPH_ECHO_H__
-#define SPH_ECHO_H__
+#ifndef RNRT_CRYPTO_SPH_ECHO_H
+#define RNRT_CRYPTO_SPH_ECHO_H
 
 #ifdef __cplusplus
 extern "C"{
 #endif
 
 #include <stddef.h>
-#include "sph_types.h"
+#include <crypto/sph_types.h>
 
 /**
  * Output size (in bits) for ECHO-224.
@@ -312,9 +313,9 @@ void sph_echo512_close(void *cc, void *dst);
  */
 void sph_echo512_addbits_and_close(
 	void *cc, unsigned ub, unsigned n, void *dst);
-	
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif // RNRT_CRYPTO_SPH_ECHO_H

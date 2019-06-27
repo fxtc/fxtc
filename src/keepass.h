@@ -1,10 +1,10 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018-2019 FXTC developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef _KEEPASS_H_
-#define _KEEPASS_H_
+#ifndef DASH_KEEPASS_H
+#define DASH_KEEPASS_H
 
 #include <support/allocators/secure.h>
 
@@ -131,4 +131,4 @@ public:
 
 };
 
-#endif
+#endif // DASH_KEEPASS_H

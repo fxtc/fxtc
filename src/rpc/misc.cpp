@@ -28,7 +28,7 @@
 #include <masternode-sync.h>
 #include <spork.h>
 // FXTC BEGIN
-#include "wallet/rpcwallet.h"
+#include <wallet/rpcwallet.h>
 // FXTC END
 //
 

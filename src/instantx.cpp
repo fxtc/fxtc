@@ -1,5 +1,5 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018-2019 FXTC developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -954,12 +954,12 @@ bool CTxLockRequest::IsValid() const
     if(vout.size() < 1) return false;
 
     if(vin.size() > WARN_MANY_INPUTS) {
-        LogPrint(BCLog::INSTANTSEND, "CTxLockRequest::IsValid -- WARNING: Too many inputs: tx=%s", ToString());
+        LogPrint(BCLog::INSTANTSEND, "CTxLockRequest::IsValid -- WARNING: Too many inputs: tx=%s\n", ToString());
     }
 
     LOCK(cs_main);
     if(!CheckFinalTx(*this)) {
-        LogPrint(BCLog::INSTANTSEND, "CTxLockRequest::IsValid -- Transaction is not final: tx=%s", ToString());
+        LogPrint(BCLog::INSTANTSEND, "CTxLockRequest::IsValid -- Transaction is not final: tx=%s\n", ToString());
         return false;
     }
 
@@ -988,14 +988,14 @@ bool CTxLockRequest::IsValid() const
     }
 
     if(nValueIn > sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN) {
-        LogPrint(BCLog::INSTANTSEND, "CTxLockRequest::IsValid -- Transaction value too high: nValueIn=%d, tx=%s", nValueIn, ToString());
+        LogPrint(BCLog::INSTANTSEND, "CTxLockRequest::IsValid -- Transaction value too high: nValueIn=%d, tx=%s\n", nValueIn, ToString());
         return false;
     }
 
     CAmount nValueOut = CTransaction(*this).GetValueOut();
 
     if(nValueIn - nValueOut < GetMinFee()) {
-        LogPrint(BCLog::INSTANTSEND, "CTxLockRequest::IsValid -- did not include enough fees in transaction: fees=%d, tx=%s", nValueOut - nValueIn, ToString());
+        LogPrint(BCLog::INSTANTSEND, "CTxLockRequest::IsValid -- did not include enough fees in transaction: fees=%d, tx=%s\n", nValueOut - nValueIn, ToString());
         return false;
     }
 

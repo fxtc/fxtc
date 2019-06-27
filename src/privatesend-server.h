@@ -1,10 +1,10 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018-2019 FXTC developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PRIVATESENDSERVER_H
-#define PRIVATESENDSERVER_H
+#ifndef DASH_PRIVATESEND_SERVER_H
+#define DASH_PRIVATESEND_SERVER_H
 
 #include <net.h>
 #include <privatesend.h>
@@ -78,4 +78,4 @@ public:
 
 void ThreadCheckPrivateSendServer(CConnman& connman);
 
-#endif
+#endif // DASH_PRIVATESEND_SERVER_H

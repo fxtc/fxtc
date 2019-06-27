@@ -30,15 +30,17 @@
 #include <wallet/wallet.h>
 #endif // ENABLE_WALLET
 // FXTC BEGIN
-#include "wallet/rpcwallet.h"
+#include <wallet/rpcwallet.h>
 // FXTC END
 
 #include <boost/lexical_cast.hpp>
 
 UniValue gobject(const JSONRPCRequest& request)
 {
+#ifdef ENABLE_WALLET
     std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
     CWallet* const pwallet = wallet.get();
+#endif // ENABLE_WALLET
 
     std::string strCommand;
     if (request.params.size() >= 1)

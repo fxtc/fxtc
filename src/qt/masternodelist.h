@@ -1,10 +1,10 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018-2019 FXTC developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef MASTERNODELIST_H
-#define MASTERNODELIST_H
+#ifndef DASH_QT_MASTERNODELIST_H
+#define DASH_QT_MASTERNODELIST_H
 
 #include <primitives/transaction.h>
 #include <qt/platformstyle.h>
@@ -79,4 +79,5 @@ private Q_SLOTS:
     void on_tableWidgetMyMasternodes_itemSelectionChanged();
     void on_UpdateButton_clicked();
 };
-#endif // MASTERNODELIST_H
+
+#endif // DASH_QT_MASTERNODELIST_H

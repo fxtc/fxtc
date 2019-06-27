@@ -11,7 +11,17 @@
 #include <script/standard.h>           // For CTxDestination
 #include <support/allocators/secure.h> // For SecureString
 #include <ui_interface.h>              // For ChangeType
+// Dash
+#ifdef ENABLE_WALLET
 #include <wallet/wallet.h>
+#else  // ENABLE_WALLET
+// FXTC TODO:
+enum AvailableCoinsType
+{
+    ALL_COINS
+};
+#endif // ENABLE_WALLET
+//
 
 #include <functional>
 #include <map>

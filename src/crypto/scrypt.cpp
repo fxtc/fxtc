@@ -1,3 +1,4 @@
+// Copyright (c) 2018-2019 FXTC developers
 /*
  * Copyright 2009 Colin Percival, 2011 ArtForz, 2012-2013 pooler
  * All rights reserved.
@@ -27,8 +28,8 @@
  * online backup system.
  */
 
-#include "crypto/scrypt.h"
-//#include "util.h"
+#include <crypto/scrypt.h>
+//#include <util.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>

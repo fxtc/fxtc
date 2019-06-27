@@ -218,7 +218,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     // Update coinbase transaction with additional info about masternode and governance payments,
     // get some info back to pass to getblocktemplate
     FillBlockPayments(coinbaseTx, nHeight, nFees + nBlockReward, pblock->txoutMasternode, pblock->voutSuperblock);
-    // LogPrintf("CreateNewBlock -- nBlockHeight %d blockReward %lld txoutMasternode %s txNew %s",
+    // LogPrintf("CreateNewBlock -- nBlockHeight %d blockReward %lld txoutMasternode %s txNew %s\n",
     //             nHeight, nFees + nBlockReward, pblock->txoutMasternode.ToString(), txNew.ToString());
     //
 
@@ -231,7 +231,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
             coinbaseTx.vout[0].nValue -= nFounderReward;
             coinbaseTx.vout.push_back(CTxOut(nFounderReward, CScript(FOUNDER_SCRIPT.begin(), FOUNDER_SCRIPT.end())));
         } else {
-            LogPrintf("CreateNewBlock(): invalid founder reward destination");
+            LogPrintf("CreateNewBlock(): invalid founder reward destination\n");
         }
     }
     //

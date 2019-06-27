@@ -1,10 +1,10 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018-2019 FXTC developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef SRC_MASTERNODECONFIG_H_
-#define SRC_MASTERNODECONFIG_H_
+#ifndef DASH_MASTERNODECONFIG_H
+#define DASH_MASTERNODECONFIG_H
 
 class CMasternodeConfig;
 extern CMasternodeConfig masternodeConfig;
@@ -95,5 +95,4 @@ private:
 
 };
 
-
-#endif /* SRC_MASTERNODECONFIG_H_ */
+#endif // DASH_MASTERNODECONFIG_H

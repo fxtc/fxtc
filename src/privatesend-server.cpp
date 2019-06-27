@@ -1,5 +1,5 @@
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018 FXTC developers
+// Copyright (c) 2018-2019 FXTC developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #include <privatesend-server.h>
@@ -46,7 +46,7 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
         CMutableTransaction txCollateral;
         vRecv >> nDenom >> txCollateral;
 
-        LogPrint(BCLog::PRIVATESEND, "DSACCEPT -- nDenom %d (%s)  txCollateral %s", nDenom, CPrivateSend::GetDenominationsToString(nDenom), txCollateral.ToString());
+        LogPrint(BCLog::PRIVATESEND, "DSACCEPT -- nDenom %d (%s)  txCollateral %s\n", nDenom, CPrivateSend::GetDenominationsToString(nDenom), txCollateral.ToString());
 
         masternode_info_t mnInfo;
         if(!mnodeman.GetMasternodeInfo(activeMasternode.outpoint, mnInfo)) {
@@ -150,7 +150,7 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
         CDarkSendEntry entry;
         vRecv >> entry;
 
-        LogPrint(BCLog::PRIVATESEND, "DSVIN -- txCollateral %s", entry.txCollateral.ToString());
+        LogPrint(BCLog::PRIVATESEND, "DSVIN -- txCollateral %s\n", entry.txCollateral.ToString());
 
         if(entry.vecTxDSIn.size() > PRIVATESEND_ENTRY_MAX_SIZE) {
             LogPrintf("DSVIN -- ERROR: too many inputs! %d/%d\n", entry.vecTxDSIn.size(), PRIVATESEND_ENTRY_MAX_SIZE);
@@ -203,7 +203,7 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
                 if(GetUTXOCoin(txin.prevout, coin)) {
                     nValueIn += coin.out.nValue;
                 } else {
-                    LogPrintf("DSVIN -- missing input! tx=%s", tx.ToString());
+                    LogPrintf("DSVIN -- missing input! tx=%s\n", tx.ToString());
                     PushStatus(pfrom, STATUS_REJECTED, ERR_MISSING_TX, connman);
                     return;
                 }
@@ -212,7 +212,7 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
             // There should be no fee in mixing tx
             CAmount nFee = nValueIn - nValueOut;
             if(nFee != 0) {
-                LogPrintf("DSVIN -- there should be no fee in mixing tx! fees: %lld, tx=%s", nFee, tx.ToString());
+                LogPrintf("DSVIN -- there should be no fee in mixing tx! fees: %lld, tx=%s\n", nFee, tx.ToString());
                 PushStatus(pfrom, STATUS_REJECTED, ERR_FEES, connman);
                 return;
             }
@@ -223,7 +223,7 @@ void CPrivateSendServer::ProcessMessage(CNode* pfrom, const std::string& strComm
                 mempool.PrioritiseTransaction(tx.GetHash(), 0.1*COIN);
                 // FXTC TODO: if(!AcceptToMemoryPool(mempool, validationState, CTransaction(tx), false, NULL, false, true, true)) {
                 if(!AcceptToMemoryPool(mempool, validationState, MakeTransactionRef(tx), nullptr, NULL, false, maxTxFee)) {
-                    LogPrintf("DSVIN -- transaction not valid! tx=%s", tx.ToString());
+                    LogPrintf("DSVIN -- transaction not valid! tx=%s\n", tx.ToString());
                     PushStatus(pfrom, STATUS_REJECTED, ERR_INVALID_TX, connman);
                     return;
                 }
@@ -328,7 +328,7 @@ void CPrivateSendServer::CreateFinalTransaction(CConnman& connman)
     sort(txNew.vout.begin(), txNew.vout.end(), CompareOutputBIP69());
 
     finalMutableTransaction = txNew;
-    LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::CreateFinalTransaction -- finalMutableTransaction=%s", txNew.ToString());
+    LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::CreateFinalTransaction -- finalMutableTransaction=%s\n", txNew.ToString());
 
     // request signatures from clients
     RelayFinalTransaction(finalMutableTransaction, connman);
@@ -342,7 +342,7 @@ void CPrivateSendServer::CommitFinalTransaction(CConnman& connman)
     CMutableTransaction finalTransaction = CMutableTransaction(finalMutableTransaction);
     uint256 hashTx = finalTransaction.GetHash();
 
-    LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::CommitFinalTransaction -- finalTransaction=%s", finalTransaction.ToString());
+    LogPrint(BCLog::PRIVATESEND, "CPrivateSendServer::CommitFinalTransaction -- finalTransaction=%s\n", finalTransaction.ToString());
 
     {
         // See if the transaction is valid
@@ -482,7 +482,7 @@ void CPrivateSendServer::ChargeRandomFees(CConnman& connman)
 
         if(GetRandInt(100) > 10) return;
 
-        LogPrintf("CPrivateSendServer::ChargeRandomFees -- charging random fees, txCollateral=%s", txCollateral.ToString());
+        LogPrintf("CPrivateSendServer::ChargeRandomFees -- charging random fees, txCollateral=%s\n", txCollateral.ToString());
 
         CValidationState state;
         if(!AcceptToMemoryPool(mempool, state, MakeTransactionRef(txCollateral), nullptr, NULL, false, maxTxFee)) {
