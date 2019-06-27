@@ -491,6 +491,10 @@ Alihkan fail data ke dalam tab semasa</translation>
         <source>Error</source>
         <translation>Ralat</translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation>Ralat</translation>
+    </message>
     </context>
 <context>
     <name>ModalOverlay</name>

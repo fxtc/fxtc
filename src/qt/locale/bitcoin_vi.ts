@@ -510,6 +510,14 @@
         <translation>Đang mở ví &lt;b&gt; %1&lt;/b&gt;...</translation>
     </message>
     <message>
+        <source>default wallet</source>
+        <translation>ví mặc định</translation>
+    </message>
+    <message>
+        <source>Opening Wallet &lt;b&gt;%1&lt;/b&gt;...</source>
+        <translation>Đang mở ví &lt;b&gt; %1&lt;/b&gt;...</translation>
+    </message>
+    <message>
         <source>&amp;Window</source>
         <translation>&amp;Window</translation>
     </message>
