@@ -121,10 +121,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000006180e048d43c21c23b"); // block 384690
+        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000061d400f28aeed3cf6c"); // block 464800
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x0000000000008e6b9337e886d1dcf6b9e6c49cf10f32f64412cf6a571468fc4c"); // block 384650
+        consensus.defaultAssumeValid = uint256S("0x000000000000946a3a8459f2e42faa153dcea75add07b0b9f692202f786fd295"); // block 464800
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -194,10 +194,11 @@ public:
                 { 20502, uint256S("0x0000000000000024378a8a15c8a31f0c823a1b441ba909b13ef1bfb59c3b4cfd")},
                 { 79000, uint256S("0x00000000000008372e5c5cfc4b572f64039418441c78b48d8c09e23f860d098a")},
                 {384650, uint256S("0x0000000000008e6b9337e886d1dcf6b9e6c49cf10f32f64412cf6a571468fc4c")},
+                {464800, uint256S("0x000000000000946a3a8459f2e42faa153dcea75add07b0b9f692202f786fd295")},
             }
         };
         // FXTC BEGIN
-        consensus.nlastValidPowHashHeight = 384650;
+        consensus.nlastValidPowHashHeight = 464800;
         // FXTC
 
         chainTxData = ChainTxData{
