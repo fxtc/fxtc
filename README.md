@@ -1,4 +1,4 @@
-RTM branch is 0.17! Use master branch at your own risk!
+RTM branch is 0.18! Use master branch at your own risk!
 =======================================================
 
 FxTC Core integration/staging tree
