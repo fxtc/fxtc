@@ -524,7 +524,6 @@ UniValue instantsendtoaddress(const JSONRPCRequest& request)
 
     // FXTC BEGIN
     auto locked_chain = pwallet->chain().lock();
-    LOCK(pwallet->cs_wallet);
     //CTransactionRef tx = SendMoney(pwallet, dest, nAmount, fSubtractFeeFromAmount, coin_control, std::move(mapValue), {} /* fromAccount */, true);
     CTransactionRef tx = SendMoney(*locked_chain, pwallet, dest, nAmount, fSubtractFeeFromAmount, coin_control, std::move(mapValue), true);
     // FXTC END
