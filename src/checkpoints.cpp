@@ -32,6 +32,8 @@ namespace Checkpoints {
     // FXTC BEGIN
     bool IsExpectedCheckpoint(const CCheckpointData& data, int nHeight, const uint256& hash)
     {
+        LOCK(cs_main);
+
         const MapCheckpoints& checkpoints = data.mapCheckpoints;
 
         for (const MapCheckpoints::value_type& i : reverse_iterate(checkpoints))
