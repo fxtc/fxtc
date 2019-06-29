@@ -2762,9 +2762,9 @@ void CConnman::RelayTransaction(const CTransaction& tx, const CDataStream& ss)
     LOCK(cs_vNodes);
     for (auto* pnode : vNodes)
     {
+        LOCK(pnode->cs_filter);
         if(!pnode->fRelayTxes)
             continue;
-        LOCK(pnode->cs_filter);
         if (pnode->pfilter)
         {
             if (pnode->pfilter->IsRelevantAndUpdate(tx))
