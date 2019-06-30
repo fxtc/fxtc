@@ -4091,10 +4091,6 @@ bool CWallet::CreateTransaction(interfaces::Chain::Lock& locked_chain, const std
                     bnb_used = false;
                 }
 
-                // FXTC BEGIN
-                LOCK (cs_wallet);
-                // FXTC END
-
                 const CAmount nChange = nValueIn - nValueToSelect;
                 if (nChange > 0)
                 {
