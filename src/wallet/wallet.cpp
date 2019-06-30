@@ -974,7 +974,10 @@ bool CWallet::MarkReplaced(const uint256& originalHash, const uint256& newHash)
 
 bool CWallet::AddToWallet(const CWalletTx& wtxIn, bool fFlushOnClose)
 {
-    LOCK(cs_wallet);
+    // FXTC BEGIN
+    //LOCK(cs_wallet);
+    LOCK2(cs_main, cs_wallet);
+    // FXTC END
 
     WalletBatch batch(*database, "r+", fFlushOnClose);
 
@@ -1046,8 +1049,6 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn, bool fFlushOnClose)
                 // FXTC BEGIN
                 //auto locked_chain = pwallet->chain().lock();
                 auto locked_chain = chain().lock();
-                //LOCK(pwallet->cs_wallet);
-                LOCK(cs_wallet);
                 // FXTC END
                 if (IsMine(wtx.tx->vout[i]) && !IsSpent(*locked_chain, hash, i)) {
                     setWalletUTXO.insert(COutPoint(hash, i));
@@ -2585,7 +2586,6 @@ CAmount CWallet::GetAnonymizedBalance() const
         // FXTC BEGIN
         {
         auto locked_chain = chain().lock();
-        LOCK(cs_wallet);
         for (map<uint256, CWalletTx>::const_iterator it = mapWallet.find(outpoint.hash); it != mapWallet.end() && it->first == outpoint.hash; ++it) {
             //if (it->second.IsTrusted())
             if (it->second.IsTrusted(*locked_chain))
@@ -3218,7 +3218,6 @@ bool CWallet::SelectCoinsByDenominations(int nDenom, CAmount nValueMin, CAmount 
 
     // FXTC BEGIN
     auto locked_chain = chain().lock();
-    LOCK(cs_wallet);
     // FXTC END
 
     vector<COutput> vCoins;
@@ -3322,7 +3321,6 @@ bool CWallet::SelectCoinsGrouppedByAddresses(std::vector<CompactTallyItem>& vecT
 
     // FXTC BEGIN
     auto locked_chain = chain().lock();
-    LOCK(cs_wallet);
     // FXTC END
 
     // Tally
@@ -3679,6 +3677,10 @@ bool CWallet::GetBudgetSystemCollateralTX(CTransactionRef& tx, uint256 hash, CAm
 
 bool CWallet::ConvertList(std::vector<CTxIn> vecTxIn, std::vector<CAmount>& vecAmounts)
 {
+    // FXTC BEGIN
+    LOCK(cs_wallet);
+    // FXTC END
+
     for (auto txin : vecTxIn) {
         if (mapWallet.count(txin.prevout.hash)) {
             CWalletTx &coin = mapWallet.at(txin.prevout.hash);
@@ -4061,7 +4063,6 @@ bool CWallet::CreateTransaction(interfaces::Chain::Lock& locked_chain, const std
                     // FXTC BEGIN
                     {
                     auto locked_chain = chain().lock();
-                    LOCK(cs_wallet);
                     // FXTC END
 
                     for(auto pcoin : setCoins)
@@ -4089,6 +4090,10 @@ bool CWallet::CreateTransaction(interfaces::Chain::Lock& locked_chain, const std
                 } else {
                     bnb_used = false;
                 }
+
+                // FXTC BEGIN
+                LOCK (cs_wallet);
+                // FXTC END
 
                 const CAmount nChange = nValueIn - nValueToSelect;
                 if (nChange > 0)
