@@ -57,6 +57,7 @@ public:
 private Q_SLOTS:
     void on_btnCopyURI_clicked();
     void on_btnCopyAddress_clicked();
+    void on_btnCoinRequest_clicked();
 
     void update();
 
