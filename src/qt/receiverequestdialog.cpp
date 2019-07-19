@@ -11,11 +11,13 @@
 #include <qt/optionsmodel.h>
 
 #include <QClipboard>
+#include <QDesktopServices>
 #include <QDrag>
 #include <QMenu>
 #include <QMimeData>
 #include <QMouseEvent>
 #include <QPixmap>
+#include <QUrl>
 
 #if defined(HAVE_CONFIG_H)
 #include <config/bitcoin-config.h> /* for USE_QRCODE */
@@ -209,4 +211,20 @@ void ReceiveRequestDialog::on_btnCopyURI_clicked()
 void ReceiveRequestDialog::on_btnCopyAddress_clicked()
 {
     GUIUtil::setClipboard(info.address);
+}
+
+void ReceiveRequestDialog::on_btnCoinRequest_clicked()
+{
+    std::string creq = "https://coinrequest.io/create?coin=fixedtradecoin&address=";
+
+    QString cruri;
+    cruri += GUIUtil::HtmlEscape(info.address);
+    if (info.amount)
+        cruri += ("&amount=") + BitcoinUnits::format(model->getOptionsModel()->getDisplayUnit(), info.amount);
+    if (!info.message.isEmpty())
+        cruri += ("&message=") + GUIUtil::HtmlEscape(info.message);
+
+    QString link = QString::fromStdString(creq + cruri.toStdString());
+
+    QDesktopServices::openUrl(QUrl(link));
 }

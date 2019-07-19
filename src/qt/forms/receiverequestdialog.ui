@@ -40,6 +40,16 @@
     </widget>
    </item>
    <item>
+    <widget class="QPushButton" name="btnCoinRequest">
+     <property name="toolTip">
+      <string>Effortless invoicing via URL and social media</string>
+     </property>
+     <property name="text">
+       <string>Share on CoinRequest</string>
+     </property>
+    </widget>
+   </item>               
+   <item>
     <widget class="QTextEdit" name="outUri">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
