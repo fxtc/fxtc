@@ -394,8 +394,8 @@
         <translation>Alatke za tabove</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
-        <translation>Zatražite plaćanje (generiše QR kodove i fxtcoin: URI-e)</translation>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
+        <translation>Zatražite plaćanje (generiše QR kodove i fixedtradecoin: URI-e)</translation>
     </message>
     <message>
         <source>Error</source>

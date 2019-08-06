@@ -414,8 +414,8 @@
         <translation>Toolbar Tabs</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
-        <translation>Meminta pembayaran (generate kode QR dan fxtcoin: URIs)</translation>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
+        <translation>Meminta pembayaran (generate kode QR dan fixedtradecoin: URIs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -426,8 +426,8 @@
         <translation>Perlihatkan daftar address penerima dan labelnya</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
-        <translation>Buka fxtcoin: URI atau permintaan pembayaran</translation>
+        <source>Open a fixedtradecoin: URI or payment request</source>
+        <translation>Buka fixedtradecoin: URI atau permintaan pembayaran</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>

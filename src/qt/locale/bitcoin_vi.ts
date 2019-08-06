@@ -410,8 +410,8 @@
         <translation>Các thanh công cụ</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
-        <translation>Yêu cầu thanh toán (tạo QR code và fxtcoin: URIs)</translation>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
+        <translation>Yêu cầu thanh toán (tạo QR code và fixedtradecoin: URIs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -422,8 +422,8 @@
         <translation>Hiển thị danh sách các địa chỉ và nhãn đã dùng để nhận</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
-        <translation>Mở một fxtcoin: URI hoặc yêu cầu thanh toán</translation>
+        <source>Open a fixedtradecoin: URI or payment request</source>
+        <translation>Mở một fixedtradecoin: URI hoặc yêu cầu thanh toán</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -1274,8 +1274,8 @@
         <translation>Payment request error</translation>
     </message>
     <message>
-        <source>Cannot start fxtcoin: click-to-pay handler</source>
-        <translation>Không thể khởi tạo fxtcoin: click-to-pay handler</translation>
+        <source>Cannot start fixedtradecoin: click-to-pay handler</source>
+        <translation>Không thể khởi tạo fixedtradecoin: click-to-pay handler</translation>
     </message>
     <message>
         <source>URI handling</source>
@@ -2268,8 +2268,8 @@
         <translation>Nhập một label cho cái address này để thêm vào danh sách địa chỉ đã sử dụng</translation>
     </message>
     <message>
-        <source>A message that was attached to the fxtcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
-        <translation>Một tin nhắn được đính kèm với số fxtcoin: URI mà sẽ được lưu giữ với transaction dành cho tài liệu tham khảo. Lưu ý: Tin nhắn này sẽ không được gửi thông qua FxTCoin network.</translation>
+        <source>A message that was attached to the fixedtradecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
+        <translation>Một tin nhắn được đính kèm với số fixedtradecoin: URI mà sẽ được lưu giữ với transaction dành cho tài liệu tham khảo. Lưu ý: Tin nhắn này sẽ không được gửi thông qua FxTCoin network.</translation>
     </message>
     <message>
         <source>Pay To:</source>

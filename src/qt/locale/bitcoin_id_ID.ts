@@ -414,8 +414,8 @@
         <translation>Baris tab</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
-        <translation>Permintaan pembayaran (membuat kode QR dan fxtcoin: URIs)</translation>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
+        <translation>Permintaan pembayaran (membuat kode QR dan fixedtradecoin: URIs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -426,8 +426,8 @@
         <translation>Tampilkan daftar alamat dan label yang diterima</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
-        <translation>Buka URI fxtcoin: atau permintaan pembayaran</translation>
+        <source>Open a fixedtradecoin: URI or payment request</source>
+        <translation>Buka URI fixedtradecoin: atau permintaan pembayaran</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -1332,16 +1332,16 @@
         <translation>Terjadi kesalahan pada permintaan pembayaran</translation>
     </message>
     <message>
-        <source>Cannot start fxtcoin: click-to-pay handler</source>
-        <translation>Tidak bisa memulai fxtcoin: handler click-to-pay</translation>
+        <source>Cannot start fixedtradecoin: click-to-pay handler</source>
+        <translation>Tidak bisa memulai fixedtradecoin: handler click-to-pay</translation>
     </message>
     <message>
         <source>URI handling</source>
         <translation>Pengelolaan URI</translation>
     </message>
     <message>
-        <source>'fxtcoin://' is not a valid URI. Use 'fxtcoin:' instead.</source>
-        <translation>'fxtcoin://' bukanlah alamat URI yang valid. Silakan gunakan 'fxtcoin:'.</translation>
+        <source>'fixedtradecoin://' is not a valid URI. Use 'fixedtradecoin:' instead.</source>
+        <translation>'fixedtradecoin://' bukanlah alamat URI yang valid. Silakan gunakan 'fixedtradecoin:'.</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>

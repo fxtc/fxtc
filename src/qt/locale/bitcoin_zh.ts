@@ -330,7 +330,7 @@
         <translation>标签工具栏</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
         <translation>请求支付(生成二维码和比特币链接)</translation>
     </message>
     <message>
@@ -765,7 +765,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>输入此地址的标签，将其添加到使用的地址列表中</translation>
     </message>
     <message>
-        <source>A message that was attached to the fxtcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
+        <source>A message that was attached to the fixedtradecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
         <translation>附在比特币上的消息:URI将与交易一起存储，供参考。注意：此信息不会通过比特币网络发送。</translation>
     </message>
     <message>

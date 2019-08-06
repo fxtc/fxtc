@@ -414,8 +414,8 @@
         <translation>分页工具栏</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
-        <translation>请求支付 (生成二维码和 fxtcoin: URI)</translation>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
+        <translation>请求支付 (生成二维码和 fixedtradecoin: URI)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -426,8 +426,8 @@
         <translation>显示用过的接收地址和标签的列表</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
-        <translation>打开一个 fxtcoin: URI 或支付请求</translation>
+        <source>Open a fixedtradecoin: URI or payment request</source>
+        <translation>打开一个 fixedtradecoin: URI 或支付请求</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -1363,7 +1363,7 @@
         <translation>要求付款时发生错误</translation>
     </message>
     <message>
-        <source>Cannot start fxtcoin: click-to-pay handler</source>
+        <source>Cannot start fixedtradecoin: click-to-pay handler</source>
         <translation>无法启动 fxtcoin 协议的“
 一键支付”处理器</translation>
     </message>
@@ -1372,8 +1372,8 @@
         <translation>URI 处理</translation>
     </message>
     <message>
-        <source>'fxtcoin://' is not a valid URI. Use 'fxtcoin:' instead.</source>
-        <translation>‘fxtcoin://’不是合法的URI。请使用'fxtcoin:'作为替代。</translation>
+        <source>'fixedtradecoin://' is not a valid URI. Use 'fixedtradecoin:' instead.</source>
+        <translation>‘fixedtradecoin://’不是合法的URI。请使用'fixedtradecoin:'作为替代。</translation>
     </message>
     <message>
         <source>You are using a BIP70 URL which will be unsupported in the future.</source>
@@ -2462,8 +2462,8 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>请为此地址输入一个标签以将它加入用过的地址列表</translation>
     </message>
     <message>
-        <source>A message that was attached to the fxtcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
-        <translation>fxtcoin:URI 附带的备注信息，将会和交易一起存储，备查。 注意：该消息不会通过比特币网络传输。</translation>
+        <source>A message that was attached to the fixedtradecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
+        <translation>fixedtradecoin:URI 附带的备注信息，将会和交易一起存储，备查。 注意：该消息不会通过比特币网络传输。</translation>
     </message>
     <message>
         <source>Pay To:</source>

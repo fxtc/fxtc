@@ -16,7 +16,7 @@ OpenURIDialog::OpenURIDialog(QWidget *parent) :
     ui(new Ui::OpenURIDialog)
 {
     ui->setupUi(this);
-    ui->uriEdit->setPlaceholderText("fxtcoin:");
+    ui->uriEdit->setPlaceholderText("fixedtradecoin:");
 }
 
 OpenURIDialog::~OpenURIDialog()
@@ -47,5 +47,5 @@ void OpenURIDialog::on_selectFileButton_clicked()
     if(filename.isEmpty())
         return;
     QUrl fileUri = QUrl::fromLocalFile(filename);
-    ui->uriEdit->setText("fxtcoin:?r=" + QUrl::toPercentEncoding(fileUri.toString()));
+    ui->uriEdit->setText("fixedtradecoin:?r=" + QUrl::toPercentEncoding(fileUri.toString()));
 }

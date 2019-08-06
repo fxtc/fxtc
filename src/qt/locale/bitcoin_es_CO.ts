@@ -379,8 +379,8 @@ Exportar los datos en la pestaña actual a un archivo</translation>
         <translation>Barra de herramientas de pestañas</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
-        <translation>Solicitar pagos (genera códigos QR y fxtcoin: URIs)</translation>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
+        <translation>Solicitar pagos (genera códigos QR y fixedtradecoin: URIs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -391,8 +391,8 @@ Exportar los datos en la pestaña actual a un archivo</translation>
         <translation>Mostrar la lista de direcciones y etiquetas de recepción usadas</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
-        <translation>Abra un fxtcoin: URI o solicitud de pago</translation>
+        <source>Open a fixedtradecoin: URI or payment request</source>
+        <translation>Abra un fixedtradecoin: URI o solicitud de pago</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -1101,8 +1101,8 @@ Exportar los datos en la pestaña actual a un archivo</translation>
         <translation>Error de solicitud de pago</translation>
     </message>
     <message>
-        <source>Cannot start fxtcoin: click-to-pay handler</source>
-        <translation>No se puede iniciar FxTCoin: controlador de clic para pagar</translation>
+        <source>Cannot start fixedtradecoin: click-to-pay handler</source>
+        <translation>No se puede iniciar fixedtradecoin: controlador de clic para pagar</translation>
     </message>
     <message>
         <source>URI handling</source>

@@ -414,8 +414,8 @@
         <translation>タブツールバー</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
-        <translation>支払いをリクエストする (QRコードと fxtcoin: URIを生成する)&lt;</translation>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
+        <translation>支払いをリクエストする (QRコードと fixedtradecoin: URIを生成する)&lt;</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -426,8 +426,8 @@
         <translation>受け取ったことがあるアドレスとラベルの一覧を表示する</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
-        <translation>fxtcoin: URIや支払いリクエストを開く</translation>
+        <source>Open a fixedtradecoin: URI or payment request</source>
+        <translation>fixedtradecoin: URIや支払いリクエストを開く</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -1364,7 +1364,7 @@
         <translation>支払いリクエスト エラー</translation>
     </message>
     <message>
-        <source>Cannot start fxtcoin: click-to-pay handler</source>
+        <source>Cannot start fixedtradecoin: click-to-pay handler</source>
         <translation>FxTCoin を起動できません: click-to-pay handler</translation>
     </message>
     <message>
@@ -1372,8 +1372,8 @@
         <translation>URIの処理</translation>
     </message>
     <message>
-        <source>'fxtcoin://' is not a valid URI. Use 'fxtcoin:' instead.</source>
-        <translation>'fxtcoin://' は正しいURIではありません｡ 'fxtcoin:'を使用してください｡</translation>
+        <source>'fixedtradecoin://' is not a valid URI. Use 'fixedtradecoin:' instead.</source>
+        <translation>'fixedtradecoin://' は正しいURIではありません｡ 'fixedtradecoin:'を使用してください｡</translation>
     </message>
     <message>
         <source>You are using a BIP70 URL which will be unsupported in the future.</source>
@@ -2470,8 +2470,8 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>このアドレスに対するラベルを入力することで、送金したことがあるアドレスの一覧に追加することができます</translation>
     </message>
     <message>
-        <source>A message that was attached to the fxtcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
-        <translation>fxtcoin: URIに添付されていたメッセージです。これは参照用として取引とともに保存されます。注意: メッセージは FxTCoin ネットワーク上へ送信されません。</translation>
+        <source>A message that was attached to the fixedtradecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
+        <translation>fixedtradecoin: URIに添付されていたメッセージです。これは参照用として取引とともに保存されます。注意: メッセージは FxTCoin ネットワーク上へ送信されません。</translation>
     </message>
     <message>
         <source>Pay To:</source>

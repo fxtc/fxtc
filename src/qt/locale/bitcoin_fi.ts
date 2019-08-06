@@ -414,8 +414,8 @@
         <translation>Välilehtipalkki</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
-        <translation>Pyydä maksuja (Luo QR koodit ja fxtcoin: URIt)</translation>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
+        <translation>Pyydä maksuja (Luo QR koodit ja fixedtradecoin: URIt)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -426,8 +426,8 @@
         <translation>Näytä vastaanottamiseen käytettyjen osoitteiden ja nimien lista</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
-        <translation>Avaa fxtcoin: URI tai maksupyyntö</translation>
+        <source>Open a fixedtradecoin: URI or payment request</source>
+        <translation>Avaa fixedtradecoin: URI tai maksupyyntö</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -1320,7 +1320,7 @@
         <translation>Maksupyyntövirhe</translation>
     </message>
     <message>
-        <source>Cannot start fxtcoin: click-to-pay handler</source>
+        <source>Cannot start fixedtradecoin: click-to-pay handler</source>
         <translation>FxTCoinia ei voi käynnistää: klikkaa-maksaaksesi -käsittelijän virhe</translation>
     </message>
     <message>
@@ -1328,8 +1328,8 @@
         <translation>URI käsittely</translation>
     </message>
     <message>
-        <source>'fxtcoin://' is not a valid URI. Use 'fxtcoin:' instead.</source>
-        <translation>'fxtcoin://' ei ole kelvollinen URI. Käytä 'fxtcoin:' sen sijaan.</translation>
+        <source>'fixedtradecoin://' is not a valid URI. Use 'fixedtradecoin:' instead.</source>
+        <translation>'fixedtradecoin://' ei ole kelvollinen URI. Käytä 'fixedtradecoin:' sen sijaan.</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -2370,8 +2370,8 @@
         <translation>Aseta nimi tälle osoitteelle lisätäksesi sen käytettyjen osoitteiden listalle.</translation>
     </message>
     <message>
-        <source>A message that was attached to the fxtcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
-        <translation>Viesti joka liitettiin fxtcoin: URI:iin tallennetaan rahansiirtoon viitteeksi. Tätä viestiä ei lähetetä FxTCoin-verkkoon.</translation>
+        <source>A message that was attached to the fixedtradecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
+        <translation>Viesti joka liitettiin fixedtradecoin: URI:iin tallennetaan rahansiirtoon viitteeksi. Tätä viestiä ei lähetetä FxTCoin-verkkoon.</translation>
     </message>
     <message>
         <source>Pay To:</source>

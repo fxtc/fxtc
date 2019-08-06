@@ -402,8 +402,8 @@
         <translation>Barra de pestañas</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
-        <translation>Pide pagos (genera codigos QR and fxtcoin: URls)</translation>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
+        <translation>Pide pagos (genera codigos QR and fixedtradecoin: URls)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -414,7 +414,7 @@
         <translation>Mostrar la lista de direcciones de recepción y etiquetas</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
+        <source>Open a fixedtradecoin: URI or payment request</source>
         <translation>Abrir un identificador URI fxtcoin o una petición de pago</translation>
     </message>
     <message>

@@ -410,7 +410,7 @@
         <translation>Bara de unelte</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
         <translation>Cereţi plăţi (generează coduri QR şi fxtcoin-uri: URls)</translation>
     </message>
     <message>
@@ -422,8 +422,8 @@
         <translation>Arată lista de adrese pentru primire şi etichetele</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
-        <translation>Deschidere fxtcoin: o adresa URI sau o cerere de plată</translation>
+        <source>Open a fixedtradecoin: URI or payment request</source>
+        <translation>Deschidere fixedtradecoin: o adresa URI sau o cerere de plată</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -1300,7 +1300,7 @@
         <translation>Eroare la cererea de plată</translation>
     </message>
     <message>
-        <source>Cannot start fxtcoin: click-to-pay handler</source>
+        <source>Cannot start fixedtradecoin: click-to-pay handler</source>
         <translation>FxTCoin nu poate porni: click-to-pay handler</translation>
     </message>
     <message>
@@ -1308,8 +1308,8 @@
         <translation>Gestionare URI</translation>
     </message>
     <message>
-        <source>'fxtcoin://' is not a valid URI. Use 'fxtcoin:' instead.</source>
-        <translation>'fxtcoin://' nu este un URI valid. Folositi 'fxtcoin:' in loc.</translation>
+        <source>'fixedtradecoin://' is not a valid URI. Use 'fixedtradecoin:' instead.</source>
+        <translation>'fixedtradecoin://' nu este un URI valid. Folositi 'fixedtradecoin:' in loc.</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -2378,8 +2378,8 @@ Nota: Cum taxa este calculata per byte, o taxa de "100 satoshi per kB" pentru o 
         <translation>Introduceţi eticheta pentru ca această adresa să fie introdusă în lista de adrese folosite</translation>
     </message>
     <message>
-        <source>A message that was attached to the fxtcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
-        <translation>un mesaj a fost ataşat la fxtcoin: URI care va fi stocat cu tranzacţia pentru referinţa dvs. Notă: Acest mesaj nu va fi trimis către reţeaua fxtcoin.</translation>
+        <source>A message that was attached to the fixedtradecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
+        <translation>un mesaj a fost ataşat la fixedtradecoin: URI care va fi stocat cu tranzacţia pentru referinţa dvs. Notă: Acest mesaj nu va fi trimis către reţeaua fxtcoin.</translation>
     </message>
     <message>
         <source>Pay To:</source>

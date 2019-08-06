@@ -366,11 +366,11 @@
         <translation>Vahelehe tööriistariba</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
         <translation>Loo maksepäring (genereerib QR koodid ja fxtcoini: URId)</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
+        <source>Open a fixedtradecoin: URI or payment request</source>
         <translation>Ava fxtcoini: URI või maksepäring</translation>
     </message>
     <message>

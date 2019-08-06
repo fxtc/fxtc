@@ -406,7 +406,7 @@
         <translation>نوار ابزار</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
         <translation>درخواست پرداخت (ساخت کد QR و بیت‌کوین: URIs)</translation>
     </message>
     <message>
@@ -418,7 +418,7 @@
         <translation>نمایش لیست آدرس‌ها و لیبل‌های دریافتی استفاده شده</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
+        <source>Open a fixedtradecoin: URI or payment request</source>
         <translation>بازکردن بیت‌کوین: آدرس یا درخواست پرداخت</translation>
     </message>
     <message>

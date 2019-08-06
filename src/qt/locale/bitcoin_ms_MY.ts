@@ -410,8 +410,8 @@ Alihkan fail data ke dalam tab semasa</translation>
 </translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
-        <translation>Request payments (generates QR codes and fxtcoin: URIs)
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
+        <translation>Request payments (generates QR codes and fixedtradecoin: URIs)
 </translation>
     </message>
     <message>

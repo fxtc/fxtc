@@ -210,7 +210,7 @@
         <translation>Ички ойналар асбоблар панели</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
         <translation>Тўловлар (QR кодлари ва fxtcoin ёрдамида яратишлар: URI’лар) сўраш</translation>
     </message>
     <message>
@@ -222,7 +222,7 @@
         <translation>Фойдаланилган қабул қилинган манзиллар ва ёрлиқлар рўйхатини кўрсатиш</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
+        <source>Open a fixedtradecoin: URI or payment request</source>
         <translation>FxTCoin’ни очиш: URI ёки тўлов сўрови</translation>
     </message>
     <message>

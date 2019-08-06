@@ -414,8 +414,8 @@
         <translation>Panel s listy</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
-        <translation>Požaduj platby (generuje QR kódy a fxtcoin: URI)</translation>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
+        <translation>Požaduj platby (generuje QR kódy a fixedtradecoin: URI)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -426,8 +426,8 @@
         <translation>Ukaž seznam použitých přijímacích adres a jejich označení</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
-        <translation>Načti fxtcoin: URI nebo platební požadavek</translation>
+        <source>Open a fixedtradecoin: URI or payment request</source>
+        <translation>Načti fixedtradecoin: URI nebo platební požadavek</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -1368,16 +1368,16 @@
         <translation>Chyba platebního požadavku</translation>
     </message>
     <message>
-        <source>Cannot start fxtcoin: click-to-pay handler</source>
-        <translation>Nemůžu spustit fxtcoin: obsluha click-to-pay</translation>
+        <source>Cannot start fixedtradecoin: click-to-pay handler</source>
+        <translation>Nemůžu spustit fixedtradecoin: obsluha click-to-pay</translation>
     </message>
     <message>
         <source>URI handling</source>
         <translation>Zpracování URI</translation>
     </message>
     <message>
-        <source>'fxtcoin://' is not a valid URI. Use 'fxtcoin:' instead.</source>
-        <translation>'fxtcoin://' není platné URI. Místo toho použij 'fxtcoin:'.</translation>
+        <source>'fixedtradecoin://' is not a valid URI. Use 'fixedtradecoin:' instead.</source>
+        <translation>'fixedtradecoin://' není platné URI. Místo toho použij 'fixedtradecoin:'.</translation>
     </message>
     <message>
         <source>You are using a BIP70 URL which will be unsupported in the future.</source>
@@ -2474,8 +2474,8 @@ Poznámka: Jelikož je poplatek počítaný za bajt, poplatek o hodnotě "100 sa
         <translation>Zadej označení této adresy; obojí se ti pak uloží do adresáře</translation>
     </message>
     <message>
-        <source>A message that was attached to the fxtcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
-        <translation>Zpráva, která byla připojena k fxtcoin: URI a která se ti pro přehled uloží k transakci. Poznámka: Tahle zpráva se neposílá s platbou po fxtcoinové síti.</translation>
+        <source>A message that was attached to the fixedtradecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
+        <translation>Zpráva, která byla připojena k fixedtradecoin: URI a která se ti pro přehled uloží k transakci. Poznámka: Tahle zpráva se neposílá s platbou po fxtcoinové síti.</translation>
     </message>
     <message>
         <source>Pay To:</source>

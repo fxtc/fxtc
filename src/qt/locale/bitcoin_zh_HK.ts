@@ -362,8 +362,8 @@
         <translation>說明 &amp;H</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
-        <translation>要求付款 (產生QR碼 fxtcoin: URIs)</translation>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
+        <translation>要求付款 (產生QR碼 fixedtradecoin: URIs)</translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
