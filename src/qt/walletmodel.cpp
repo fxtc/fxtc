@@ -262,7 +262,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction &tran
             }
             else
 #endif
-            if (!rcp.message.isEmpty()) // Message from normal fxtcoin:URI (fxtcoin:123...?message=example)
+            if (!rcp.message.isEmpty()) // Message from normal fixedtradecoin:URI (fixedtradecoin:123...?message=example)
                 vOrderForm.emplace_back("Message", rcp.message.toStdString());
         }
 

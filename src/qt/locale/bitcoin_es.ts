@@ -410,8 +410,8 @@
         <translation>Barra de pestañas</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
-        <translation>Solicitar pagos (generando códigos QR e identificadores URI "fxtcoin:")</translation>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
+        <translation>Solicitar pagos (generando códigos QR e identificadores URI "fixedtradecoin:")</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -422,8 +422,8 @@
         <translation>Muestra la lista de direcciones de recepción y etiquetas</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
-        <translation>Abrir un identificador URI "fxtcoin:" o una petición de pago</translation>
+        <source>Open a fixedtradecoin: URI or payment request</source>
+        <translation>Abrir un identificador URI "fixedtradecoin:" o una petición de pago</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -1347,16 +1347,16 @@
         <translation>Fallo en la solicitud de pago</translation>
     </message>
     <message>
-        <source>Cannot start fxtcoin: click-to-pay handler</source>
-        <translation>No se puede iniciar fxtcoin: encargado click-para-pagar</translation>
+        <source>Cannot start fixedtradecoin: click-to-pay handler</source>
+        <translation>No se puede iniciar fixedtradecoin: encargado click-para-pagar</translation>
     </message>
     <message>
         <source>URI handling</source>
         <translation>Manejo de URI</translation>
     </message>
     <message>
-        <source>'fxtcoin://' is not a valid URI. Use 'fxtcoin:' instead.</source>
-        <translation>'fxtcoin: //' no es un URI válido. Use 'fxtcoin:' en su lugar.</translation>
+        <source>'fixedtradecoin://' is not a valid URI. Use 'fixedtradecoin:' instead.</source>
+        <translation>'fixedtradecoin: //' no es un URI válido. Use 'fixedtradecoin:' en su lugar.</translation>
     </message>
     <message>
         <source>You are using a BIP70 URL which will be unsupported in the future.</source>
@@ -2433,8 +2433,8 @@ Nota: Dado que la comisión se calcula por byte, una comisión de "100 satoshis 
         <translation>Introduce una etiqueta para esta dirección para añadirla a la lista de direcciones utilizadas</translation>
     </message>
     <message>
-        <source>A message that was attached to the fxtcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
-        <translation>Un mensaje que se adjuntó a la fxtcoin: URL que será almacenada con la transacción para su referencia. Nota: Este mensaje no se envía a través de la red FxTCoin.</translation>
+        <source>A message that was attached to the fixedtradecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
+        <translation>Un mensaje que se adjuntó a la fixedtradecoin: URL que será almacenada con la transacción para su referencia. Nota: Este mensaje no se envía a través de la red FxTCoin.</translation>
     </message>
     <message>
         <source>Pay To:</source>

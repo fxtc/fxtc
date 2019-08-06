@@ -306,7 +306,7 @@
         <translation>Barra de pestañas</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
         <translation>Solicitar pagos (genera codigo QR y URL's de FxTCoin)</translation>
     </message>
     <message>
@@ -318,8 +318,8 @@
         <translation>Muestra la lista de direcciones de recepción y etiquetas</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
-        <translation>Abrir un fxtcoin: URI o petición de pago</translation>
+        <source>Open a fixedtradecoin: URI or payment request</source>
+        <translation>Abrir un fixedtradecoin: URI o petición de pago</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>

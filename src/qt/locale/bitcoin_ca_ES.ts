@@ -398,8 +398,8 @@
         <translation>Barra d'eines de les pestanyes</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
-        <translation>Sol·licita pagaments (genera codis QR i fxtcoin: URI)</translation>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
+        <translation>Sol·licita pagaments (genera codis QR i fixedtradecoin: URI)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -410,8 +410,8 @@
         <translation>Mostra la llista d'adreces de recepció i etiquetes utilitzades</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
-        <translation>Obre una fxtcoin: sol·licitud d'URI o pagament</translation>
+        <source>Open a fixedtradecoin: URI or payment request</source>
+        <translation>Obre una fixedtradecoin: sol·licitud d'URI o pagament</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -1170,8 +1170,8 @@
         <translation>Error de la sol·licitud de pagament</translation>
     </message>
     <message>
-        <source>Cannot start fxtcoin: click-to-pay handler</source>
-        <translation>No es pot iniciar fxtcoin: controlador click-to-pay</translation>
+        <source>Cannot start fixedtradecoin: click-to-pay handler</source>
+        <translation>No es pot iniciar fixedtradecoin: controlador click-to-pay</translation>
     </message>
     <message>
         <source>URI handling</source>
@@ -2048,8 +2048,8 @@
         <translation>Introduïu una etiqueta per a aquesta adreça per afegir-la a la llista d'adreces utilitzades</translation>
     </message>
     <message>
-        <source>A message that was attached to the fxtcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
-        <translation>Un missatge que s'ha adjuntat al fxtcoin: URI que s'emmagatzemarà amb la transacció per a la vostra referència. Nota: el missatge no s'enviarà a través de la xarxa FxTCoin.</translation>
+        <source>A message that was attached to the fixedtradecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
+        <translation>Un missatge que s'ha adjuntat al fixedtradecoin: URI que s'emmagatzemarà amb la transacció per a la vostra referència. Nota: el missatge no s'enviarà a través de la xarxa FxTCoin.</translation>
     </message>
     <message>
         <source>Pay To:</source>

@@ -410,7 +410,7 @@
         <translation>Трака са картицама</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
         <translation>Затражи плаћање (генерише QR кодове и FxTCоин: URI-е)</translation>
     </message>
     <message>
@@ -422,7 +422,7 @@
         <translation>Прегледајте листу коришћених адреса и етикета за пријем уплата</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
+        <source>Open a fixedtradecoin: URI or payment request</source>
         <translation>Отворите FxTCоин: URI или захтев за плаћање</translation>
     </message>
     <message>

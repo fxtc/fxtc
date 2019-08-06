@@ -415,8 +415,8 @@ Var vänlig och försök igen.</translation>
         <translation>Verktygsfält för tabbar</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
-        <translation>Begär betalningar (skapar QR-koder och fxtcoin: -URIer)</translation>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
+        <translation>Begär betalningar (skapar QR-koder och fixedtradecoin: -URIer)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -427,8 +427,8 @@ Var vänlig och försök igen.</translation>
         <translation>Visa listan med använda mottagningsadresser och etiketter</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
-        <translation>Öppna en fxtcoin: URI eller betalningsbegäran</translation>
+        <source>Open a fixedtradecoin: URI or payment request</source>
+        <translation>Öppna en fixedtradecoin: URI eller betalningsbegäran</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -1369,16 +1369,16 @@ Var vänlig och försök igen.</translation>
         <translation>Fel vid betalningsbegäran</translation>
     </message>
     <message>
-        <source>Cannot start fxtcoin: click-to-pay handler</source>
-        <translation>Kan inte starta fxtcoin: klicka-och-betala hanteraren</translation>
+        <source>Cannot start fixedtradecoin: click-to-pay handler</source>
+        <translation>Kan inte starta fixedtradecoin: klicka-och-betala hanteraren</translation>
     </message>
     <message>
         <source>URI handling</source>
         <translation>URI-hantering</translation>
     </message>
     <message>
-        <source>'fxtcoin://' is not a valid URI. Use 'fxtcoin:' instead.</source>
-        <translation>'fxtcoin://' är inte en accepterad URI. Använd 'fxtcoin:' istället.</translation>
+        <source>'fixedtradecoin://' is not a valid URI. Use 'fixedtradecoin:' instead.</source>
+        <translation>'fixedtradecoin://' är inte en accepterad URI. Använd 'fixedtradecoin:' istället.</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -2447,8 +2447,8 @@ Notera: Då avgiften beräknas per byte kommer en avgift på 50 satoshi tas ut f
         <translation>Ange en etikett för denna adress för att lägga till den i listan med använda adresser</translation>
     </message>
     <message>
-        <source>A message that was attached to the fxtcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
-        <translation>Ett meddelande som bifogades fxtcoin: -URIn och som lagras med transaktionen som referens. NB: Meddelandet kommer inte att sändas över FxTCoin-nätverket.</translation>
+        <source>A message that was attached to the fixedtradecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
+        <translation>Ett meddelande som bifogades fixedtradecoin: -URIn och som lagras med transaktionen som referens. NB: Meddelandet kommer inte att sändas över FxTCoin-nätverket.</translation>
     </message>
     <message>
         <source>Pay To:</source>

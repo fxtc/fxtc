@@ -274,11 +274,11 @@
         <translation>Ciļņu rīkjosla</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
-        <translation>Pieprasīt maksājumus (izveido QR kodu un fxtcoin: URIs)</translation>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
+        <translation>Pieprasīt maksājumus (izveido QR kodu un fixedtradecoin: URIs)</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
+        <source>Open a fixedtradecoin: URI or payment request</source>
         <translation>Atvērt fxtcoin URI vai maksājuma pieprasījumu</translation>
     </message>
     <message>

@@ -526,7 +526,7 @@
     </message>
     <message>
         <location line="-257"/>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -541,7 +541,7 @@
     </message>
     <message>
         <location line="+3"/>
-        <source>Open a fxtcoin: URI or payment request</source>
+        <source>Open a fixedtradecoin: URI or payment request</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1734,7 +1734,7 @@
     </message>
     <message>
         <location line="-529"/>
-        <source>Cannot start fxtcoin: click-to-pay handler</source>
+        <source>Cannot start fixedtradecoin: click-to-pay handler</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1749,7 +1749,7 @@
     </message>
     <message>
         <location line="-53"/>
-        <source>&apos;fxtcoin://&apos; is not a valid URI. Use &apos;fxtcoin:&apos; instead.</source>
+        <source>&apos;fixedtradecoin://&apos; is not a valid URI. Use &apos;fixedtradecoin:&apos; instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3192,7 +3192,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of &quot;100 satos
     </message>
     <message>
         <location line="+54"/>
-        <source>A message that was attached to the fxtcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
+        <source>A message that was attached to the fixedtradecoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the FxTCoin network.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

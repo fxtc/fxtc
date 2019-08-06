@@ -49,7 +49,7 @@
 #include <QUrlQuery>
 
 const int BITCOIN_IPC_CONNECT_TIMEOUT = 1000; // milliseconds
-const QString BITCOIN_IPC_PREFIX("fxtcoin:");
+const QString BITCOIN_IPC_PREFIX("fixedtradecoin:");
 #ifdef ENABLE_BIP70
 // BIP70 payment protocol messages
 const char* BIP70_MESSAGE_PAYMENTACK = "PaymentACK";
@@ -102,11 +102,11 @@ void PaymentServer::ipcParseCommandLine(interfaces::Node& node, int argc, char* 
         if (arg.startsWith("-"))
             continue;
 
-        // If the fxtcoin: URI contains a payment request, we are not able to detect the
+        // If the fixedtradecoin: URI contains a payment request, we are not able to detect the
         // network as that would require fetching and parsing the payment request.
         // That means clicking such an URI which contains a testnet payment request
         // will start a mainnet instance and throw a "wrong network" error.
-        if (arg.startsWith(BITCOIN_IPC_PREFIX, Qt::CaseInsensitive)) // fxtcoin: URI
+        if (arg.startsWith(BITCOIN_IPC_PREFIX, Qt::CaseInsensitive)) // fixedtradecoin: URI
         {
             savedPaymentRequests.append(arg);
 
@@ -208,7 +208,7 @@ PaymentServer::PaymentServer(QObject* parent, bool startLocalServer) :
 #endif
 
     // Install global event filter to catch QFileOpenEvents
-    // on Mac: sent when you click fxtcoin: links
+    // on Mac: sent when you click fixedtradecoin: links
     // other OSes: helpful when dealing with payment request files
     if (parent)
         parent->installEventFilter(this);
@@ -225,7 +225,7 @@ PaymentServer::PaymentServer(QObject* parent, bool startLocalServer) :
         if (!uriServer->listen(name)) {
             // constructor is called early in init, so don't use "Q_EMIT message()" here
             QMessageBox::critical(nullptr, tr("Payment request error"),
-                tr("Cannot start fxtcoin: click-to-pay handler"));
+                tr("Cannot start fixedtradecoin: click-to-pay handler"));
         }
         else {
             connect(uriServer, &QLocalServer::newConnection, this, &PaymentServer::handleURIConnection);
@@ -244,7 +244,7 @@ PaymentServer::~PaymentServer()
 }
 
 //
-// OSX-specific way of handling fxtcoin: URIs and PaymentRequest mime types.
+// OSX-specific way of handling fixedtradecoin: URIs and PaymentRequest mime types.
 // Also used by paymentservertests.cpp and when opening a payment request file
 // via "Open URI..." menu entry.
 //
@@ -285,12 +285,12 @@ void PaymentServer::handleURIOrFile(const QString& s)
         return;
     }
 
-    if (s.startsWith("fxtcoin://", Qt::CaseInsensitive))
+    if (s.startsWith("fixedtradecoin://", Qt::CaseInsensitive))
     {
-        Q_EMIT message(tr("URI handling"), tr("'fxtcoin://' is not a valid URI. Use 'fxtcoin:' instead."),
+        Q_EMIT message(tr("URI handling"), tr("'fixedtradecoin://' is not a valid URI. Use 'fixedtradecoin:' instead."),
             CClientUIInterface::MSG_ERROR);
     }
-    else if (s.startsWith(BITCOIN_IPC_PREFIX, Qt::CaseInsensitive)) // fxtcoin: URI
+    else if (s.startsWith(BITCOIN_IPC_PREFIX, Qt::CaseInsensitive)) // fixedtradecoin: URI
     {
         QUrlQuery uri((QUrl(s)));
 #ifdef ENABLE_BIP70
@@ -507,7 +507,7 @@ void PaymentServer::initNetManager()
         return;
     delete netManager;
 
-    // netManager is used to fetch paymentrequests given in fxtcoin: URIs
+    // netManager is used to fetch paymentrequests given in fixedtradecoin: URIs
     netManager = new QNetworkAccessManager(this);
 
     QNetworkProxy proxy;

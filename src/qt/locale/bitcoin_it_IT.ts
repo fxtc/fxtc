@@ -402,8 +402,8 @@
         <translation>Barra degli strumenti</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and fxtcoin: URIs)</source>
-        <translation>Richiedi pagamenti (genera codici QR e fxtcoin: URI)</translation>
+        <source>Request payments (generates QR codes and fixedtradecoin: URIs)</source>
+        <translation>Richiedi pagamenti (genera codici QR e fixedtradecoin: URI)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -414,8 +414,8 @@
         <translation>Mostra la lista degli indirizzi di ricezione usati e le relative etichette</translation>
     </message>
     <message>
-        <source>Open a fxtcoin: URI or payment request</source>
-        <translation>Apri un fxtcoin: URI o una richiesta di pagamento</translation>
+        <source>Open a fixedtradecoin: URI or payment request</source>
+        <translation>Apri un fixedtradecoin: URI o una richiesta di pagamento</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -830,8 +830,8 @@
         <translation>Gestione URI</translation>
     </message>
     <message>
-        <source>'fxtcoin://' is not a valid URI. Use 'fxtcoin:' instead.</source>
-        <translation>'fxtcoin://' non è un URI valido. Usa invece 'fxtcoin:'.</translation>
+        <source>'fixedtradecoin://' is not a valid URI. Use 'fixedtradecoin:' instead.</source>
+        <translation>'fixedtradecoin://' non è un URI valido. Usa invece 'fixedtradecoin:'.</translation>
     </message>
     <message>
         <source>Invalid payment address %1</source>
