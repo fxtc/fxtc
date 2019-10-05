@@ -1249,6 +1249,16 @@ CAmount GetBlockSubsidy(int nHeight, CBlockHeader pblock, const Consensus::Param
     if (nHeight >= sporkManager.GetSporkValue(SPORK_FXTC_03_BLOCK_REWARD_SMOOTH_HALVING_START)) {
         nSubsidy -= ((nSubsidy >> 1) * (nHeight % consensusParams.nSubsidyHalvingInterval)) / consensusParams.nSubsidyHalvingInterval;
     }
+    // Reward shaping
+    if (nHeight >= sporkManager.GetSporkValue(SPORK_FXTC_03_BLOCK_REWARD_SHAPING_START)) {
+        CAmount nStart = COIN / 100;
+        int nPart = 10;
+        while (nSubsidy > nStart) {
+            nSubsidy = ((nPart - 1) * nStart + nSubsidy) / nPart;
+            nPart *= 10;
+            nStart *= 10;
+        }
+    }
     // Force minimum subsidy allowed
     if (nSubsidy < consensusParams.nMinimumSubsidy) {
         nSubsidy = consensusParams.nMinimumSubsidy;
