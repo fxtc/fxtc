@@ -629,7 +629,7 @@ CAddress GetLocalAddress(const CNetAddr *paddrPeer, ServiceFlags nLocalServices)
 
 extern bool fDiscover;
 extern bool fListen;
-extern bool fRelayTxes;
+extern bool g_relay_txes;
 
 // Dash
 extern std::map<CInv, CDataStream> mapRelayDash;
