@@ -31,11 +31,7 @@
     </message>
     <message>
         <source>Enter address or label to search</source>
-        <translation>Introduzca la dirección o etiqueta para buscar
-                    
-                      
-                    
-                  </translation>
+        <translation>Introduzca la dirección o etiqueta para buscar</translation>
     </message>
     <message>
         <source>Export the data in the current tab to a file</source>
