@@ -29,7 +29,7 @@ static const int SPORK_START                                            = 10001;
 static const int SPORK_END                                              = 10013;
 // FXTC BEGIN
 static const int SPORK_FXTC_START                                    = 94680010;
-static const int SPORK_FXTC_END                                      = 94680031;
+static const int SPORK_FXTC_END                                      = 94680032;
 // FXTC END
 
 static const int SPORK_2_INSTANTSEND_ENABLED                            = 10001;
@@ -57,6 +57,7 @@ static const int SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_VALUE        = 94680024;
 static const int SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_PAYEE        = 94680025;
 
 static const int SPORK_FXTC_03_BLOCK_REWARD_SMOOTH_HALVING_START     = 94680031;
+static const int SPORK_FXTC_03_BLOCK_REWARD_SHAPING_START            = 94680032;
 // FXTC END
 
 static const int64_t SPORK_2_INSTANTSEND_ENABLED_DEFAULT                = 0;            // ON
@@ -84,6 +85,7 @@ static const int64_t SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_VALUE_DEFAULT   = 40
 static const int64_t SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_PAYEE_DEFAULT   = 4070908800ULL;// OFF
 
 static const int64_t SPORK_FXTC_03_BLOCK_REWARD_SMOOTH_HALVING_START_DEFAULT  = 4070908800ULL;// OFF
+static const int64_t SPORK_FXTC_03_BLOCK_REWARD_SHAPING_START_DEFAULT         = 4070908800ULL;// OFF
 // FXTC END
 
 extern std::map<uint256, CSporkMessage> mapSporks;

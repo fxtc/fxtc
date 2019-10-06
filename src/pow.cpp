@@ -287,6 +287,12 @@ unsigned int GetHandbrakeForce(int32_t nVersion, int nHeight)
         if (nHeight >= 19335) return 20;
     }
 
+    // Safe mode before reward shaping activation
+    if (nHeight >= 505050 && nHeight < sporkManager.GetSporkValue(SPORK_FXTC_03_BLOCK_REWARD_SHAPING_START))
+    {
+        return 100;
+    }
+
     if (nHeight >= sporkManager.GetSporkValue(SPORK_FXTC_01_HANDBRAKE_HEIGHT))
     {
         switch (nVersionAlgo)

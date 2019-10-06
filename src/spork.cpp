@@ -206,6 +206,7 @@ bool CSporkManager::IsSporkActive(int nSporkID)
             case SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_PAYEE:      r = SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_PAYEE_DEFAULT; break;
 
             case SPORK_FXTC_03_BLOCK_REWARD_SMOOTH_HALVING_START:   r = SPORK_FXTC_03_BLOCK_REWARD_SMOOTH_HALVING_START_DEFAULT; break;
+            case SPORK_FXTC_03_BLOCK_REWARD_SHAPING_START:          r = SPORK_FXTC_03_BLOCK_REWARD_SHAPING_START_DEFAULT; break;
             // FXTC END
             default:
                 LogPrint(BCLog::SPORK, "CSporkManager::IsSporkActive -- Unknown Spork ID %d\n", nSporkID);
@@ -249,6 +250,7 @@ int64_t CSporkManager::GetSporkValue(int nSporkID)
         case SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_PAYEE:      return SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_PAYEE_DEFAULT;
 
         case SPORK_FXTC_03_BLOCK_REWARD_SMOOTH_HALVING_START:   return SPORK_FXTC_03_BLOCK_REWARD_SMOOTH_HALVING_START_DEFAULT;
+        case SPORK_FXTC_03_BLOCK_REWARD_SHAPING_START:          return SPORK_FXTC_03_BLOCK_REWARD_SHAPING_START_DEFAULT;
         // FXTC END
         default:
             LogPrint(BCLog::SPORK, "CSporkManager::GetSporkValue -- Unknown Spork ID %d\n", nSporkID);
@@ -284,6 +286,7 @@ int CSporkManager::GetSporkIDByName(std::string strName)
     if (strName == "SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_PAYEE")      return SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_PAYEE;
 
     if (strName == "SPORK_FXTC_03_BLOCK_REWARD_SMOOTH_HALVING_START")   return SPORK_FXTC_03_BLOCK_REWARD_SMOOTH_HALVING_START;
+    if (strName == "SPORK_FXTC_03_BLOCK_REWARD_SHAPING_START")          return SPORK_FXTC_03_BLOCK_REWARD_SHAPING_START;
     // FXTC END
 
     LogPrint(BCLog::SPORK, "CSporkManager::GetSporkIDByName -- Unknown Spork name '%s'\n", strName);
@@ -318,6 +321,7 @@ std::string CSporkManager::GetSporkNameByID(int nSporkID)
         case SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_PAYEE:      return "SPORK_FXTC_02_IGNORE_MASTERNODE_REWARD_PAYEE";
 
         case SPORK_FXTC_03_BLOCK_REWARD_SMOOTH_HALVING_START:   return "SPORK_FXTC_03_BLOCK_REWARD_SMOOTH_HALVING_START";
+        case SPORK_FXTC_03_BLOCK_REWARD_SHAPING_START:          return "SPORK_FXTC_03_BLOCK_REWARD_SHAPING_START";
         // FXTC END
         default:
             LogPrint(BCLog::SPORK, "CSporkManager::GetSporkNameByID -- Unknown Spork ID %d\n", nSporkID);

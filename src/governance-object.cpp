@@ -292,7 +292,7 @@ uint256 CGovernanceObject::GetHash() const
     // fee_tx is left out on purpose
     uint256 h1 = ss.GetHash();
 
-    DBG( printf("CGovernanceObject::GetHash %i %li %s\n", nRevision, nTime, strData.c_str()); );
+    DBG( LogPrintf("CGovernanceObject::GetHash %i %li %s\n", nRevision, nTime, strData.c_str()); );
 
     return h1;
 }
