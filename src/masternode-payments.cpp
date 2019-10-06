@@ -979,9 +979,9 @@ void CMasternodePayments::RequestLowDataPaymentBlocks(CNode* pnode, CConnman& co
                 CTxDestination address1;
                 ExtractDestination(payee.GetPayee(), address1);
                 CBitcoinAddress address2(address1);
-                printf("payee %s votes %d\n", address2.ToString().c_str(), payee.GetVoteCount());
+                LogPrintf("payee %s votes %d\n", address2.ToString().c_str(), payee.GetVoteCount());
             }
-            printf("block %d votes total %d\n", it->first, nTotalVotes);
+            LogPrintf("block %d votes total %d\n", it->first, nTotalVotes);
         )
         // END DEBUG
         // Low data block found, let's try to sync it
