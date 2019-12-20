@@ -38,6 +38,18 @@
 // Application startup time (used for uptime calculation)
 int64_t GetStartupTime();
 
+// FXTC BEGIN
+// BIP-0044 coin types - https://github.com/satoshilabs/slips/blob/master/slip-0044.md
+enum {
+    BIP44_BITCOIN            = 0x80000000, // BTC
+    BIP44_FIXEDTRADECOIN     = 0x80009468, // FXTC
+
+    BIP44_NULL
+};
+
+extern int32_t blockchainNetwork;
+// FXTC END
+
 extern const char * const BITCOIN_CONF_FILENAME;
 
 void SetupEnvironment();
