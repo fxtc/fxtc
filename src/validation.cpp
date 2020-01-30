@@ -3546,11 +3546,17 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
     // Start enforcing BIP113 (Median Time Past) using versionbits logic.
     int nLockTimeFlags = 0;
     if (VersionBitsState(pindexPrev, consensusParams, Consensus::DEPLOYMENT_CSV, versionbitscache) == ThresholdState::ACTIVE) {
-        assert(pindexPrev != nullptr);
+        // FXTC BEGIN
+        /* CSV deployed in FxTC since genesis block */
+        //assert(pindexPrev != nullptr);
+        // FXTC END
         nLockTimeFlags |= LOCKTIME_MEDIAN_TIME_PAST;
     }
 
-    int64_t nLockTimeCutoff = (nLockTimeFlags & LOCKTIME_MEDIAN_TIME_PAST)
+    // FXTC BEGIN
+    //int64_t nLockTimeCutoff = (nLockTimeFlags & LOCKTIME_MEDIAN_TIME_PAST)
+    int64_t nLockTimeCutoff = (nLockTimeFlags & LOCKTIME_MEDIAN_TIME_PAST && pindexPrev != NULL)
+    // FXTC END
                               ? pindexPrev->GetMedianTimePast()
                               : block.GetBlockTime();
 
