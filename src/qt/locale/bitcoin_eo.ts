@@ -1,4 +1,52 @@
 <TS language="eo" version="2.1">
+<!-- FXTC BEGIN -->
+<context>
+    <name>Multichain_Bitcoin</name>
+    <message>
+        <source>bitcoin</source>
+        <translation>bitmono</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Bitmono</translation>
+    </message>
+    <message>
+        <source>BITCOIN</source>
+        <translation>BITMONO</translation>
+    </message>
+</context>
+<context>
+    <name>Multichain_FixedTradeCoin</name>
+    <message>
+        <source>bitcoin:</source>
+        <translation>fixedtradecoin:</translation>
+    </message>
+    <message>
+        <source>bitmono</source>
+        <translation>fxtmono</translation>
+    </message>
+    <message>
+        <source>Bitmono</source>
+        <translation>FxTMono</translation>
+    </message>
+    <message>
+        <source>BITMONO</source>
+        <translation>FXTMONO</translation>
+    </message>
+    <message>
+        <source>bitcoin</source>
+        <translation>fxtmono</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>FxTMono</translation>
+    </message>
+    <message>
+        <source>BITCOIN</source>
+        <translation>FXTMONO</translation>
+    </message>
+</context>
+<!-- FXTC END -->
 <context>
     <name>AddressBookPage</name>
     <message>

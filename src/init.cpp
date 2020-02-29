@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2020 The FxTC Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -526,7 +527,7 @@ void SetupServerArgs()
     gArgs.AddArg("-blockmintxfee=<amt>", strprintf("Set lowest fee rate (in %s/kB) for transactions to be included in block creation. (default: %s)", CURRENCY_UNIT, FormatMoney(DEFAULT_BLOCK_MIN_TX_FEE)), ArgsManager::ALLOW_ANY, OptionsCategory::BLOCK_CREATION);
     gArgs.AddArg("-blockversion=<n>", "Override block version to test forking scenarios", ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::BLOCK_CREATION);
     // FXTC BEGIN
-    gArgs.AddArg("-blockchainnetwork=<network>", strprintf("Blockchain network: fixedtradecoin, bitcoin (default: fixedtradecoin)"), false, OptionsCategory::BLOCK_CREATION);
+    gArgs.AddArg("-blockchainnetwork=<network>", strprintf("Blockchain network: fixedtradecoin, bitcoin (default: fixedtradecoin)"), ArgsManager::ALLOW_ANY, OptionsCategory::BLOCK_CREATION);
     // FXTC END
 
     gArgs.AddArg("-rest", strprintf("Accept public REST requests (default: %u)", DEFAULT_REST_ENABLE), ArgsManager::ALLOW_ANY, OptionsCategory::RPC);

@@ -1,4 +1,77 @@
 <TS language="uk" version="2.1">
+<!-- FXTC BEGIN -->
+<context>
+    <name>Multichain_Bitcoin</name>
+    <message>
+        <source>bitcoin</source>
+        <translation>біткойн</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>Біткоін</translation>
+    </message>
+    <message>
+        <source>BITCOIN</source>
+        <translation>біткінів</translation>
+    </message>
+
+    <message>
+        <source>bitcoins</source>
+        <translation>біткоіни</translation>
+    </message>
+    <message>
+        <source>Bitcoins</source>
+        <translation>Біткоіни</translation>
+    </message>
+    <message>
+        <source>BITCOINS</source>
+        <translation>БИТКОИНЫ</translation>
+    </message>
+</context>
+<context>
+    <name>Multichain_FixedTradeCoin</name>
+    <message>
+        <source>біткойн</source>
+        <translation>fxtcoin</translation>
+    </message>
+    <message>
+        <source>Біткоін</source>
+        <translation>FxTCoin</translation>
+    </message>
+    <message>
+        <source>біткінів</source>
+        <translation>FXTCінів</translation>
+    </message>
+    <message>
+        <source>біткоіни</source>
+        <translation>фхткоіни</translation>
+    </message>
+    <message>
+        <source>Біткоіни</source>
+        <translation>ФхТКоіни</translation>
+    </message>
+    <message>
+        <source>БИТКОИНЫ</source>
+        <translation>ФХКОИНЫ</translation>
+    </message>
+    <message>
+        <source>bitcoin:</source>
+        <translation>fixedtradecoin:</translation>
+    </message>
+    <message>
+        <source>bitcoin</source>
+        <translation>fxtcoin</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>FxTCoin</translation>
+    </message>
+    <message>
+        <source>BITCOIN</source>
+        <translation>FXTCOIN</translation>
+    </message>
+</context>
+<!-- FXTC END -->
 <context>
     <name>AddressBookPage</name>
     <message>

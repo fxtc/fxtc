@@ -1,4 +1,60 @@
 <TS language="ko" version="2.1">
+<!-- FXTC BEGIN -->
+<context>
+    <name>Multichain_FixedTradeCoin</name>
+    <message>
+        <source>bitcoin</source>
+        <translation>비트코인</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>비트코인들</translation>
+    </message>
+    <message>
+        <source>bitcoins</source>
+        <translation>비트코인을</translation>
+    </message>
+    <message>
+        <source>Bitcoins</source>
+        <translation>비트코인들을</translation>
+    </message>
+</context>
+<context>
+    <name>Multichain_FixedTradeCoin</name>
+    <message>
+        <source>bitcoin:</source>
+        <translation>fixedtradecoin:</translation>
+    </message>
+    <message>
+        <source>비트코인</source>
+        <translation>fxtcoin</translation>
+    </message>
+    <message>
+        <source>비트코인들</source>
+        <translation>FxTCoin</translation>
+    </message>
+    <message>
+        <source>비트코인을</source>
+        <translation>fxtcoins</translation>
+    </message>
+    <message>
+        <source>비트코인들을</source>
+        <translation>FxTCoins</translation>
+    </message>
+    <message>
+        <source>bitcoin</source>
+        <translation>fxtcoin</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>FxTCoin</translation>
+    </message>
+    <message>
+        <source>BITCOIN</source>
+        <translation>FXTCOIN</translation>
+    </message>
+</context>
+<!-- FXTC END -->
 <context>
     <name>AddressBookPage</name>
     <message>

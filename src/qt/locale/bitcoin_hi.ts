@@ -1,4 +1,36 @@
 <TS language="hi" version="2.1">
+<!-- FXTC BEGIN -->
+<context>
+    <name>Multichain_Bitcoin</name>
+    <message>
+        <source>Bitcoin</source>
+        <translation>बिटकॉइन</translation>
+    </message>
+</context>
+<context>
+    <name>Multichain_FixedTradeCoin</name>
+    <message>
+        <source>bitcoin:</source>
+        <translation>fixedtradecoin:</translation>
+    </message>
+    <message>
+        <source>बिटकॉइन</source>
+        <translation>FxTCoin</translation>
+    </message>
+    <message>
+        <source>bitcoin</source>
+        <translation>fxtcoin</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>FxTCoin</translation>
+    </message>
+    <message>
+        <source>BITCOIN</source>
+        <translation>FXTCOIN</translation>
+    </message>
+</context>
+<!-- FXTC END -->
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -333,7 +365,7 @@
     <name>Intro</name>
     <message>
         <source>Bitcoin</source>
-        <translation>बीटकोइन</translation>
+        <translation>बिटकॉइन</translation>
     </message>
     <message>
         <source>Error</source>

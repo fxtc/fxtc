@@ -1,4 +1,5 @@
 # Copyright (c) 2013-2016 The Bitcoin Core developers
+# Copyright (c) 2020 The FxTC Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -163,6 +164,11 @@ BITCOIN_QT_H = \
   qt/walletmodeltransaction.h \
   qt/walletview.h \
   qt/winshutdownmonitor.h
+
+# FXTC BEGIN
+BITCOIN_QT_H += \
+  qt/multichaintranslator.h
+# FXTC END
 
 RES_ICONS = \
   qt/res/icons/add.png \

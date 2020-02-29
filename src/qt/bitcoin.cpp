@@ -1,4 +1,5 @@
 // Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2020 The FxTC Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -15,6 +16,9 @@
 #include <qt/guiconstants.h>
 #include <qt/guiutil.h>
 #include <qt/intro.h>
+// FXTC BEGIN
+#include <qt/multichaintranslator.h>
+// FXTC END
 #include <qt/networkstyle.h>
 #include <qt/optionsmodel.h>
 #include <qt/platformstyle.h>
@@ -80,13 +84,19 @@ static QString GetLangTerritory()
 }
 
 /** Set up translations */
-static void initTranslations(QTranslator &qtTranslatorBase, QTranslator &qtTranslator, QTranslator &translatorBase, QTranslator &translator)
+// FXTC BEGIN
+//static void initTranslations(QTranslator &qtTranslatorBase, QTranslator &qtTranslator, QTranslator &translatorBase, QTranslator &translator)
+static void initTranslations(QTranslator &qtTranslatorBase, QTranslator &qtTranslator, QTranslator &translatorBase, QTranslator &translator, QTranslator &multichainTranslator)
+// FXTC END
 {
     // Remove old translators
     QApplication::removeTranslator(&qtTranslatorBase);
     QApplication::removeTranslator(&qtTranslator);
     QApplication::removeTranslator(&translatorBase);
     QApplication::removeTranslator(&translator);
+    // FXTC BEGIN
+    QApplication::removeTranslator(&multichainTranslator);
+    // FXTC END
 
     // Get desired locale (e.g. "de_DE")
     // 1) System default language
@@ -99,6 +109,12 @@ static void initTranslations(QTranslator &qtTranslatorBase, QTranslator &qtTrans
     // Load language files for configured locale:
     // - First load the translator for the base language, without territory
     // - Then load the more specific locale translator
+
+    // FXTC BEGIN
+    // Load translator for multichain support
+    if (multichainTranslator.load("multichain", ":/translations/"))
+        QApplication::installTranslator(&multichainTranslator);
+    // FXTC END
 
     // Load e.g. qt_de.qm
     if (qtTranslatorBase.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
@@ -475,8 +491,12 @@ int GuiMain(int argc, char* argv[])
 
     /// 4. Initialization of translations, so that intro dialog is in user's language
     // Now that QSettings are accessible, initialize translations
-    QTranslator qtTranslatorBase, qtTranslator, translatorBase, translator;
-    initTranslations(qtTranslatorBase, qtTranslator, translatorBase, translator);
+    // FXTC BEGIN
+    //QTranslator qtTranslatorBase, qtTranslator, translatorBase, translator;
+    //initTranslations(qtTranslatorBase, qtTranslator, translatorBase, translator);
+    CMultichainTranslator qtTranslatorBase, qtTranslator, translatorBase, translator, multichainTranslator;
+    initTranslations(qtTranslatorBase, qtTranslator, translatorBase, translator, multichainTranslator);
+    // FXTC END
 
     // Show help message immediately after parsing command-line options (for "-lang") and setting locale,
     // but before showing splash screen.
@@ -532,7 +552,10 @@ int GuiMain(int argc, char* argv[])
     // Allow for separate UI settings for testnets
     QApplication::setApplicationName(networkStyle->getAppName());
     // Re-initialize translations after changing application name (language in network-specific settings can be different)
-    initTranslations(qtTranslatorBase, qtTranslator, translatorBase, translator);
+    // FXTC BEGIN
+    //initTranslations(qtTranslatorBase, qtTranslator, translatorBase, translator);
+    initTranslations(qtTranslatorBase, qtTranslator, translatorBase, translator, multichainTranslator);
+    // FXTC END
 
 #ifdef ENABLE_WALLET
     /// 8. URI IPC sending

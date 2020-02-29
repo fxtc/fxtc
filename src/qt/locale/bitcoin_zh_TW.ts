@@ -1,4 +1,36 @@
 <TS language="zh_TW" version="2.1">
+<!-- FXTC BEGIN -->
+<context>
+    <name>Multichain_Bitcoin</name>
+    <message>
+        <source>Bitcoin</source>
+        <translation>比特</translation>
+    </message>
+</context>
+<context>
+    <name>Multichain_FixedTradeCoin</name>
+    <message>
+        <source>bitcoin:</source>
+        <translation>fixedtradecoin:</translation>
+    </message>
+    <message>
+        <source>比特</source>
+        <translation>FxTC</translation>
+    </message>
+    <message>
+        <source>bitcoin</source>
+        <translation>fxtcoin</translation>
+    </message>
+    <message>
+        <source>Bitcoin</source>
+        <translation>FxTCoin</translation>
+    </message>
+    <message>
+        <source>BITCOIN</source>
+        <translation>FXTCOIN</translation>
+    </message>
+</context>
+<!-- FXTC END -->
 <context>
     <name>AddressBookPage</name>
     <message>

@@ -74,3 +74,8 @@ QT_TS = \
   qt/locale/bitcoin_zh_CN.ts \
   qt/locale/bitcoin_zh_HK.ts \
   qt/locale/bitcoin_zh_TW.ts
+
+# FXTC BEGIN
+QT_TS += \
+  qt/locale/multichain.ts
+# FXTC END
