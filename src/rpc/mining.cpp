@@ -77,27 +77,11 @@ static UniValue GetNetworkHashPS(int lookup, int height, int32_t nAlgo) {
 
     arith_uint256 workDiff = pb->nChainWork - pb0->nChainWork;
     // FXTC BEGIN
-    switch (nAlgo)
-    {
-        case ALGO_SHA256D:
-            workDiff = pb->nChainWorkSha256d - pb0->nChainWorkSha256d;
-            break;
-        case ALGO_SCRYPT:
-            workDiff = pb->nChainWorkScrypt - pb0->nChainWorkScrypt;
-            break;
-        case ALGO_NIST5:
-            workDiff = pb->nChainWorkNist5 - pb0->nChainWorkNist5;
-            break;
-        case ALGO_LYRA2Z:
-            workDiff = pb->nChainWorkLyra2Z - pb0->nChainWorkLyra2Z;
-            break;
-        case ALGO_X11:
-            workDiff = pb->nChainWorkX11 - pb0->nChainWorkX11;
-            break;
-        case ALGO_X16R:
-            workDiff = pb->nChainWorkX16R - pb0->nChainWorkX16R;
-            break;
-    }
+    CBlockIndex* pbAlgo = pb;
+    while (pbAlgo->pprev && nAlgo != (pbAlgo->nVersion & ALGO_VERSION_MASK)) pbAlgo = pbAlgo->pprev;
+    CBlockIndex* pb0Algo = pb0;
+    while (pb0Algo->pprev && nAlgo != (pb0Algo->nVersion & ALGO_VERSION_MASK)) pb0Algo = pb0Algo->pprev;
+    workDiff = pbAlgo->nChainWorkAlgo - pb0Algo->nChainWorkAlgo;
     // FXTC END
     int64_t timeDiff = maxTime - minTime;
 

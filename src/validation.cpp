@@ -3191,12 +3191,11 @@ CBlockIndex* CChainState::AddToBlockIndex(const CBlockHeader& block)
     pindexNew->nTimeMax = (pindexNew->pprev ? std::max(pindexNew->pprev->nTimeMax, pindexNew->nTime) : pindexNew->nTime);
     pindexNew->nChainWork = (pindexNew->pprev ? pindexNew->pprev->nChainWork : 0) + GetBlockProof(*pindexNew);
     // FXTC BEGIN
-    pindexNew->nChainWorkSha256d = (pindexNew->pprev ? pindexNew->pprev->nChainWorkSha256d : 0) + (((pindexNew->nVersion & ALGO_VERSION_MASK) == ALGO_SHA256D) ? GetBlockProof(*pindexNew) : 0);
-    pindexNew->nChainWorkScrypt = (pindexNew->pprev ? pindexNew->pprev->nChainWorkScrypt : 0) + (((pindexNew->nVersion & ALGO_VERSION_MASK) == ALGO_SCRYPT) ? GetBlockProof(*pindexNew) : 0);
-    pindexNew->nChainWorkNist5 = (pindexNew->pprev ? pindexNew->pprev->nChainWorkNist5 : 0) + (((pindexNew->nVersion & ALGO_VERSION_MASK) == ALGO_NIST5) ? GetBlockProof(*pindexNew) : 0);
-    pindexNew->nChainWorkLyra2Z = (pindexNew->pprev ? pindexNew->pprev->nChainWorkLyra2Z : 0) + (((pindexNew->nVersion & ALGO_VERSION_MASK) == ALGO_LYRA2Z) ? GetBlockProof(*pindexNew) : 0);
-    pindexNew->nChainWorkX11 = (pindexNew->pprev ? pindexNew->pprev->nChainWorkX11 : 0) + (((pindexNew->nVersion & ALGO_VERSION_MASK) == ALGO_X11) ? GetBlockProof(*pindexNew) : 0);
-    pindexNew->nChainWorkX16R = (pindexNew->pprev ? pindexNew->pprev->nChainWorkX16R : 0) + (((pindexNew->nVersion & ALGO_VERSION_MASK) == ALGO_X16R) ? GetBlockProof(*pindexNew) : 0);
+    int32_t nAlgo = pindexNew->nVersion & ALGO_VERSION_MASK;
+    CBlockIndex* pindexNewAlgo = pindexNew;
+    if (pindexNewAlgo->pprev) pindexNewAlgo = pindexNewAlgo->pprev;
+    while (pindexNewAlgo->pprev && nAlgo != (pindexNewAlgo->nVersion & ALGO_VERSION_MASK)) pindexNewAlgo = pindexNewAlgo->pprev;
+    pindexNew->nChainWorkAlgo = (pindexNewAlgo ? pindexNewAlgo->nChainWorkAlgo : 0) + GetBlockProof(*pindexNew);
     // FXTC END
     pindexNew->RaiseValidity(BLOCK_VALID_TREE);
     if (pindexBestHeader == nullptr || pindexBestHeader->nChainWork < pindexNew->nChainWork)
@@ -4143,12 +4142,11 @@ bool CChainState::LoadBlockIndex(const Consensus::Params& consensus_params, CBlo
         CBlockIndex* pindex = item.second;
         pindex->nChainWork = (pindex->pprev ? pindex->pprev->nChainWork : 0) + GetBlockProof(*pindex);
         // FXTC BEGIN
-        pindex->nChainWorkSha256d = (pindex->pprev ? pindex->pprev->nChainWorkSha256d : 0) + (((pindex->nVersion & ALGO_VERSION_MASK) == ALGO_SHA256D) ? GetBlockProof(*pindex) : 0);
-        pindex->nChainWorkScrypt = (pindex->pprev ? pindex->pprev->nChainWorkScrypt : 0) + (((pindex->nVersion & ALGO_VERSION_MASK) == ALGO_SCRYPT) ? GetBlockProof(*pindex) : 0);
-        pindex->nChainWorkNist5 = (pindex->pprev ? pindex->pprev->nChainWorkNist5 : 0) + (((pindex->nVersion & ALGO_VERSION_MASK) == ALGO_NIST5) ? GetBlockProof(*pindex) : 0);
-        pindex->nChainWorkLyra2Z = (pindex->pprev ? pindex->pprev->nChainWorkLyra2Z : 0) + (((pindex->nVersion & ALGO_VERSION_MASK) == ALGO_LYRA2Z) ? GetBlockProof(*pindex) : 0);
-        pindex->nChainWorkX11 = (pindex->pprev ? pindex->pprev->nChainWorkX11 : 0) + (((pindex->nVersion & ALGO_VERSION_MASK) == ALGO_X11) ? GetBlockProof(*pindex) : 0);
-        pindex->nChainWorkX16R = (pindex->pprev ? pindex->pprev->nChainWorkX16R : 0) + (((pindex->nVersion & ALGO_VERSION_MASK) == ALGO_X16R) ? GetBlockProof(*pindex) : 0);
+        int32_t nAlgo = pindex->nVersion & ALGO_VERSION_MASK;
+        CBlockIndex* pindexAlgo = pindex;
+        if (pindexAlgo->pprev) pindexAlgo = pindexAlgo->pprev;
+        while (pindexAlgo->pprev && nAlgo != (pindexAlgo->nVersion & ALGO_VERSION_MASK)) pindexAlgo = pindexAlgo->pprev;
+        pindex->nChainWorkAlgo = (pindexAlgo ? pindexAlgo->nChainWorkAlgo : 0) + GetBlockProof(*pindex);
         // FXTC END
         pindex->nTimeMax = (pindex->pprev ? std::max(pindex->pprev->nTimeMax, pindex->nTime) : pindex->nTime);
         // We can link the chain of blocks for which we've received transactions at some point.
